@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibrariansAssistant.DomainModelLayer", "LibrariansAssistant.DomainModelLayer\LibrariansAssistant.DomainModelLayer.csproj", "{B3747587-68EE-4E44-B5B0-89C8AD78B437}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibrariansAssistant.DomainModelLayer", "LibrariansAssistant.DomainModelLayer\LibrariansAssistant.DomainModelLayer.csproj", "{B3747587-68EE-4E44-B5B0-89C8AD78B437}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibrariansAssistant.InfranstructureLayer", "LibrariansAssistant.InfranstructureLayer\LibrariansAssistant.InfranstructureLayer.csproj", "{8EE65A24-1586-42E2-831D-7074CCC27A36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibrariansAssistant.InfranstructureLayer", "LibrariansAssistant.InfranstructureLayer\LibrariansAssistant.InfranstructureLayer.csproj", "{8EE65A24-1586-42E2-831D-7074CCC27A36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibrariansAssistant.ServicesLayer", "LibrariansAssistant.ServicesLayer\LibrariansAssistant.ServicesLayer.csproj", "{D76E0534-2537-4997-A46D-502BDAC02468}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibrariansAssistant.ServicesLayer", "LibrariansAssistant.ServicesLayer\LibrariansAssistant.ServicesLayer.csproj", "{D76E0534-2537-4997-A46D-502BDAC02468}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibrariansAssistant.PresentationLayer", "LibrariansAssistant.PresentationLayer\LibrariansAssistant.PresentationLayer.csproj", "{07E3BD85-6261-4684-946D-20FD81E2CDAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibrariansAssistant.PresentationLayer", "LibrariansAssistant.PresentationLayer\LibrariansAssistant.PresentationLayer.csproj", "{07E3BD85-6261-4684-946D-20FD81E2CDAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibrariansAssistant.UserInterfaceLayer", "LibrariansAssistant.UserInterfaceLayer\LibrariansAssistant.UserInterfaceLayer.csproj", "{0496B863-666E-448F-9396-5F36AB62825E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibrariansAssistant.UserInterfaceLayer", "LibrariansAssistant.UserInterfaceLayer\LibrariansAssistant.UserInterfaceLayer.csproj", "{0496B863-666E-448F-9396-5F36AB62825E}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "LibrariansAssistant.LibraryDatabase", "LibrariansAssistant.LibraryDatabase\LibrariansAssistant.LibraryDatabase.sqlproj", "{30245BC9-530D-43AF-9E9B-B8C4AE3D2A9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,12 @@ Global
 		{0496B863-666E-448F-9396-5F36AB62825E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0496B863-666E-448F-9396-5F36AB62825E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0496B863-666E-448F-9396-5F36AB62825E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30245BC9-530D-43AF-9E9B-B8C4AE3D2A9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30245BC9-530D-43AF-9E9B-B8C4AE3D2A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30245BC9-530D-43AF-9E9B-B8C4AE3D2A9A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{30245BC9-530D-43AF-9E9B-B8C4AE3D2A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30245BC9-530D-43AF-9E9B-B8C4AE3D2A9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30245BC9-530D-43AF-9E9B-B8C4AE3D2A9A}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
