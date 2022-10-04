@@ -8,7 +8,7 @@ public interface IObjectRelationalMapper
 
     IEnumerable<int> ExecuteNonQueries(IEnumerable<string> queries, QueryExecutionSettings? executionSettings);
 
-    IEnumerable<T> ExecuteQuery<T>(string query, QueryExecutionSettings? executionSettings);
+    IEnumerable<T> ExecuteQuery<T>(string query, QueryExecutionSettings? executionSettings, MappingSettings? mappingSettings);
 
     T ExecuteScalar<T>(string query, QueryExecutionSettings? executionSettings);
 
