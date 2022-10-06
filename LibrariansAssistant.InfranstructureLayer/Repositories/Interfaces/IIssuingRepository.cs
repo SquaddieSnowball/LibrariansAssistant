@@ -8,7 +8,7 @@ public interface IIssuingRepository
 
     IEnumerable<IIssuingModel> IssuingGetAll();
 
-    IIssuingModel IssuingGetById(int issuingId);
+    IIssuingModel? IssuingGetById(int issuingId);
 
     void IssuingUpdate(IIssuingModel issuing);
 

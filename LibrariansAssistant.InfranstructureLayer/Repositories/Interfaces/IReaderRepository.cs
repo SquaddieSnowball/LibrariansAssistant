@@ -8,7 +8,7 @@ public interface IReaderRepository
 
     IEnumerable<IReaderModel> ReaderGetAll();
 
-    IReaderModel ReaderGetById(int readerId);
+    IReaderModel? ReaderGetById(int readerId);
 
     void ReaderUpdate(IReaderModel reader);
 

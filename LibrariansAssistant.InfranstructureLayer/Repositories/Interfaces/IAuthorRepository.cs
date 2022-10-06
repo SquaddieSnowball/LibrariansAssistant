@@ -8,7 +8,7 @@ public interface IAuthorRepository
 
     IEnumerable<IAuthorModel> AuthorGetAll();
 
-    IAuthorModel AuthorGetById(int authorId);
+    IAuthorModel? AuthorGetById(int authorId);
 
     void AuthorUpdate(IAuthorModel author);
 

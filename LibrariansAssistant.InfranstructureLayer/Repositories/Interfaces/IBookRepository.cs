@@ -8,7 +8,7 @@ public interface IBookRepository
 
     IEnumerable<IBookModel> BookGetAll();
 
-    IBookModel BookGetById(int bookId);
+    IBookModel? BookGetById(int bookId);
 
     void BookUpdate(IBookModel book);
 
