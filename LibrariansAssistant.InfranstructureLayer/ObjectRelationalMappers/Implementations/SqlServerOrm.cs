@@ -192,27 +192,34 @@ public sealed class SqlServerOrm : IObjectRelationalMapper
 
     public IObjectRelationalMapper AddParameter<T>(string name, T value)
     {
-        _sqlCommand.Parameters.Add((value is not null) ? new SqlParameter(name, value) : new SqlParameter(name, DBNull.Value));
+        try
+        {
+            _sqlCommand.Parameters.Add(
+                (value is not null) ?
+                new SqlParameter(name, value) :
+                new SqlParameter(name, DBNull.Value)
+                );
+        }
+        catch
+        {
+            throw;
+        }
 
         return this;
     }
 
-    public void RegisterDependency(Type abstractType, Type concreteType)
+    public IObjectRelationalMapper RegisterDependency<TAbstract, TConcrete>() where TConcrete : TAbstract
     {
-        if (abstractType is null)
-            throw new ArgumentNullException(nameof(abstractType), "Abstract type must not be null.");
-
-        if (concreteType is null)
-            throw new ArgumentNullException(nameof(concreteType), "Concrete type must not be null.");
-
         try
         {
-            _dependencies.Add(abstractType, concreteType);
+            _dependencies.Add(typeof(TAbstract), typeof(TConcrete));
         }
         catch (ArgumentException)
         {
             throw new ArgumentException("This dependency has already been registered.");
         }
+
+        return this;
     }
 
     private object? CreateObject(Type type) =>
@@ -232,7 +239,7 @@ public sealed class SqlServerOrm : IObjectRelationalMapper
                 _dependencies[typeDetails.ObjectType].Name :
                 typeDetails.ObjectType.Name;
 
-            if ((mappingSettings.SuppressModelPostfix is true) && (propertyNamePrefix.EndsWith("Model") is true))
+            if ((mappingSettings.SuppressModelInPrefix is true) && (propertyNamePrefix.EndsWith("Model") is true))
                 propertyNamePrefix = propertyNamePrefix.Remove(propertyNamePrefix.LastIndexOf("Model"));
 
             if (mappingSettings.UseSqlStylePropertiesNaming is true)
@@ -261,7 +268,8 @@ public sealed class SqlServerOrm : IObjectRelationalMapper
                 }
                 catch (IndexOutOfRangeException)
                 {
-                    throw new MappingException($"Cannot map property named \"{propertyMappingName}\" to any column name.");
+                    throw new MappingException($"Cannot find a column named \"{propertyMappingName}\" " +
+                        $"to initialize a property named \"{propertyDetails.PropertyInfo.Name}\".");
                 }
             }
             else
@@ -288,34 +296,20 @@ public sealed class SqlServerOrm : IObjectRelationalMapper
                 {
                     if (currentEnumerableNumber == enumerableNumber)
                     {
+                        _ = GetEnumerableElementNumber(sqlDataReader);
+
                         var enumerable =
                             (IList)CreateObject(typeof(List<>).MakeGenericType(propertyDetails.TypeDetails.ObjectType))!;
-                        int elementNumber;
 
                         do
                         {
-                            try
-                            {
-                                elementNumber = int.Parse(sqlDataReader["i"].ToString()!);
-                            }
-                            catch (IndexOutOfRangeException)
-                            {
-                                throw new MappingException($"The enumerable property cannot be initialized " +
-                                    $"because the column named \"i\" does not exist.");
-                            }
-                            catch (FormatException)
-                            {
-                                throw new MappingException($"The enumerable property cannot be initialized " +
-                                    $"because the column named \"i\" contains a non-integer value.");
-                            }
-
                             object? enumerabledObj = CreateObject(propertyDetails.TypeDetails.ObjectType);
 
                             InitializeObject(enumerabledObj, propertyDetails.TypeDetails, sqlDataReader, mappingSettings);
 
                             enumerable.Add(enumerabledObj);
 
-                        } while ((sqlDataReader.Read() is true) && (elementNumber != 0));
+                        } while ((sqlDataReader.Read() is true) && (GetEnumerableElementNumber(sqlDataReader) != 0));
 
                         propertyDetails.PropertyInfo.SetValue(obj, enumerable);
 
@@ -344,5 +338,23 @@ public sealed class SqlServerOrm : IObjectRelationalMapper
             }
 
         return false;
+    }
+
+    private static int GetEnumerableElementNumber(SqlDataReader sqlDataReader)
+    {
+        try
+        {
+            return int.Parse(sqlDataReader["i"].ToString()!);
+        }
+        catch (IndexOutOfRangeException)
+        {
+            throw new MappingException($"The enumerable property cannot be initialized " +
+                $"because the column named \"i\" does not exist.");
+        }
+        catch (FormatException)
+        {
+            throw new MappingException($"The enumerable property cannot be initialized " +
+                $"because the column named \"i\" contains a non-integer value.");
+        }
     }
 }

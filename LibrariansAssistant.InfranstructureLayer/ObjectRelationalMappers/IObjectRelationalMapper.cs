@@ -14,5 +14,5 @@ public interface IObjectRelationalMapper
 
     IObjectRelationalMapper AddParameter<T>(string name, T value);
 
-    void RegisterDependency(Type abstractType, Type concreteType);
+    IObjectRelationalMapper RegisterDependency<TAbstract, TConcrete>() where TConcrete : TAbstract;
 }

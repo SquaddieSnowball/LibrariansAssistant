@@ -6,5 +6,5 @@ public sealed class MappingSettings
 
     public bool AddPropertyTypeObjectNamePrefix { get; set; }
 
-    public bool SuppressModelPostfix { get; set; }
+    public bool SuppressModelInPrefix { get; set; }
 }
