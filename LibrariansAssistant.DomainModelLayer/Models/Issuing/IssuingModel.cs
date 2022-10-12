@@ -1,4 +1,5 @@
-﻿using LibrariansAssistant.DomainModelLayer.Models.Book;
+﻿using LibrariansAssistant.DependenciesLayer;
+using LibrariansAssistant.DomainModelLayer.Models.Book;
 using LibrariansAssistant.DomainModelLayer.Models.Reader;
 
 namespace LibrariansAssistant.DomainModelLayer.Models.Issuing;
@@ -19,8 +20,12 @@ public sealed class IssuingModel : IIssuingModel
 
     public int? ReturnState { get; set; }
 
-    public IssuingModel(int id, IReaderModel reader, IBookModel book, DateTime takeDate,
+    public IssuingModel() =>
+        (Reader, Book) =
+        (DependenciesContainer.Resolve<IReaderModel>()!, DependenciesContainer.Resolve<IBookModel>()!);
+
+    public IssuingModel(IReaderModel reader, IBookModel book, DateTime takeDate,
         bool returned, DateTime? returnDate, int? returnState) =>
-        (Id, Reader, Book, TakeDate, Returned, ReturnDate, ReturnState) =
-        (id, reader, book, takeDate, returned, returnDate, returnState);
+        (Reader, Book, TakeDate, Returned, ReturnDate, ReturnState) =
+        (reader, book, takeDate, returned, returnDate, returnState);
 }

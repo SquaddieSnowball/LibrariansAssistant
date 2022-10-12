@@ -12,6 +12,9 @@ public sealed class BookModel : IBookModel
 
     public string Genre { get; set; }
 
-    public BookModel(int id, IEnumerable<IAuthorModel> authors, string title, string genre) =>
-        (Id, Authors, Title, Genre) = (id, authors, title, genre);
+    public BookModel() =>
+        (Authors, Title, Genre) = (Enumerable.Empty<IAuthorModel>(), string.Empty, string.Empty);
+
+    public BookModel(IEnumerable<IAuthorModel> authors, string title, string genre) =>
+        (Authors, Title, Genre) = (authors, title, genre);
 }

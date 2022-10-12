@@ -6,4 +6,8 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\LibrariansAssistant.DependenciesLayer\LibrariansAssistant.DependenciesLayer.csproj" />
+	</ItemGroup>
+
 </Project>

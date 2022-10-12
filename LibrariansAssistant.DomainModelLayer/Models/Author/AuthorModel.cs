@@ -10,6 +10,9 @@ public sealed class AuthorModel : IAuthorModel
 
     public string? Patronymic { get; set; }
 
-    public AuthorModel(int id, string firstName, string lastName, string? patronymic) =>
-        (Id, FirstName, LastName, Patronymic) = (id, firstName, lastName, patronymic);
+    public AuthorModel() =>
+        (FirstName, LastName) = (string.Empty, string.Empty);
+
+    public AuthorModel(string firstName, string lastName, string? patronymic) =>
+        (FirstName, LastName, Patronymic) = (firstName, lastName, patronymic);
 }

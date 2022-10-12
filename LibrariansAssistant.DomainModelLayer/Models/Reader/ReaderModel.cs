@@ -14,8 +14,11 @@ public sealed class ReaderModel : IReaderModel
 
     public DateTime DateOfBirth { get; set; }
 
-    public ReaderModel(int id, string firstName, string lastName, string? patronymic,
+    public ReaderModel() =>
+        (FirstName, LastName, Gender) = (string.Empty, string.Empty, string.Empty);
+
+    public ReaderModel(string firstName, string lastName, string? patronymic,
         string gender, DateTime dateOfBirth) =>
-        (Id, FirstName, LastName, Patronymic, Gender, DateOfBirth) =
-        (id, firstName, lastName, patronymic, gender, dateOfBirth);
+        (FirstName, LastName, Patronymic, Gender, DateOfBirth) =
+        (firstName, lastName, patronymic, gender, dateOfBirth);
 }
