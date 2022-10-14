@@ -8,4 +8,12 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\LibrariansAssistant.DependenciesLayer\LibrariansAssistant.DependenciesLayer.csproj" />
+		<ProjectReference Include="..\LibrariansAssistant.DomainModelLayer\LibrariansAssistant.DomainModelLayer.csproj" />
+		<ProjectReference Include="..\LibrariansAssistant.InfranstructureLayer\LibrariansAssistant.InfranstructureLayer.csproj" />
+		<ProjectReference Include="..\LibrariansAssistant.PresentationLayer\LibrariansAssistant.PresentationLayer.csproj" />
+		<ProjectReference Include="..\LibrariansAssistant.ServicesLayer\LibrariansAssistant.ServicesLayer.csproj" />
+	</ItemGroup>
+
 </Project>

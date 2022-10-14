@@ -8,6 +8,8 @@ internal static class Program
     [STAThread]
     private static void Main()
     {
+        DependenciesConfigurator.Configure();
+
         ApplicationConfiguration.Initialize();
         //Application.Run(new MainView());
     }
