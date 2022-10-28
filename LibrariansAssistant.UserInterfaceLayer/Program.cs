@@ -1,3 +1,5 @@
+using LibrariansAssistant.UserInterfaceLayer.Views.WinFormsViews;
+
 namespace LibrariansAssistant.UserInterfaceLayer;
 
 internal static class Program
@@ -9,8 +11,7 @@ internal static class Program
     private static void Main()
     {
         DependenciesConfigurator.Configure();
-
         ApplicationConfiguration.Initialize();
-        //Application.Run(new MainView());
+        Application.Run(new MainView());
     }
 }
