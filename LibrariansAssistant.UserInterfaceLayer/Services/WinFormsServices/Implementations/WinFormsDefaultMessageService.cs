@@ -2,7 +2,7 @@
 
 namespace LibrariansAssistant.UserInterfaceLayer.Services.WinFormsServices.Implementations;
 
-internal class DefaultMessageService : IMessageService
+internal class WinFormsDefaultMessageService : IMessageService
 {
     public void ShowMessage(string message) =>
         MessageBox.Show(message, "Message", MessageBoxButtons.OK);
