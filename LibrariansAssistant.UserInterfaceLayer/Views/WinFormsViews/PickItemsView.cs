@@ -48,6 +48,23 @@ internal sealed partial class PickItemsView : Form
         FormClosed += PickItemsViewOnFormClosed;
     }
 
+    private void UpdateView()
+    {
+        string itemsTitle = (string.IsNullOrEmpty(_itemsTitle) is true) ? "Unnamed" : _itemsTitle;
+
+        if ((_items is not null) && (_items.Any() is true))
+        {
+            dataGridViewItems.DataSource = _items.Select(i => new PickItem(i.Key, i.Value)).Cast<object>().ToList();
+            labelItemsName.Text = itemsTitle;
+            Height = 333;
+        }
+        else
+        {
+            labelItemsName.Text = itemsTitle + ": no items to show";
+            Height = 140;
+        }
+    }
+
     private void DataGridViewItemsOnColumnAdded(object? sender, DataGridViewColumnEventArgs e)
     {
         switch (e.Column.Index)
@@ -84,22 +101,5 @@ internal sealed partial class PickItemsView : Form
         foreach (var pickedItem in pickedItems)
             if (pickedItem.IsChecked is true)
                 ((List<int>)PickedItemIds).Add(pickedItem.Id);
-    }
-
-    private void UpdateView()
-    {
-        string itemsTitle = (string.IsNullOrEmpty(_itemsTitle) is true) ? "Unnamed" : _itemsTitle;
-
-        if ((_items is not null) && (_items.Any() is true))
-        {
-            dataGridViewItems.DataSource = _items.Select(i => new PickItem(i.Key, i.Value)).Cast<object>().ToList();
-            labelItemsName.Text = itemsTitle;
-            Height = 333;
-        }
-        else
-        {
-            labelItemsName.Text = itemsTitle + ": no items to show";
-            Height = 140;
-        }
     }
 }
