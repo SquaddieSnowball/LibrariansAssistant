@@ -2,15 +2,11 @@
 
 internal interface IApplicationConfigurationService
 {
-    string? GetAppSetting(string name);
+    object? GetSettingValue(string name);
 
-    void UpdateAppSetting(string name, string value);
+    void UpdateSettingValue(string name, object? value);
 
-    IEnumerable<string?> GetAppSettings(IEnumerable<string> names);
+    IEnumerable<object?> GetSettingsValues(IEnumerable<string> names);
 
-    void UpdateAppSettings(IEnumerable<KeyValuePair<string, string>> nameValuePairs);
-
-    string? GetConnectionString(string name);
-
-    void UpdateConnectionString(string name, string value);
+    void UpdateSettingsValues(IEnumerable<KeyValuePair<string, object?>> nameValuePairs);
 }

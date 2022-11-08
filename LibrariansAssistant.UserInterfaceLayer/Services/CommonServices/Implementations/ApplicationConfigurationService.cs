@@ -1,92 +1,129 @@
-﻿using LibrariansAssistant.UserInterfaceLayer.Services.CommonServices.Interfaces;
-using System.Configuration;
+﻿using LibrariansAssistant.UserInterfaceLayer.Properties;
+using LibrariansAssistant.UserInterfaceLayer.Services.CommonServices.Interfaces;
+using System.Reflection;
 
 namespace LibrariansAssistant.UserInterfaceLayer.Services.CommonServices.Implementations;
 
 internal sealed class ApplicationConfigurationService : IApplicationConfigurationService
 {
-    public string? GetAppSetting(string name) =>
-        ConfigurationManager.AppSettings[name];
+    private readonly Settings _settings;
+    private readonly IEnumerable<PropertyInfo> _settingPropertyInfos;
 
-    public void UpdateAppSetting(string name, string value)
+    public ApplicationConfigurationService()
     {
-        try
-        {
-            Configuration configurationFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            KeyValueConfigurationCollection settings = configurationFile.AppSettings.Settings;
-
-            if (settings[name] is null)
-                settings.Add(name, value);
-            else
-                settings[name].Value = value;
-
-            configurationFile.Save(ConfigurationSaveMode.Modified);
-
-            ConfigurationManager.RefreshSection(configurationFile.AppSettings.SectionInformation.Name);
-        }
-        catch
-        {
-            throw;
-        }
+        _settings = Settings.Default;
+        _settingPropertyInfos = _settings.GetType()
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
     }
 
-    public IEnumerable<string?> GetAppSettings(IEnumerable<string> names)
+    public object? GetSettingValue(string name)
+    {
+        if (string.IsNullOrEmpty(name) is true)
+            throw new ArgumentException($"Name must not be null or empty.", nameof(name));
+
+        foreach (PropertyInfo settingPropertyInfo in _settingPropertyInfos)
+            if (settingPropertyInfo.Name.Equals(name, StringComparison.Ordinal) is true)
+                return settingPropertyInfo.GetValue(_settings);
+
+        throw new ArgumentException($"The setting with the \"{name}\" name does not exist.", nameof(name));
+    }
+
+    public void UpdateSettingValue(string name, object? value)
+    {
+        if (string.IsNullOrEmpty(name) is true)
+            throw new ArgumentException($"Name must not be null or empty.", nameof(name));
+
+        foreach (PropertyInfo settingPropertyInfo in _settingPropertyInfos)
+            if (settingPropertyInfo.Name.Equals(name, StringComparison.Ordinal) is true)
+            {
+                try
+                {
+                    settingPropertyInfo.SetValue(_settings, value);
+
+                    _settings.Save();
+
+                    return;
+                }
+                catch (ArgumentException)
+                {
+                    if (settingPropertyInfo.CanWrite is false)
+                        throw new ArgumentException($"The \"{name}\" setting " +
+                            $"cannot be updated because it is read-only.", nameof(name));
+
+                    if (settingPropertyInfo.PropertyType != value!.GetType())
+                        throw new ArgumentException($"The \"{name}\" setting " +
+                            $"cannot be updated because the \"{value.GetType().FullName}\" value type " +
+                            $"cannot be converted to the \"{settingPropertyInfo.PropertyType.FullName}\" setting type.",
+                            nameof(value));
+
+                    throw;
+                }
+                catch
+                {
+                    throw;
+                }
+            }
+
+        throw new ArgumentException($"The setting with the \"{name}\" name does not exist.", nameof(name));
+    }
+
+    public IEnumerable<object?> GetSettingsValues(IEnumerable<string> names)
     {
         if (names is null)
             throw new ArgumentNullException(nameof(names), "Names must not be null.");
 
-        foreach (var name in names)
-            yield return GetAppSetting(name);
+        foreach (string name in names)
+            yield return GetSettingValue(name);
     }
 
-    public void UpdateAppSettings(IEnumerable<KeyValuePair<string, string>> nameValuePairs)
+    public void UpdateSettingsValues(IEnumerable<KeyValuePair<string, object?>> nameValuePairs)
     {
         if (nameValuePairs is null)
             throw new ArgumentNullException(nameof(nameValuePairs), "Name-value pairs must not be null.");
 
-        try
+        foreach (KeyValuePair<string, object?> nameValuePair in nameValuePairs)
         {
-            Configuration configurationFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            KeyValueConfigurationCollection settings = configurationFile.AppSettings.Settings;
+            if (string.IsNullOrEmpty(nameValuePair.Key) is true)
+                throw new ArgumentException($"Name must not be null or empty.", nameof(nameValuePairs));
 
-            foreach (KeyValuePair<string, string> nameValuePair in nameValuePairs)
-            {
-                if (settings[nameValuePair.Key] is null)
-                    settings.Add(nameValuePair.Key, nameValuePair.Value);
-                else
-                    settings[nameValuePair.Key].Value = nameValuePair.Value;
-            }
+            bool isSettingPropertyInfoFound = false;
 
-            configurationFile.Save(ConfigurationSaveMode.Modified);
+            foreach (PropertyInfo settingPropertyInfo in _settingPropertyInfos)
+                if (settingPropertyInfo.Name.Equals(nameValuePair.Key, StringComparison.Ordinal) is true)
+                {
+                    isSettingPropertyInfoFound = true;
 
-            ConfigurationManager.RefreshSection(configurationFile.AppSettings.SectionInformation.Name);
+                    try
+                    {
+                        settingPropertyInfo.SetValue(_settings, nameValuePair.Value);
+
+                        break;
+                    }
+                    catch (ArgumentException)
+                    {
+                        if (settingPropertyInfo.CanWrite is false)
+                            throw new ArgumentException($"The \"{nameValuePair.Key}\" setting " +
+                                $"cannot be updated because it is read-only.", nameof(nameValuePairs));
+
+                        if (settingPropertyInfo.PropertyType != nameValuePair.Value!.GetType())
+                            throw new ArgumentException($"The \"{nameValuePair.Key}\" setting " +
+                                $"cannot be updated because the \"{nameValuePair.Value.GetType().FullName}\" value type " +
+                                $"cannot be converted to the \"{settingPropertyInfo.PropertyType.FullName}\" setting type.",
+                                nameof(nameValuePairs));
+
+                        throw;
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                }
+
+            if (isSettingPropertyInfoFound is false)
+                throw new ArgumentException($"The setting with the \"{nameValuePair.Key}\" " +
+                    $"name does not exist.", nameof(nameValuePairs));
         }
-        catch
-        {
-            throw;
-        }
-    }
 
-    public string? GetConnectionString(string name) =>
-        ConfigurationManager.ConnectionStrings[name]?.ConnectionString;
-
-    public void UpdateConnectionString(string name, string value)
-    {
-        try
-        {
-            Configuration configurationFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            ConnectionStringSettingsCollection settings = configurationFile.ConnectionStrings.ConnectionStrings;
-
-            settings.Remove(name);
-            settings.Add(new ConnectionStringSettings(name, value));
-
-            configurationFile.Save(ConfigurationSaveMode.Modified);
-
-            ConfigurationManager.RefreshSection(configurationFile.ConnectionStrings.SectionInformation.Name);
-        }
-        catch
-        {
-            throw;
-        }
+        _settings.Save();
     }
 }
