@@ -31,9 +31,13 @@ internal static class ControlExtensions
             data.OrderByDescending(o => o.GetType().GetProperty(dataGridView.Columns[columnIndex].Name)!.GetValue(o)).ToList();
 
         if (dataPrevSortColumnIndex is not -1)
-            dataGridView.Columns[dataPrevSortColumnIndex].HeaderText =
-                dataGridView.Columns[dataPrevSortColumnIndex].HeaderText
-                .Remove(dataGridView.Columns[dataPrevSortColumnIndex].HeaderText.Length - 1, 1);
+        {
+            string sortedCulumnHeaderText = dataGridView.Columns[dataPrevSortColumnIndex].HeaderText;
+
+            if (sortedCulumnHeaderText.EndsWith('\u2191') || sortedCulumnHeaderText.EndsWith('\u2193'))
+                dataGridView.Columns[dataPrevSortColumnIndex].HeaderText =
+                    sortedCulumnHeaderText.Remove(sortedCulumnHeaderText.Length - 1, 1);
+        }
 
         if (dataIsAscSortDirection is true)
             dataGridView.Columns[columnIndex].HeaderText += '\u2191';
