@@ -18,7 +18,7 @@ public static class DependenciesContainer
         }
     }
 
-    public static T? Resolve<T>()
+    public static T? Resolve<T>(params object?[]? ctorArgs)
     {
         var type = typeof(T);
 
@@ -26,7 +26,7 @@ public static class DependenciesContainer
         {
             try
             {
-                return (T?)Activator.CreateInstance(_dependencies[type]);
+                return (T?)Activator.CreateInstance(_dependencies[type], ctorArgs);
             }
             catch
             {
