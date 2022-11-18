@@ -10,7 +10,7 @@ internal static class Program
     [STAThread]
     private static void Main()
     {
-        DependenciesConfigurator.Configure();
+        DependenciesConfiguration.Configure();
         ApplicationConfiguration.Initialize();
         Application.Run(new MainView());
     }

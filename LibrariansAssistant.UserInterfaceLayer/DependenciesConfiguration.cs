@@ -3,6 +3,8 @@ using LibrariansAssistant.DomainModelLayer.Models.Author;
 using LibrariansAssistant.DomainModelLayer.Models.Book;
 using LibrariansAssistant.DomainModelLayer.Models.Issuing;
 using LibrariansAssistant.DomainModelLayer.Models.Reader;
+using LibrariansAssistant.ServicesLayer.CommonServices.Implementation;
+using LibrariansAssistant.ServicesLayer.CommonServices.Interfaces;
 using LibrariansAssistant.ServicesLayer.ModelServices.Author;
 using LibrariansAssistant.ServicesLayer.ModelServices.Book;
 using LibrariansAssistant.ServicesLayer.ModelServices.Issuing;
@@ -12,7 +14,7 @@ using LibrariansAssistant.UserInterfaceLayer.Services.CommonServices.Interfaces;
 
 namespace LibrariansAssistant.UserInterfaceLayer;
 
-internal static class DependenciesConfigurator
+internal static class DependenciesConfiguration
 {
     internal static void Configure()
     {
@@ -24,6 +26,7 @@ internal static class DependenciesConfigurator
         DependenciesContainer.Register<IBookService, BookService>();
         DependenciesContainer.Register<IIssuingService, IssuingService>();
         DependenciesContainer.Register<IReaderService, ReaderService>();
+        DependenciesContainer.Register<IDataAnnotationModelValidationService, DataAnnotationModelValidationService>();
         DependenciesContainer.Register<IApplicationConfigurationService, ApplicationConfigurationService>();
     }
 }
