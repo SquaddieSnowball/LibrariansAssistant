@@ -7,6 +7,7 @@ using LibrariansAssistant.InfranstructureLayer.RepositoryFactories;
 using LibrariansAssistant.InfranstructureLayer.RepositoryFactories.Implementations;
 using LibrariansAssistant.UserInterfaceLayer.Entities;
 using LibrariansAssistant.UserInterfaceLayer.Entities.WinFormsEntities;
+using LibrariansAssistant.UserInterfaceLayer.Helpers.WinFormsHelpers;
 using LibrariansAssistant.UserInterfaceLayer.Helpers.WinFormsHelpers.ColorTables;
 using LibrariansAssistant.UserInterfaceLayer.Services.CommonServices.Interfaces;
 using LibrariansAssistant.UserInterfaceLayer.Services.WinFormsServices.Implementations;
@@ -40,10 +41,10 @@ internal sealed partial class SettingsView : Form
 
     private void SubsribeToControlEvents()
     {
-        FormClosing += SettingsViewOnFormClosing;
         connectionToolStripMenuItem.Click += ConnectionToolStripMenuItemOnClick;
         additionalToolStripMenuItem.Click += AdditionalToolStripMenuItemOnClick;
         buttonApply.Click += ButtonApplyOnClick;
+        FormClosing += SettingsViewOnFormClosing;
     }
 
     private void InitializeView()
@@ -72,7 +73,8 @@ internal sealed partial class SettingsView : Form
                     UseWindowsAuthentication =
                         (bool)_applicationConfigurationService.GetSettingValue("SqlServer_UseWindowsAuthentication")!,
                     UserName = _applicationConfigurationService.GetSettingValue("SqlServer_UserName") as string,
-                    Password = _applicationConfigurationService.GetSettingValue("SqlServer_Password") as string
+                    Password = _applicationConfigurationService.GetSettingValue("SqlServer_Password") as string,
+                    DatabaseName = _applicationConfigurationService.GetSettingValue("DatabaseName") as string
                 };
 
                 initializationStringBuilder = new SqlServerInitializationStringBuilder(sqlServerIsbSettings);
@@ -87,6 +89,20 @@ internal sealed partial class SettingsView : Form
         }
 
         SettingCreateEmptyDatabase = (bool)_applicationConfigurationService.GetSettingValue("CreateEmptyDatabase")!;
+    }
+
+    private void ConnectionToolStripMenuItemOnClick(object? sender, EventArgs e) =>
+        SwitchSettingsGroupView(SettingsGroup.Connection);
+
+    private void AdditionalToolStripMenuItemOnClick(object? sender, EventArgs e) =>
+        SwitchSettingsGroupView(SettingsGroup.Additional);
+
+    private void ButtonApplyOnClick(object? sender, EventArgs e)
+    {
+        if (_modifiedSettings.Any() is false)
+            return;
+
+        SaveSettings();
     }
 
     private void SettingsViewOnFormClosing(object? sender, FormClosingEventArgs e)
@@ -113,27 +129,14 @@ internal sealed partial class SettingsView : Form
         }
     }
 
-    private void ConnectionToolStripMenuItemOnClick(object? sender, EventArgs e) =>
-        SwitchSettingsGroupView(SettingsGroup.Connection);
-
-    private void AdditionalToolStripMenuItemOnClick(object? sender, EventArgs e) =>
-        SwitchSettingsGroupView(SettingsGroup.Additional);
-
-    private void ButtonApplyOnClick(object? sender, EventArgs e)
-    {
-        if (_modifiedSettings.Any() is false)
-            return;
-
-        SaveSettings();
-    }
-
     private Control[] GenerateConnectionSettingsControls()
     {
-        TextBox textBoxSqlServerServerName = CreateTextBox();
-        TextBox textBoxSqlServerServerInstanceName = CreateTextBox();
-        CheckBox checkBoxSqlServerUseWindowsAuthentication = CreateCheckBox("Use Windows authentication");
-        TextBox textBoxSqlServerUsername = CreateTextBox();
-        TextBox textBoxSqlServerPassword = CreateTextBox();
+        TextBox textBoxSqlServerServerName = ControlCreation.SettingsCreateTextBox();
+        TextBox textBoxSqlServerServerInstanceName = ControlCreation.SettingsCreateTextBox();
+        CheckBox checkBoxSqlServerUseWindowsAuthentication =
+            ControlCreation.SettingsCreateCheckBox("Use Windows authentication");
+        TextBox textBoxSqlServerUsername = ControlCreation.SettingsCreateTextBox();
+        TextBox textBoxSqlServerPassword = ControlCreation.SettingsCreateTextBox();
 
         textBoxSqlServerPassword.PasswordChar = '*';
 
@@ -169,11 +172,15 @@ internal sealed partial class SettingsView : Form
 
         var controls = new List<Control>()
         {
-            CreateLabelControlTableLayoutPanel(CreateLabel("Server name:"), textBoxSqlServerServerName),
-            CreateLabelControlTableLayoutPanel(CreateLabel("Server instance name:"), textBoxSqlServerServerInstanceName),
-            CreateControlTableLayoutPanel(checkBoxSqlServerUseWindowsAuthentication),
-            CreateLabelControlTableLayoutPanel(CreateLabel("User name:"), textBoxSqlServerUsername),
-            CreateLabelControlTableLayoutPanel(CreateLabel("Password:"), textBoxSqlServerPassword)
+            ControlCreation.SettingsCreateLabelControlTableLayoutPanel(
+                ControlCreation.SettingsCreateLabel("Server name:"), textBoxSqlServerServerName),
+            ControlCreation.SettingsCreateLabelControlTableLayoutPanel(
+                ControlCreation.SettingsCreateLabel("Server instance name:"), textBoxSqlServerServerInstanceName),
+            ControlCreation.SettingsCreateControlTableLayoutPanel(checkBoxSqlServerUseWindowsAuthentication),
+            ControlCreation.SettingsCreateLabelControlTableLayoutPanel(
+                ControlCreation.SettingsCreateLabel("User name:"), textBoxSqlServerUsername),
+            ControlCreation.SettingsCreateLabelControlTableLayoutPanel(
+                ControlCreation.SettingsCreateLabel("Password:"), textBoxSqlServerPassword)
         };
 
         return controls.ToArray();
@@ -181,8 +188,10 @@ internal sealed partial class SettingsView : Form
 
     private Control[] GenerateAdditionalSettingsControls()
     {
-        CheckBox checkBoxCreateEmptyDatabase = CreateCheckBox("If the database is not found, create a new empty one");
-        Label labelCreateEmptyDatabaseNote = CreateLabel("Note: \"Database name \'library\' must be available\"");
+        CheckBox checkBoxCreateEmptyDatabase =
+            ControlCreation.SettingsCreateCheckBox("If the database is not found, create a new empty one");
+        Label labelCreateEmptyDatabaseNote =
+            ControlCreation.SettingsCreateLabel("Note: \"Database name \'library\' must be available\"");
 
         labelCreateEmptyDatabaseNote.Margin = new Padding(52, 0, 0, 0);
 
@@ -194,77 +203,12 @@ internal sealed partial class SettingsView : Form
 
         var controls = new List<Control>()
         {
-            CreateControlTableLayoutPanel(checkBoxCreateEmptyDatabase),
-            CreateControlTableLayoutPanel(labelCreateEmptyDatabaseNote)
+            ControlCreation.SettingsCreateControlTableLayoutPanel(checkBoxCreateEmptyDatabase),
+            ControlCreation.SettingsCreateControlTableLayoutPanel(labelCreateEmptyDatabaseNote)
         };
 
         return controls.ToArray();
     }
-
-    private static TableLayoutPanel CreateControlTableLayoutPanel(Control control)
-    {
-        var tableLayoutPanel = new TableLayoutPanel()
-        {
-            Height = control.Height
-        };
-
-        tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
-        tableLayoutPanel.RowStyles.Add(new RowStyle());
-
-        tableLayoutPanel.Controls.Add(control, 0, 0);
-
-        tableLayoutPanel.RowCount++;
-
-        return tableLayoutPanel;
-    }
-
-    private static TableLayoutPanel CreateLabelControlTableLayoutPanel(Label label, Control control)
-    {
-        var tableLayoutPanel = new TableLayoutPanel()
-        {
-            Height = (label.Height > control.Height) ? label.Height : control.Height
-        };
-
-        tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
-        tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
-        tableLayoutPanel.RowStyles.Add(new RowStyle());
-
-        tableLayoutPanel.Controls.Add(label, 0, 0);
-        tableLayoutPanel.Controls.Add(control, 1, 0);
-
-        tableLayoutPanel.RowCount++;
-
-        return tableLayoutPanel;
-    }
-
-    private static Label CreateLabel(string text) =>
-        new()
-        {
-            Anchor = AnchorStyles.Left,
-            AutoSize = true,
-            Margin = new Padding(30, 0, 0, 0),
-            Text = text
-        };
-
-    private static TextBox CreateTextBox() =>
-        new()
-        {
-            Anchor = AnchorStyles.Left,
-            BackColor = Color.FromArgb(60, 60, 60),
-            BorderStyle = BorderStyle.FixedSingle,
-            ForeColor = Color.FromArgb(230, 230, 230),
-            Margin = new Padding(0),
-            Width = 180
-        };
-
-    private static CheckBox CreateCheckBox(string text) =>
-        new()
-        {
-            Anchor = AnchorStyles.Left,
-            AutoSize = true,
-            Margin = new Padding(33, 0, 0, 0),
-            Text = text
-        };
 
     private static void UpdateSqlServerCredentialsState(CheckBox checkBoxUseWindowsAuthentication,
         TextBox textBoxUsername, TextBox textBoxPassword)
