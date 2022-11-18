@@ -2,7 +2,7 @@
 
 internal sealed partial class AddEditItemView : Form
 {
-    public string FieldsTitle
+    internal string FieldsTitle
     {
         get => groupBoxFields.Text;
         set => groupBoxFields.Text = value;
@@ -11,6 +11,19 @@ internal sealed partial class AddEditItemView : Form
     internal AddEditItemView()
     {
         InitializeComponent();
+        SubscribeToControlEvents();
+    }
+
+    private void SubscribeToControlEvents()
+    {
+        buttonConfirm.Click += ButtonConfirmOnClick;
+    }
+
+    private void ButtonConfirmOnClick(object? sender, EventArgs e)
+    {
+        DialogResult = DialogResult.OK;
+
+        Close();
     }
 
     internal AddEditItemView AddField(string name, Control control)
