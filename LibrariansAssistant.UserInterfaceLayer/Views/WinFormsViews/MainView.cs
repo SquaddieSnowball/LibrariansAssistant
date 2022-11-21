@@ -144,35 +144,41 @@ internal sealed partial class MainView : Form, IMainView
             e.Column.CellTemplate = new DataGridViewCheckBoxCell() { FlatStyle = FlatStyle.Flat };
     }
 
-    private void DataGridViewDataOnColumnHeaderMouseClick(object? sender, DataGridViewCellMouseEventArgs e) =>
+    private void DataGridViewDataOnColumnHeaderMouseClick(object? sender, DataGridViewCellMouseEventArgs e)
+    {
+        int? selectedItemId = GetSelectedItemId();
+
         dataGridViewData.SortDataSourceObjectList(e.ColumnIndex, ref _dataIsAscSortDirection, ref _dataPrevSortColumnIndex);
+
+        SetSelectedItem(selectedItemId);
+    }
 
     private void IssuingsShowAllToolStripMenuItemOnClick(object? sender, EventArgs e)
     {
         _dataUpdateEventInvokationList = IssuingsUpdateNormalView?.GetInvocationList();
 
-        UpdateDataView(ViewType.Issuings, "all", false);
+        UpdateDataView(ViewType.Issuings, "all");
     }
 
     private void ReadersShowAllToolStripMenuItemOnClick(object? sender, EventArgs e)
     {
         _dataUpdateEventInvokationList = ReadersUpdateNormalView?.GetInvocationList();
 
-        UpdateDataView(ViewType.Readers, "all", false);
+        UpdateDataView(ViewType.Readers, "all");
     }
 
     private void AuthorsShowAllToolStripMenuItemOnClick(object? sender, EventArgs e)
     {
         _dataUpdateEventInvokationList = AuthorsUpdateNormalView?.GetInvocationList();
 
-        UpdateDataView(ViewType.Authors, "all", false);
+        UpdateDataView(ViewType.Authors, "all");
     }
 
     private void BooksShowAllToolStripMenuItemOnClick(object? sender, EventArgs e)
     {
         _dataUpdateEventInvokationList = BooksUpdateNormalView?.GetInvocationList();
 
-        UpdateDataView(ViewType.Books, "all", false);
+        UpdateDataView(ViewType.Books, "all");
     }
 
     private void ShowDefaultDataView() =>
@@ -202,7 +208,7 @@ internal sealed partial class MainView : Form, IMainView
         }
     }
 
-    private void UpdateDataView(ViewType viewType, string viewName, bool keepSorted)
+    private void UpdateDataView(ViewType viewType, string viewName, bool keepSorted = false, int? selectedItemId = null)
     {
         ClearCustomActions();
         ClearCustomFilters();
@@ -253,17 +259,19 @@ internal sealed partial class MainView : Form, IMainView
             if (dataColumnHeaders is not null)
                 for (var i = 0; (i < dataGridViewData.ColumnCount) && (i < dataColumnHeaders.Length); i++)
                     dataGridViewData.Columns[i].HeaderText = dataColumnHeaders[i];
-        }
 
-        if ((keepSorted is true) && (_dataPrevSortColumnIndex is not -1))
-        {
-            _dataIsAscSortDirection = !_dataIsAscSortDirection;
+            if ((keepSorted is true) && (_dataPrevSortColumnIndex is not -1))
+            {
+                _dataIsAscSortDirection = !_dataIsAscSortDirection;
 
-            dataGridViewData.SortDataSourceObjectList(_dataPrevSortColumnIndex,
-                ref _dataIsAscSortDirection, ref _dataPrevSortColumnIndex);
+                dataGridViewData.SortDataSourceObjectList(_dataPrevSortColumnIndex,
+                    ref _dataIsAscSortDirection, ref _dataPrevSortColumnIndex);
+            }
+            else
+                ResetSorting();
+
+            SetSelectedItem(selectedItemId);
         }
-        else
-            ResetSorting();
 
         _currentViewType = viewType;
         _currentViewName = viewName;
@@ -386,19 +394,21 @@ internal sealed partial class MainView : Form, IMainView
                 return;
             }
 
-            labelCloseId.Text = dataGridViewData.SelectedRows[0].Cells[0].Value.ToString()!;
+            int? selectedItemId = GetSelectedItemId();
+
+            labelCloseId.Text = selectedItemId.ToString()!;
 
             if (closeView.ShowDialog() is DialogResult.OK)
             {
                 var args = new object?[]
                 {
-                        int.Parse(labelCloseId.Text),
-                        numericUpDownCloseReturnState.Value
+                    (int)selectedItemId!,
+                    numericUpDownCloseReturnState.Value
                 };
 
                 IssuingClose?.Invoke(this, args);
 
-                UpdateDataView(_currentViewType, _currentViewName, true);
+                UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
             }
         };
 
@@ -413,9 +423,9 @@ internal sealed partial class MainView : Form, IMainView
 
             VisibleDataEditView = default;
 
-            int id = (int)dataGridViewData.SelectedRows[0].Cells[0].Value;
+            int? selectedItemId = GetSelectedItemId();
 
-            IssuingUpdateEditView?.Invoke(this, id);
+            IssuingUpdateEditView?.Invoke(this, (int)selectedItemId!);
 
             if (VisibleDataEditView is not null)
             {
@@ -438,7 +448,7 @@ internal sealed partial class MainView : Form, IMainView
                 {
                     var args = new object?[]
                     {
-                        int.Parse(labelEditId.Text),
+                        (int)selectedItemId!,
                         pickItemsEditReaderView.PickedItemIds,
                         pickItemsEditBookView.PickedItemIds,
                         dateTimePickerEditTakeDate.Value,
@@ -449,11 +459,11 @@ internal sealed partial class MainView : Form, IMainView
 
                     IssuingEdit?.Invoke(this, args);
 
-                    UpdateDataView(_currentViewType, _currentViewName, true);
+                    UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
                 }
             }
             else
-                UpdateDataView(_currentViewType, _currentViewName, true);
+                UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
         };
 
         buttonRemove.Click += (sender, e) =>
@@ -468,9 +478,9 @@ internal sealed partial class MainView : Form, IMainView
             if (MessageBox.Show("Are you sure you want to remove the selected item?", "Warning",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Warning) is DialogResult.Yes)
             {
-                int id = (int)dataGridViewData.SelectedRows[0].Cells[0].Value;
+                int? selectedItemId = GetSelectedItemId();
 
-                IssuingRemove?.Invoke(this, id);
+                IssuingRemove?.Invoke(this, (int)selectedItemId!);
 
                 UpdateDataView(_currentViewType, _currentViewName, true);
             }
@@ -556,9 +566,9 @@ internal sealed partial class MainView : Form, IMainView
 
             VisibleDataEditView = default;
 
-            int id = (int)dataGridViewData.SelectedRows[0].Cells[0].Value;
+            int? selectedItemId = GetSelectedItemId();
 
-            ReaderUpdateEditView?.Invoke(this, id);
+            ReaderUpdateEditView?.Invoke(this, (int)selectedItemId!);
 
             if (VisibleDataEditView is not null)
             {
@@ -575,7 +585,7 @@ internal sealed partial class MainView : Form, IMainView
                 {
                     var args = new object?[]
                     {
-                        int.Parse(labelEditId.Text),
+                        (int)selectedItemId!,
                         textBoxEditFirstName.Text,
                         textBoxEditLastName.Text,
                         textBoxEditPatronymic.Text,
@@ -585,11 +595,11 @@ internal sealed partial class MainView : Form, IMainView
 
                     ReaderEdit?.Invoke(this, args);
 
-                    UpdateDataView(_currentViewType, _currentViewName, true);
+                    UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
                 }
             }
             else
-                UpdateDataView(_currentViewType, _currentViewName, true);
+                UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
         };
 
         buttonRemove.Click += (sender, e) =>
@@ -604,9 +614,9 @@ internal sealed partial class MainView : Form, IMainView
             if (MessageBox.Show("Are you sure you want to remove the selected item?", "Warning",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Warning) is DialogResult.Yes)
             {
-                int id = (int)dataGridViewData.SelectedRows[0].Cells[0].Value;
+                int? selectedItemId = GetSelectedItemId();
 
-                ReaderRemove?.Invoke(this, id);
+                ReaderRemove?.Invoke(this, (int)selectedItemId!);
 
                 UpdateDataView(_currentViewType, _currentViewName, true);
             }
@@ -681,9 +691,9 @@ internal sealed partial class MainView : Form, IMainView
 
             VisibleDataEditView = default;
 
-            int id = (int)dataGridViewData.SelectedRows[0].Cells[0].Value;
+            int? selectedItemId = GetSelectedItemId();
 
-            AuthorUpdateEditView?.Invoke(this, id);
+            AuthorUpdateEditView?.Invoke(this, (int)selectedItemId!);
 
             if (VisibleDataEditView is not null)
             {
@@ -698,7 +708,7 @@ internal sealed partial class MainView : Form, IMainView
                 {
                     var args = new object?[]
                     {
-                        int.Parse(labelEditId.Text),
+                        (int)selectedItemId!,
                         textBoxEditFirstName.Text,
                         textBoxEditLastName.Text,
                         textBoxEditPatronymic.Text
@@ -706,11 +716,11 @@ internal sealed partial class MainView : Form, IMainView
 
                     AuthorEdit?.Invoke(this, args);
 
-                    UpdateDataView(_currentViewType, _currentViewName, true);
+                    UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
                 }
             }
             else
-                UpdateDataView(_currentViewType, _currentViewName, true);
+                UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
         };
 
         buttonRemove.Click += (sender, e) =>
@@ -725,9 +735,9 @@ internal sealed partial class MainView : Form, IMainView
             if (MessageBox.Show("Are you sure you want to remove the selected item?", "Warning",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Warning) is DialogResult.Yes)
             {
-                int id = (int)dataGridViewData.SelectedRows[0].Cells[0].Value;
+                int? selectedItemId = GetSelectedItemId();
 
-                AuthorRemove?.Invoke(this, id);
+                AuthorRemove?.Invoke(this, (int)selectedItemId!);
 
                 UpdateDataView(_currentViewType, _currentViewName, true);
             }
@@ -818,9 +828,9 @@ internal sealed partial class MainView : Form, IMainView
 
             VisibleDataEditView = default;
 
-            int id = (int)dataGridViewData.SelectedRows[0].Cells[0].Value;
+            int? selectedItemId = GetSelectedItemId();
 
-            BookUpdateEditView?.Invoke(this, id);
+            BookUpdateEditView?.Invoke(this, (int)selectedItemId!);
 
             if (VisibleDataEditView is not null)
             {
@@ -837,7 +847,7 @@ internal sealed partial class MainView : Form, IMainView
                 {
                     var args = new object?[]
                     {
-                        int.Parse(labelEditId.Text),
+                        (int)selectedItemId!,
                         pickItemsEditView.PickedItemIds,
                         textBoxEditTitle.Text,
                         textBoxEditGenre.Text
@@ -845,11 +855,11 @@ internal sealed partial class MainView : Form, IMainView
 
                     BookEdit?.Invoke(this, args);
 
-                    UpdateDataView(_currentViewType, _currentViewName, true);
+                    UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
                 }
             }
             else
-                UpdateDataView(_currentViewType, _currentViewName, true);
+                UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
         };
 
         buttonRemove.Click += (sender, e) =>
@@ -864,9 +874,9 @@ internal sealed partial class MainView : Form, IMainView
             if (MessageBox.Show("Are you sure you want to remove the selected item?", "Warning",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Warning) is DialogResult.Yes)
             {
-                int id = (int)dataGridViewData.SelectedRows[0].Cells[0].Value;
+                int? selectedItemId = GetSelectedItemId();
 
-                BookRemove?.Invoke(this, id);
+                BookRemove?.Invoke(this, (int)selectedItemId!);
 
                 UpdateDataView(_currentViewType, _currentViewName, true);
             }
@@ -947,5 +957,25 @@ internal sealed partial class MainView : Form, IMainView
     {
         _dataIsAscSortDirection = true;
         _dataPrevSortColumnIndex = -1;
+    }
+
+    private int? GetSelectedItemId()
+    {
+        if ((VisibleDataNormalView is null) || (VisibleDataNormalView.Any() is false))
+            return null;
+
+        return (int)dataGridViewData.SelectedRows[0].Cells[0].Value;
+    }
+
+    private void SetSelectedItem(int? itemId)
+    {
+        if (itemId is not null)
+            for (var i = 0; i < dataGridViewData.RowCount; i++)
+                if ((int)dataGridViewData.Rows[i].Cells[0].Value == itemId)
+                {
+                    dataGridViewData.Rows[i].Selected = true;
+
+                    break;
+                }
     }
 }
