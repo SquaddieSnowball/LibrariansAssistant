@@ -18,6 +18,7 @@ internal sealed partial class MainView : Form, IMainView
     private int _dataPrevSortColumnIndex = -1;
     private ViewType _currentViewType;
     private string _currentViewName = string.Empty;
+    private Action<DataGridViewRow>? _filterMethods;
 
     public IEnumerable<object>? VisibleDataNormalView { get; set; }
 
@@ -90,17 +91,22 @@ internal sealed partial class MainView : Form, IMainView
 
         dataGridViewData.ColumnAdded += DataGridViewDataOnColumnAdded;
         dataGridViewData.ColumnHeaderMouseClick += DataGridViewDataOnColumnHeaderMouseClick;
+        dataGridViewData.CellPainting += DataGridViewDataOnCellPainting;
 
         issuingsShowAllToolStripMenuItem.Click += IssuingsShowAllToolStripMenuItemOnClick;
         readersShowAllToolStripMenuItem.Click += ReadersShowAllToolStripMenuItemOnClick;
         authorsShowAllToolStripMenuItem.Click += AuthorsShowAllToolStripMenuItemOnClick;
         booksShowAllToolStripMenuItem.Click += BooksShowAllToolStripMenuItemOnClick;
+
+        textBoxSearch.TextChanged += TextBoxSearchOnTextChanged;
+        checkBoxApplyFilters.CheckedChanged += CheckBoxApplyFiltersOnCheckedChanged;
     }
 
     private void InitializeView()
     {
         menuStripMain.Renderer = new MenuStripMainRenderer(new MenuStripMainColorTable());
         Controls.Add(_labelStartMessage);
+        _filterMethods = FilterSearch;
 
         SwitchDataView(false);
     }
@@ -144,13 +150,62 @@ internal sealed partial class MainView : Form, IMainView
             e.Column.CellTemplate = new DataGridViewCheckBoxCell() { FlatStyle = FlatStyle.Flat };
     }
 
-    private void DataGridViewDataOnColumnHeaderMouseClick(object? sender, DataGridViewCellMouseEventArgs e)
+    private void DataGridViewDataOnColumnHeaderMouseClick(object? sender, DataGridViewCellMouseEventArgs e) =>
+        SortData(e.ColumnIndex);
+
+    private void DataGridViewDataOnCellPainting(object? sender, DataGridViewCellPaintingEventArgs e)
     {
-        int? selectedItemId = GetSelectedItemId();
+        string searchText = textBoxSearch.Text.Trim();
 
-        dataGridViewData.SortDataSourceObjectList(e.ColumnIndex, ref _dataIsAscSortDirection, ref _dataPrevSortColumnIndex);
+        if ((checkBoxApplyFilters.Checked is true) &&
+            (e.RowIndex > -1) &&
+            (e.ColumnIndex > -1) &&
+            (string.IsNullOrWhiteSpace(searchText) is false) &&
+            (e.Value?.GetType() != typeof(bool)))
+        {
+            e.PaintBackground(e.CellBounds, true);
 
-        SetSelectedItem(selectedItemId);
+            var matchRectangles = new List<Rectangle>();
+
+            string cellText = e.FormattedValue.ToString()!;
+            int searchTextCellIndex = cellText.IndexOf(searchText, StringComparison.OrdinalIgnoreCase);
+
+            while (searchTextCellIndex > -1)
+            {
+                var matchRectangle = new Rectangle();
+
+                string cellIndentText = cellText[..searchTextCellIndex];
+                string cellSearchText = cellText.Substring(searchTextCellIndex, searchText.Length);
+
+                Size cellIndentTextSize =
+                    TextRenderer.MeasureText(e.Graphics, cellIndentText, e.CellStyle.Font, e.CellBounds.Size);
+                Size searchTextSize =
+                    TextRenderer.MeasureText(e.Graphics, cellSearchText, e.CellStyle.Font, e.CellBounds.Size);
+
+                matchRectangle.Width = searchTextSize.Width - 10;
+                matchRectangle.Height = searchTextSize.Height;
+
+                matchRectangle.X =
+                    e.CellBounds.X +
+                    ((cellIndentTextSize.Width is not 0) ? cellIndentTextSize.Width : 10);
+
+                matchRectangle.Y =
+                    e.CellBounds.Y +
+                    (e.CellBounds.Height - matchRectangle.Height) / 2;
+
+                matchRectangles.Add(matchRectangle);
+                searchTextCellIndex = cellText.IndexOf(searchText, searchTextCellIndex + 1, StringComparison.OrdinalIgnoreCase);
+            }
+
+            using var solidBrush = new SolidBrush(Color.FromArgb(200, 50, 50));
+
+            foreach (Rectangle matchRectangle in matchRectangles)
+                e.Graphics.FillRectangle(solidBrush, matchRectangle);
+
+            e.PaintContent(e.CellBounds);
+
+            e.Handled = true;
+        }
     }
 
     private void IssuingsShowAllToolStripMenuItemOnClick(object? sender, EventArgs e)
@@ -181,6 +236,23 @@ internal sealed partial class MainView : Form, IMainView
         UpdateDataView(ViewType.Books, "all");
     }
 
+    private void TextBoxSearchOnTextChanged(object? sender, EventArgs e)
+    {
+        if (checkBoxApplyFilters.Checked is true)
+        {
+            DisableFilters();
+            ApplyFilters();
+        }
+    }
+
+    private void CheckBoxApplyFiltersOnCheckedChanged(object? sender, EventArgs e)
+    {
+        if (checkBoxApplyFilters.Checked is true)
+            ApplyFilters();
+        else
+            DisableFilters();
+    }
+
     private void ShowDefaultDataView() =>
         IssuingsShowAllToolStripMenuItemOnClick(this, EventArgs.Empty);
 
@@ -205,6 +277,23 @@ internal sealed partial class MainView : Form, IMainView
             panelMain.Visible = false;
 
             connectToDatabaseToolStripMenuItem.Visible = true;
+        }
+    }
+
+    private void SwitchDataItemsVisibility(bool isDataItemsVisible)
+    {
+        if (isDataItemsVisible is true)
+        {
+            tableLayoutPanelMain.Controls.Remove(_labelDataNoItems);
+            tableLayoutPanelMain.Controls.Add(dataGridViewData, 0, 2);
+        }
+        else
+        {
+            tableLayoutPanelMain.Controls.Remove(dataGridViewData);
+            tableLayoutPanelMain.Controls.Add(_labelDataNoItems, 0, 2);
+
+            if (dataGridViewData.SelectedRows.Count > 0)
+                dataGridViewData.SelectedRows[0].Selected = false;
         }
     }
 
@@ -245,14 +334,10 @@ internal sealed partial class MainView : Form, IMainView
         dataGridViewData.DataSource = VisibleDataNormalView?.ToList();
 
         if ((VisibleDataNormalView is null) || (VisibleDataNormalView.Any() is false))
-        {
-            tableLayoutPanelMain.Controls.Remove(dataGridViewData);
-            tableLayoutPanelMain.Controls.Add(_labelDataNoItems, 0, 2);
-        }
+            SwitchDataItemsVisibility(false);
         else
         {
-            tableLayoutPanelMain.Controls.Remove(_labelDataNoItems);
-            tableLayoutPanelMain.Controls.Add(dataGridViewData, 0, 2);
+            SwitchDataItemsVisibility(true);
 
             string[]? dataColumnHeaders = VisibleDataColumnHeadersNormalView?.ToArray();
 
@@ -260,17 +345,19 @@ internal sealed partial class MainView : Form, IMainView
                 for (var i = 0; (i < dataGridViewData.ColumnCount) && (i < dataColumnHeaders.Length); i++)
                     dataGridViewData.Columns[i].HeaderText = dataColumnHeaders[i];
 
+            SetSelectedItem(selectedItemId);
+
             if ((keepSorted is true) && (_dataPrevSortColumnIndex is not -1))
             {
                 _dataIsAscSortDirection = !_dataIsAscSortDirection;
 
-                dataGridViewData.SortDataSourceObjectList(_dataPrevSortColumnIndex,
-                    ref _dataIsAscSortDirection, ref _dataPrevSortColumnIndex);
+                SortData(_dataPrevSortColumnIndex);
             }
             else
-                ResetSorting();
+                ResetDataSorting();
 
-            SetSelectedItem(selectedItemId);
+            if (checkBoxApplyFilters.Checked is true)
+                ApplyFilters();
         }
 
         _currentViewType = viewType;
@@ -887,24 +974,32 @@ internal sealed partial class MainView : Form, IMainView
         AddCustomAction(buttonRemove);
     }
 
-    private void AddIssuingFilters()
-    {
-        //throw new NotImplementedException();
-    }
+    private void AddIssuingFilters() { }
 
-    private void AddReaderFilters()
-    {
-        //throw new NotImplementedException();
-    }
+    private void AddReaderFilters() { }
 
-    private void AddAuthorFilters()
-    {
-        //throw new NotImplementedException();
-    }
+    private void AddAuthorFilters() { }
 
-    private void AddBookFilters()
+    private void AddBookFilters() { }
+
+    private void FilterSearch(DataGridViewRow dataGridViewRow)
     {
-        //throw new NotImplementedException();
+        string searchText = textBoxSearch.Text.Trim();
+
+        if ((string.IsNullOrWhiteSpace(searchText) is false) && (dataGridViewRow.Visible is true))
+        {
+            for (var i = 0; i < dataGridViewRow.Cells.Count; i++)
+            {
+                if (dataGridViewRow.Cells[i].Value?.GetType() == typeof(bool))
+                    continue;
+
+                if ((dataGridViewRow.Cells[i].Value?.ToString()?
+                    .Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false) is true)
+                    return;
+            }
+
+            dataGridViewRow.Visible = false;
+        }
     }
 
     private void AddCustomAction(Control control)
@@ -930,7 +1025,7 @@ internal sealed partial class MainView : Form, IMainView
         tableLayoutPanelCustomActions.ColumnCount = 2;
     }
 
-    private void AddCustomFilter(Control control)
+    private void AddCustomFilter(Control control, Action<DataGridViewRow>? filterMethod)
     {
         control.Anchor = AnchorStyles.Left;
 
@@ -941,6 +1036,8 @@ internal sealed partial class MainView : Form, IMainView
         tableLayoutPanelCustomFilters.Controls.Add(control, tableLayoutPanelCustomFilters.ColumnCount - 1, 0);
 
         tableLayoutPanelCustomFilters.ColumnCount++;
+
+        _filterMethods = (Action<DataGridViewRow>?)Delegate.Combine(_filterMethods, filterMethod);
     }
 
     private void ClearCustomFilters()
@@ -951,17 +1048,65 @@ internal sealed partial class MainView : Form, IMainView
             tableLayoutPanelCustomFilters.ColumnStyles.RemoveAt(0);
 
         tableLayoutPanelCustomFilters.ColumnCount = 1;
+
+        _filterMethods = FilterSearch;
     }
 
-    private void ResetSorting()
+    private void SortData(int columnIndex)
+    {
+        int? selectedItemId = GetSelectedItemId();
+
+        dataGridViewData.SortDataSourceObjectList(columnIndex, ref _dataIsAscSortDirection, ref _dataPrevSortColumnIndex);
+
+        SetSelectedItem(selectedItemId);
+    }
+
+    private void ResetDataSorting()
     {
         _dataIsAscSortDirection = true;
         _dataPrevSortColumnIndex = -1;
     }
 
+    private void ApplyFilters()
+    {
+        dataGridViewData.Visible = false;
+
+        int? selectedItemId = GetSelectedItemId();
+        dataGridViewData.CurrentCell = null;
+
+        for (var i = 0; i < dataGridViewData.RowCount; i++)
+            _filterMethods?.Invoke(dataGridViewData.Rows[i]);
+
+        SetSelectedItem(selectedItemId);
+
+        if (dataGridViewData.SelectedRows.Count < 1)
+            SwitchDataItemsVisibility(false);
+
+        dataGridViewData.Visible = true;
+    }
+
+    private void DisableFilters()
+    {
+        dataGridViewData.Visible = false;
+
+        int? selectedItemId = GetSelectedItemId();
+
+        for (var i = 0; i < dataGridViewData.RowCount; i++)
+            dataGridViewData.Rows[i].Visible = true;
+
+        SetSelectedItem(selectedItemId);
+
+        if (dataGridViewData.SelectedRows.Count > 0)
+            SwitchDataItemsVisibility(true);
+
+        dataGridViewData.Visible = true;
+    }
+
     private int? GetSelectedItemId()
     {
-        if ((VisibleDataNormalView is null) || (VisibleDataNormalView.Any() is false))
+        if ((VisibleDataNormalView is null) ||
+            (VisibleDataNormalView.Any() is false) ||
+            (dataGridViewData.SelectedRows.Count < 1))
             return null;
 
         return (int)dataGridViewData.SelectedRows[0].Cells[0].Value;
@@ -969,13 +1114,40 @@ internal sealed partial class MainView : Form, IMainView
 
     private void SetSelectedItem(int? itemId)
     {
-        if (itemId is not null)
-            for (var i = 0; i < dataGridViewData.RowCount; i++)
-                if ((int)dataGridViewData.Rows[i].Cells[0].Value == itemId)
+        if (itemId is null)
+        {
+            if ((VisibleDataNormalView is not null) &&
+                (VisibleDataNormalView.Any() is true) &&
+                (dataGridViewData.SelectedRows.Count < 1))
+            {
+                dataGridViewData.Rows[0].Selected = true;
+                dataGridViewData.CurrentCell = dataGridViewData.Rows[0].Cells[0];
+            }
+
+            return;
+        }
+
+        for (var i = 0; i < dataGridViewData.RowCount; i++)
+            if ((int)dataGridViewData.Rows[i].Cells[0].Value == itemId)
+            {
+                if (dataGridViewData.Rows[i].Visible is true)
                 {
                     dataGridViewData.Rows[i].Selected = true;
-
-                    break;
+                    dataGridViewData.CurrentCell = dataGridViewData.Rows[i].Cells[0];
                 }
+                else
+                    for (int j = 0; j < dataGridViewData.RowCount; j++)
+                        if (dataGridViewData.Rows[j].Visible is true)
+                        {
+                            dataGridViewData.Rows[j].Selected = true;
+                            dataGridViewData.CurrentCell = dataGridViewData.Rows[j].Cells[0];
+
+                            break;
+                        }
+                        else
+                            dataGridViewData.Rows[j].Selected = false;
+
+                break;
+            }
     }
 }
