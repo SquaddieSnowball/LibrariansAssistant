@@ -42,9 +42,8 @@ internal sealed partial class PickItemsView : Form
 
     internal PickItemsView(bool isMultipick)
     {
-        MainControl = ControlCreation.PickItemsCreateTableLayoutPanel(out _buttonPlus, out _labelPicked);
-        _buttonPlus.Click += (sender, e) => ShowDialog();
         _isMultipick = isMultipick;
+        MainControl = ControlCreation.PickItemsCreateTableLayoutPanel(out _buttonPlus, out _labelPicked);
 
         InitializeComponent();
         SubscribeToControlEvents();
@@ -88,6 +87,7 @@ internal sealed partial class PickItemsView : Form
         dataGridViewItems.CellMouseUp += DataGridViewItemsOnCellMouseUp;
         dataGridViewItems.CellValueChanged += DataGridViewItemsOnCellValueChanged;
         dataGridViewItems.ColumnHeaderMouseClick += DataGridViewItemsOnColumnHeaderMouseClick;
+        _buttonPlus.Click += ButtonPlusOnClick;
         FormClosed += PickItemsViewOnFormClosed;
     }
 
@@ -169,6 +169,9 @@ internal sealed partial class PickItemsView : Form
 
     private void DataGridViewItemsOnColumnHeaderMouseClick(object? sender, DataGridViewCellMouseEventArgs e) =>
         dataGridViewItems.SortDataSourceObjectList(e.ColumnIndex, ref _dataIsAscSortDirection, ref _dataPrevSortColumnIndex);
+
+    private void ButtonPlusOnClick(object? sender, EventArgs e) =>
+        ShowDialog();
 
     private void PickItemsViewOnFormClosed(object? sender, FormClosedEventArgs e) =>
         UpdatePickedItems();
