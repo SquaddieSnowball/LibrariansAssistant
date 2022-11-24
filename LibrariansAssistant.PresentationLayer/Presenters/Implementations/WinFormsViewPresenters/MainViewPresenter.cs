@@ -60,6 +60,9 @@ public sealed class MainViewPresenter : IPresenter
         _mainView.BooksUpdatePickView += MainViewOnBooksUpdatePickView;
         _mainView.ReadersUpdatePickView += MainViewOnReadersUpdatePickView;
 
+        _mainView.IssuingsUpdatePeriodView += MainViewOnIssuingsUpdatePeriodView;
+        _mainView.ReadersUpdatePeriodView += MainViewOnReadersUpdatePeriodView;
+
         _mainView.IssuingOpen += MainViewOnIssuingOpen;
         _mainView.IssuingClose += MainViewOnIssuingClose;
         _mainView.AuthorAdd += MainViewOnAuthorAdd;
@@ -315,6 +318,19 @@ public sealed class MainViewPresenter : IPresenter
                 $"{r.LastName} {r.FirstName.First()}." +
                 $"{((string.IsNullOrEmpty(r.Patronymic) is false) ? $" {r.Patronymic.First()}." : string.Empty)}"));
     }
+
+    private void MainViewOnIssuingsUpdatePeriodView(object? sender, EventArgs e) =>
+        _mainView.VisibleDataPeriodView = new Dictionary<int, string>()
+        {
+            {3, "Take date"},
+            {5, "Return date"}
+        };
+
+    private void MainViewOnReadersUpdatePeriodView(object? sender, EventArgs e) =>
+        _mainView.VisibleDataPeriodView = new Dictionary<int, string>()
+        {
+            {5, "Date of birth"}
+        };
 
     private void MainViewOnIssuingOpen(object? sender, IEnumerable<object?> e)
     {

@@ -8,6 +8,8 @@ public interface IMainView : IView
 
     public IEnumerable<KeyValuePair<int, string?>>? VisibleDataPickView { get; set; }
 
+    public IEnumerable<KeyValuePair<int, string>>? VisibleDataPeriodView { get; set; }
+
     public IEnumerable<string>? VisibleDataColumnHeadersNormalView { get; set; }
 
     public event EventHandler? AuthorsUpdateNormalView;
@@ -31,6 +33,10 @@ public interface IMainView : IView
     public event EventHandler? BooksUpdatePickView;
 
     public event EventHandler? ReadersUpdatePickView;
+
+    public event EventHandler? IssuingsUpdatePeriodView;
+
+    public event EventHandler? ReadersUpdatePeriodView;
 
     public event EventHandler<IEnumerable<object?>>? IssuingOpen;
 

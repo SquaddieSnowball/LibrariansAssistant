@@ -19,12 +19,15 @@ internal sealed partial class MainView : Form, IMainView
     private ViewType _currentViewType;
     private string _currentViewName = string.Empty;
     private Action<DataGridViewRow>? _filterMethods;
+    private PickPeriodView? _pickPeriodView;
 
     public IEnumerable<object>? VisibleDataNormalView { get; set; }
 
     public IEnumerable<object?>? VisibleDataEditView { get; set; }
 
     public IEnumerable<KeyValuePair<int, string?>>? VisibleDataPickView { get; set; }
+
+    public IEnumerable<KeyValuePair<int, string>>? VisibleDataPeriodView { get; set; }
 
     public IEnumerable<string>? VisibleDataColumnHeadersNormalView { get; set; }
 
@@ -49,6 +52,10 @@ internal sealed partial class MainView : Form, IMainView
     public event EventHandler? BooksUpdatePickView;
 
     public event EventHandler? ReadersUpdatePickView;
+
+    public event EventHandler? IssuingsUpdatePeriodView;
+
+    public event EventHandler? ReadersUpdatePeriodView;
 
     public event EventHandler<IEnumerable<object?>>? IssuingOpen;
 
@@ -236,14 +243,8 @@ internal sealed partial class MainView : Form, IMainView
         UpdateDataView(ViewType.Books, "all");
     }
 
-    private void TextBoxSearchOnTextChanged(object? sender, EventArgs e)
-    {
-        if (checkBoxApplyFilters.Checked is true)
-        {
-            DisableFilters();
-            ApplyFilters();
-        }
-    }
+    private void TextBoxSearchOnTextChanged(object? sender, EventArgs e) =>
+        UpdateFilters();
 
     private void CheckBoxApplyFiltersOnCheckedChanged(object? sender, EventArgs e)
     {
@@ -314,11 +315,9 @@ internal sealed partial class MainView : Form, IMainView
                 break;
             case ViewType.Authors:
                 AddAuthorActions();
-                AddAuthorFilters();
                 break;
             case ViewType.Books:
                 AddBookActions();
-                AddBookFilters();
                 break;
             default:
                 break;
@@ -974,13 +973,38 @@ internal sealed partial class MainView : Form, IMainView
         AddCustomAction(buttonRemove);
     }
 
-    private void AddIssuingFilters() { }
+    private void AddIssuingFilters() =>
+        AddPeriodFilter(ViewType.Issuings);
 
-    private void AddReaderFilters() { }
+    private void AddReaderFilters() =>
+        AddPeriodFilter(ViewType.Readers);
 
-    private void AddAuthorFilters() { }
+    private void AddPeriodFilter(ViewType viewType)
+    {
+        if (_currentViewType != viewType)
+        {
+            switch (viewType)
+            {
+                case ViewType.Issuings:
+                    IssuingsUpdatePeriodView?.Invoke(this, EventArgs.Empty);
+                    break;
+                case ViewType.Readers:
+                    ReadersUpdatePeriodView?.Invoke(this, EventArgs.Empty);
+                    break;
+                default:
+                    break;
+            }
 
-    private void AddBookFilters() { }
+            _pickPeriodView = new PickPeriodView()
+            {
+                PeriodColumnIndexNames = (VisibleDataPeriodView as Dictionary<int, string>)!
+            };
+
+            _pickPeriodView.PeriodSet += (sender, e) => UpdateFilters();
+        }
+
+        AddCustomFilter(_pickPeriodView!.MainControl, FilterPickPeriod);
+    }
 
     private void FilterSearch(DataGridViewRow dataGridViewRow)
     {
@@ -999,6 +1023,21 @@ internal sealed partial class MainView : Form, IMainView
             }
 
             dataGridViewRow.Visible = false;
+        }
+    }
+
+    private void FilterPickPeriod(DataGridViewRow dataGridViewRow)
+    {
+        if ((_pickPeriodView is not null) &&
+            (_pickPeriodView.StartPeriod is not null) &&
+            (_pickPeriodView.EndPeriod is not null) &&
+            (_pickPeriodView.PeriodColumnIndex is not null) &&
+            (dataGridViewRow.Visible is true))
+        {
+            var dateTime = (DateTime?)dataGridViewRow.Cells[(int)_pickPeriodView.PeriodColumnIndex].Value;
+
+            if ((dateTime is null) || (dateTime < _pickPeriodView.StartPeriod) || (dateTime > _pickPeriodView.EndPeriod))
+                dataGridViewRow.Visible = false;
         }
     }
 
@@ -1027,7 +1066,7 @@ internal sealed partial class MainView : Form, IMainView
 
     private void AddCustomFilter(Control control, Action<DataGridViewRow>? filterMethod)
     {
-        control.Anchor = AnchorStyles.Left;
+        control.Dock = DockStyle.Fill;
 
         tableLayoutPanelCustomFilters.ColumnStyles.Insert(
             tableLayoutPanelCustomFilters.ColumnStyles.Count - 1,
@@ -1100,6 +1139,15 @@ internal sealed partial class MainView : Form, IMainView
             SwitchDataItemsVisibility(true);
 
         dataGridViewData.Visible = true;
+    }
+
+    private void UpdateFilters()
+    {
+        if (checkBoxApplyFilters.Checked is true)
+        {
+            DisableFilters();
+            ApplyFilters();
+        }
     }
 
     private int? GetSelectedItemId()
