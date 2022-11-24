@@ -111,6 +111,54 @@ internal static class ControlCreation
         return tableLayoutPanel;
     }
 
+    internal static TableLayoutPanel PickPeriodCreateTableLayoutPanel(out Label labelPickedPeriod, out Button buttonPick)
+    {
+        var labelPeriod = new Label()
+        {
+            Anchor = AnchorStyles.Left,
+            AutoSize = true,
+            Margin = new Padding(0, 0, 0, 10),
+            Text = "Period:"
+        };
+
+        labelPickedPeriod = new Label()
+        {
+            Anchor = AnchorStyles.Left,
+            AutoSize = true,
+            Margin = new Padding(0, 0, 0, 10),
+            Text = "none"
+        };
+
+        buttonPick = new Button()
+        {
+            Anchor = AnchorStyles.Left,
+            AutoSize = false,
+            FlatStyle = FlatStyle.Flat,
+            Height = 30,
+            Margin = new Padding(10, 0, 0, 10),
+            Text = "\uFE19",
+            Width = 30
+        };
+
+        var tableLayoutPanel = new TableLayoutPanel()
+        {
+            Width = 270
+        };
+
+        tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
+        tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
+        tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
+        tableLayoutPanel.RowStyles.Add(new RowStyle());
+
+        tableLayoutPanel.Controls.Add(labelPeriod, 0, 0);
+        tableLayoutPanel.Controls.Add(labelPickedPeriod, 1, 0);
+        tableLayoutPanel.Controls.Add(buttonPick, 2, 0);
+
+        tableLayoutPanel.RowCount++;
+
+        return tableLayoutPanel;
+    }
+
     internal static TableLayoutPanel SettingsCreateControlTableLayoutPanel(Control control)
     {
         var tableLayoutPanel = new TableLayoutPanel()
