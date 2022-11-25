@@ -1,4 +1,4 @@
-﻿namespace LibrariansAssistant.ServicesLayer.CommonServices.Interfaces;
+﻿namespace LibrariansAssistant.ServicesLayer.CommonServices.DataAnnotationModelValidationService;
 
 public interface IDataAnnotationModelValidationService
 {

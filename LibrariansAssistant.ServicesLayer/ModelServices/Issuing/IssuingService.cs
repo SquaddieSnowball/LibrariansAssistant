@@ -1,6 +1,6 @@
 ﻿using LibrariansAssistant.DomainModelLayer.Models.Issuing;
 using LibrariansAssistant.InfranstructureLayer.Repositories.Interfaces;
-using LibrariansAssistant.ServicesLayer.CommonServices.Interfaces;
+using LibrariansAssistant.ServicesLayer.CommonServices.DataAnnotationModelValidationService;
 
 namespace LibrariansAssistant.ServicesLayer.ModelServices.Issuing;
 

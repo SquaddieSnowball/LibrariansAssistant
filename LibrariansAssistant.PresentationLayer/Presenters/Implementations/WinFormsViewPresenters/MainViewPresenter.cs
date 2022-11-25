@@ -6,7 +6,7 @@ using LibrariansAssistant.DomainModelLayer.Models.Reader;
 using LibrariansAssistant.InfranstructureLayer.Repositories.Interfaces;
 using LibrariansAssistant.PresentationLayer.ViewInterfaces.WinFormsViewInterfaces;
 using LibrariansAssistant.PresentationLayer.ViewServiceInterfaces;
-using LibrariansAssistant.ServicesLayer.CommonServices.Interfaces;
+using LibrariansAssistant.ServicesLayer.CommonServices.DataAnnotationModelValidationService;
 using LibrariansAssistant.ServicesLayer.ModelServices.Author;
 using LibrariansAssistant.ServicesLayer.ModelServices.Book;
 using LibrariansAssistant.ServicesLayer.ModelServices.Issuing;

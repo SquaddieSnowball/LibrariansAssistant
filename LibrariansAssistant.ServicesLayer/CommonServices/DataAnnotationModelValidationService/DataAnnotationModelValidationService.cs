@@ -1,8 +1,7 @@
-﻿using LibrariansAssistant.ServicesLayer.CommonServices.Interfaces;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace LibrariansAssistant.ServicesLayer.CommonServices.Implementation;
+namespace LibrariansAssistant.ServicesLayer.CommonServices.DataAnnotationModelValidationService;
 
 public sealed class DataAnnotationModelValidationService : IDataAnnotationModelValidationService
 {
