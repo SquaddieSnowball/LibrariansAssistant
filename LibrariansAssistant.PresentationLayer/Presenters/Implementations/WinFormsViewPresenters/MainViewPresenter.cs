@@ -7,6 +7,9 @@ using LibrariansAssistant.InfranstructureLayer.Repositories.Interfaces;
 using LibrariansAssistant.PresentationLayer.ViewInterfaces.WinFormsViewInterfaces;
 using LibrariansAssistant.PresentationLayer.ViewServiceInterfaces;
 using LibrariansAssistant.ServicesLayer.CommonServices.DataAnnotationModelValidationService;
+using LibrariansAssistant.ServicesLayer.CommonServices.ReportGenerator;
+using LibrariansAssistant.ServicesLayer.CommonServices.ReportGenerator.Entities;
+using LibrariansAssistant.ServicesLayer.CommonServices.ReportGenerator.Implementations;
 using LibrariansAssistant.ServicesLayer.ModelServices.Author;
 using LibrariansAssistant.ServicesLayer.ModelServices.Book;
 using LibrariansAssistant.ServicesLayer.ModelServices.Issuing;
@@ -78,6 +81,9 @@ public sealed class MainViewPresenter : IPresenter
         _mainView.BookRemove += MainViewOnBookRemove;
         _mainView.IssuingRemove += MainViewOnIssuingRemove;
         _mainView.ReaderRemove += MainViewOnReaderRemove;
+
+        _mainView.ExportDataText += MainViewOnExportDataText;
+        _mainView.ExportDataExcel += MainViewOnExportDataExcel;
     }
 
     private void MainViewOnAuthorsUpdateNormalView(object? sender, EventArgs e)
@@ -675,5 +681,45 @@ public sealed class MainViewPresenter : IPresenter
             DependenciesContainer.Resolve<IReaderService>(_repository, _dataAnnotationModelValidationService)!;
 
         readerService.ReaderDelete(e);
+    }
+
+    private void MainViewOnExportDataText(object? sender, IEnumerable<object> e) =>
+        ExportData("Text", e);
+
+    private void MainViewOnExportDataExcel(object? sender, IEnumerable<object> e) =>
+        ExportData("Excel", e);
+
+    private void ExportData(string dataType, IEnumerable<object> data)
+    {
+        IReportGenerator reportGenerator = dataType switch
+        {
+            "Text" => new TextReportGenerator(),
+            "Excel" => new ExcelReportGenerator(),
+            _ => throw new NotImplementedException("This report generator has not yet been implemented."),
+        };
+
+        var args = (data as object[])!;
+
+        var title = (args[0] as string)!;
+        var columnHeaders = (args[1] as string[])!;
+        var exportData = (args[2] as string[,])!;
+        var filePath = (args[3] as string)!;
+
+        try
+        {
+            var reportDocument = new ReportDocument(title, columnHeaders, exportData.GetLength(0), exportData.GetLength(1));
+
+            for (var i = 0; i < reportDocument.RowCount; i++)
+                for (var j = 0; j < reportDocument.ColumnCount; j++)
+                    reportDocument[i, j] = exportData[i, j];
+
+            reportGenerator.GenerateReport(filePath, reportDocument);
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
     }
 }

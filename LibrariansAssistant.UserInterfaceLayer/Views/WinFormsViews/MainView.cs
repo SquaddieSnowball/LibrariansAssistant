@@ -83,6 +83,10 @@ internal sealed partial class MainView : Form, IMainView
 
     public event EventHandler<int>? ReaderRemove;
 
+    public event EventHandler<IEnumerable<object>>? ExportDataText;
+
+    public event EventHandler<IEnumerable<object>>? ExportDataExcel;
+
     internal MainView()
     {
         InitializeComponent();
@@ -104,6 +108,9 @@ internal sealed partial class MainView : Form, IMainView
         readersShowAllToolStripMenuItem.Click += ReadersShowAllToolStripMenuItemOnClick;
         authorsShowAllToolStripMenuItem.Click += AuthorsShowAllToolStripMenuItemOnClick;
         booksShowAllToolStripMenuItem.Click += BooksShowAllToolStripMenuItemOnClick;
+
+        exportTextToolStripMenuItem.Click += ExportTextToolStripMenuItemOnClick;
+        exportExcelToolStripMenuItem.Click += ExportExcelToolStripMenuItemOnClick;
 
         textBoxSearch.TextChanged += TextBoxSearchOnTextChanged;
         checkBoxApplyFilters.CheckedChanged += CheckBoxApplyFiltersOnCheckedChanged;
@@ -241,6 +248,30 @@ internal sealed partial class MainView : Form, IMainView
         _dataUpdateEventInvokationList = BooksUpdateNormalView?.GetInvocationList();
 
         UpdateDataView(ViewType.Books, "all");
+    }
+
+    private void ExportTextToolStripMenuItemOnClick(object? sender, EventArgs e)
+    {
+        var saveFileDialog = new SaveFileDialog()
+        {
+            Filter = "Text files (*.txt)|*.txt",
+            Title = "Export"
+        };
+
+        if (saveFileDialog.ShowDialog() is DialogResult.OK)
+            ExportDataText?.Invoke(this, GenerateExportData(saveFileDialog.FileName));
+    }
+
+    private void ExportExcelToolStripMenuItemOnClick(object? sender, EventArgs e)
+    {
+        var saveFileDialog = new SaveFileDialog()
+        {
+            Filter = "Excel files (*.xlsx)|*.xlsx",
+            Title = "Export"
+        };
+
+        if (saveFileDialog.ShowDialog() is DialogResult.OK)
+            ExportDataExcel?.Invoke(this, GenerateExportData(saveFileDialog.FileName));
     }
 
     private void TextBoxSearchOnTextChanged(object? sender, EventArgs e) =>
@@ -1197,5 +1228,65 @@ internal sealed partial class MainView : Form, IMainView
 
                 break;
             }
+    }
+
+    private IEnumerable<object> GenerateExportData(string filePath)
+    {
+        int rowCount = 0;
+        int columnCount = dataGridViewData.ColumnCount;
+
+        if (tableLayoutPanelMain.Controls.Contains(dataGridViewData) is true)
+            for (var i = 0; i < dataGridViewData.RowCount; i++)
+                if (dataGridViewData.Rows[i].Visible is true)
+                    rowCount++;
+
+        string title = labelTableName.Text;
+        var columnHeaders = new string[columnCount];
+        var exportData = new string[rowCount, columnCount];
+
+        for (var j = 0; j < columnCount; j++)
+            columnHeaders[j] = dataGridViewData.Columns[j].HeaderText;
+
+        rowCount = 0;
+
+        if (tableLayoutPanelMain.Controls.Contains(dataGridViewData) is true)
+            for (var i = 0; i < dataGridViewData.RowCount; i++)
+                if (dataGridViewData.Rows[i].Visible is true)
+                {
+                    columnCount = 0;
+
+                    while (columnCount < dataGridViewData.ColumnCount)
+                    {
+                        object cellValue = dataGridViewData.Rows[i].Cells[columnCount].Value;
+
+                        if (cellValue is null)
+                            exportData[rowCount, columnCount] = string.Empty;
+                        else
+                        {
+                            Type cellValueType = cellValue.GetType();
+
+                            if (cellValueType == typeof(bool))
+                                exportData[rowCount, columnCount] = ((bool)cellValue is true) ? "Yes" : "No";
+
+                            else if (cellValueType == typeof(DateTime))
+                                exportData[rowCount, columnCount] = ((DateTime)cellValue).ToString("d");
+
+                            else
+                                exportData[rowCount, columnCount] = cellValue.ToString()!;
+                        }
+
+                        columnCount++;
+                    }
+
+                    rowCount++;
+                }
+
+        return new object[]
+        {
+            title,
+            columnHeaders,
+            exportData,
+            filePath
+        };
     }
 }

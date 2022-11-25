@@ -63,4 +63,8 @@ public interface IMainView : IView
     public event EventHandler<int>? IssuingRemove;
 
     public event EventHandler<int>? ReaderRemove;
+
+    public event EventHandler<IEnumerable<object>>? ExportDataText;
+
+    public event EventHandler<IEnumerable<object>>? ExportDataExcel;
 }
