@@ -31,6 +31,8 @@ internal sealed partial class MainView : Form, IMainView
 
     public IEnumerable<string>? VisibleDataColumnHeadersNormalView { get; set; }
 
+    public bool IsOperationSuccessful { get; set; }
+
     public event EventHandler? AuthorsUpdateNormalView;
 
     public event EventHandler? BooksUpdateNormalView;
@@ -481,18 +483,31 @@ internal sealed partial class MainView : Form, IMainView
 
         buttonOpen.Click += (sender, e) =>
         {
-            if (openView.ShowDialog() is DialogResult.OK)
+            DialogResult dialogResult;
+
+            do
             {
-                var args = new object?[]
+                dialogResult = openView.ShowDialog();
+
+                if (dialogResult is DialogResult.OK)
                 {
-                    pickItemsOpenReaderView.PickedItemIds,
-                    pickItemsOpenBookView.PickedItemIds
-                };
+                    var args = new object?[]
+                    {
+                        pickItemsOpenReaderView.PickedItemIds,
+                        pickItemsOpenBookView.PickedItemIds
+                    };
 
-                IssuingOpen?.Invoke(this, args);
+                    IssuingOpen?.Invoke(this, args);
 
-                UpdateDataView(_currentViewType, _currentViewName, true);
-            }
+                    if (IsOperationSuccessful is true)
+                    {
+                        UpdateDataView(_currentViewType, _currentViewName, true);
+
+                        break;
+                    }
+                }
+
+            } while (dialogResult is DialogResult.OK);
         };
 
         buttonClose.Click += (sender, e) =>
@@ -515,18 +530,31 @@ internal sealed partial class MainView : Form, IMainView
 
             labelCloseId.Text = selectedItemId.ToString()!;
 
-            if (closeView.ShowDialog() is DialogResult.OK)
+            DialogResult dialogResult;
+
+            do
             {
-                var args = new object?[]
+                dialogResult = closeView.ShowDialog();
+
+                if (dialogResult is DialogResult.OK)
                 {
-                    (int)selectedItemId!,
-                    numericUpDownCloseReturnState.Value
-                };
+                    var args = new object?[]
+                    {
+                        (int)selectedItemId!,
+                        numericUpDownCloseReturnState.Value
+                    };
 
-                IssuingClose?.Invoke(this, args);
+                    IssuingClose?.Invoke(this, args);
 
-                UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
-            }
+                    if (IsOperationSuccessful is true)
+                    {
+                        UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
+
+                        break;
+                    }
+                }
+
+            } while (dialogResult is DialogResult.OK);
         };
 
         buttonEdit.Click += (sender, e) =>
@@ -561,23 +589,36 @@ internal sealed partial class MainView : Form, IMainView
                 numericUpDownEditReturnState.Value =
                     (data[6] is not null) ? (int)data[6]! : numericUpDownEditReturnState.Minimum;
 
-                if (editView.ShowDialog() is DialogResult.OK)
+                DialogResult dialogResult;
+
+                do
                 {
-                    var args = new object?[]
+                    dialogResult = editView.ShowDialog();
+
+                    if (dialogResult is DialogResult.OK)
                     {
-                        (int)selectedItemId!,
-                        pickItemsEditReaderView.PickedItemIds,
-                        pickItemsEditBookView.PickedItemIds,
-                        dateTimePickerEditTakeDate.Value,
-                        checkBoxEditReturned.Checked,
-                        dateTimePickerEditReturnDate.Value,
-                        numericUpDownEditReturnState.Value
-                    };
+                        var args = new object?[]
+                        {
+                            (int)selectedItemId!,
+                            pickItemsEditReaderView.PickedItemIds,
+                            pickItemsEditBookView.PickedItemIds,
+                            dateTimePickerEditTakeDate.Value,
+                            checkBoxEditReturned.Checked,
+                            dateTimePickerEditReturnDate.Value,
+                            numericUpDownEditReturnState.Value
+                        };
 
-                    IssuingEdit?.Invoke(this, args);
+                        IssuingEdit?.Invoke(this, args);
 
-                    UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
-                }
+                        if (IsOperationSuccessful is true)
+                        {
+                            UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
+
+                            break;
+                        }
+                    }
+
+                } while (dialogResult is DialogResult.OK);
             }
             else
                 UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
@@ -599,7 +640,8 @@ internal sealed partial class MainView : Form, IMainView
 
                 IssuingRemove?.Invoke(this, (int)selectedItemId!);
 
-                UpdateDataView(_currentViewType, _currentViewName, true);
+                if (IsOperationSuccessful is true)
+                    UpdateDataView(_currentViewType, _currentViewName, true);
             }
         };
 
@@ -655,21 +697,34 @@ internal sealed partial class MainView : Form, IMainView
 
         buttonAdd.Click += (sender, e) =>
         {
-            if (addView.ShowDialog() is DialogResult.OK)
+            DialogResult dialogResult;
+
+            do
             {
-                var args = new object?[]
+                dialogResult = addView.ShowDialog();
+
+                if (dialogResult is DialogResult.OK)
                 {
-                    textBoxAddFirstName.Text,
-                    textBoxAddLastName.Text,
-                    textBoxAddPatronymic.Text,
-                    textBoxAddGender.Text,
-                    dateTimePickerAddDateOfBirth.Value
-                };
+                    var args = new object?[]
+                    {
+                        textBoxAddFirstName.Text,
+                        textBoxAddLastName.Text,
+                        textBoxAddPatronymic.Text,
+                        textBoxAddGender.Text,
+                        dateTimePickerAddDateOfBirth.Value
+                    };
 
-                ReaderAdd?.Invoke(this, args);
+                    ReaderAdd?.Invoke(this, args);
 
-                UpdateDataView(_currentViewType, _currentViewName, true);
-            }
+                    if (IsOperationSuccessful is true)
+                    {
+                        UpdateDataView(_currentViewType, _currentViewName, true);
+
+                        break;
+                    }
+                }
+
+            } while (dialogResult is DialogResult.OK);
         };
 
         buttonEdit.Click += (sender, e) =>
@@ -698,22 +753,35 @@ internal sealed partial class MainView : Form, IMainView
                 textBoxEditGender.Text = data[4] as string;
                 dateTimePickerEditDateOfBirth.Value = (DateTime)data[5]!;
 
-                if (editView.ShowDialog() is DialogResult.OK)
+                DialogResult dialogResult;
+
+                do
                 {
-                    var args = new object?[]
+                    dialogResult = editView.ShowDialog();
+
+                    if (dialogResult is DialogResult.OK)
                     {
-                        (int)selectedItemId!,
-                        textBoxEditFirstName.Text,
-                        textBoxEditLastName.Text,
-                        textBoxEditPatronymic.Text,
-                        textBoxEditGender.Text,
-                        dateTimePickerEditDateOfBirth.Value
-                    };
+                        var args = new object?[]
+                        {
+                            (int)selectedItemId!,
+                            textBoxEditFirstName.Text,
+                            textBoxEditLastName.Text,
+                            textBoxEditPatronymic.Text,
+                            textBoxEditGender.Text,
+                            dateTimePickerEditDateOfBirth.Value
+                        };
 
-                    ReaderEdit?.Invoke(this, args);
+                        ReaderEdit?.Invoke(this, args);
 
-                    UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
-                }
+                        if (IsOperationSuccessful is true)
+                        {
+                            UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
+
+                            break;
+                        }
+                    }
+
+                } while (dialogResult is DialogResult.OK);
             }
             else
                 UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
@@ -735,7 +803,8 @@ internal sealed partial class MainView : Form, IMainView
 
                 ReaderRemove?.Invoke(this, (int)selectedItemId!);
 
-                UpdateDataView(_currentViewType, _currentViewName, true);
+                if (IsOperationSuccessful is true)
+                    UpdateDataView(_currentViewType, _currentViewName, true);
             }
         };
 
@@ -782,19 +851,32 @@ internal sealed partial class MainView : Form, IMainView
 
         buttonAdd.Click += (sender, e) =>
         {
-            if (addView.ShowDialog() is DialogResult.OK)
+            DialogResult dialogResult;
+
+            do
             {
-                var args = new object?[]
+                dialogResult = addView.ShowDialog();
+
+                if (dialogResult is DialogResult.OK)
                 {
-                    textBoxAddFirstName.Text,
-                    textBoxAddLastName.Text,
-                    textBoxAddPatronymic.Text
-                };
+                    var args = new object?[]
+                    {
+                        textBoxAddFirstName.Text,
+                        textBoxAddLastName.Text,
+                        textBoxAddPatronymic.Text
+                    };
 
-                AuthorAdd?.Invoke(this, args);
+                    AuthorAdd?.Invoke(this, args);
 
-                UpdateDataView(_currentViewType, _currentViewName, true);
-            }
+                    if (IsOperationSuccessful is true)
+                    {
+                        UpdateDataView(_currentViewType, _currentViewName, true);
+
+                        break;
+                    }
+                }
+
+            } while (dialogResult is DialogResult.OK);
         };
 
         buttonEdit.Click += (sender, e) =>
@@ -821,20 +903,33 @@ internal sealed partial class MainView : Form, IMainView
                 textBoxEditLastName.Text = data[2] as string;
                 textBoxEditPatronymic.Text = data[3] as string;
 
-                if (editView.ShowDialog() is DialogResult.OK)
+                DialogResult dialogResult;
+
+                do
                 {
-                    var args = new object?[]
+                    dialogResult = editView.ShowDialog();
+
+                    if (dialogResult is DialogResult.OK)
                     {
-                        (int)selectedItemId!,
-                        textBoxEditFirstName.Text,
-                        textBoxEditLastName.Text,
-                        textBoxEditPatronymic.Text
-                    };
+                        var args = new object?[]
+                        {
+                            (int)selectedItemId!,
+                            textBoxEditFirstName.Text,
+                            textBoxEditLastName.Text,
+                            textBoxEditPatronymic.Text
+                        };
 
-                    AuthorEdit?.Invoke(this, args);
+                        AuthorEdit?.Invoke(this, args);
 
-                    UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
-                }
+                        if (IsOperationSuccessful is true)
+                        {
+                            UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
+
+                            break;
+                        }
+                    }
+
+                } while (dialogResult is DialogResult.OK);
             }
             else
                 UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
@@ -856,7 +951,8 @@ internal sealed partial class MainView : Form, IMainView
 
                 AuthorRemove?.Invoke(this, (int)selectedItemId!);
 
-                UpdateDataView(_currentViewType, _currentViewName, true);
+                if (IsOperationSuccessful is true)
+                    UpdateDataView(_currentViewType, _currentViewName, true);
             }
         };
 
@@ -919,19 +1015,32 @@ internal sealed partial class MainView : Form, IMainView
 
         buttonAdd.Click += (sender, e) =>
         {
-            if (addView.ShowDialog() is DialogResult.OK)
+            DialogResult dialogResult;
+
+            do
             {
-                var args = new object?[]
+                dialogResult = addView.ShowDialog();
+
+                if (dialogResult is DialogResult.OK)
                 {
-                    pickItemsAddView.PickedItemIds,
-                    textBoxAddTitle.Text,
-                    textBoxAddGenre.Text
-                };
+                    var args = new object?[]
+                    {
+                        pickItemsAddView.PickedItemIds,
+                        textBoxAddTitle.Text,
+                        textBoxAddGenre.Text
+                    };
 
-                BookAdd?.Invoke(this, args);
+                    BookAdd?.Invoke(this, args);
 
-                UpdateDataView(_currentViewType, _currentViewName, true);
-            }
+                    if (IsOperationSuccessful is true)
+                    {
+                        UpdateDataView(_currentViewType, _currentViewName, true);
+
+                        break;
+                    }
+                }
+
+            } while (dialogResult is DialogResult.OK);
         };
 
         buttonEdit.Click += (sender, e) =>
@@ -960,20 +1069,33 @@ internal sealed partial class MainView : Form, IMainView
                 textBoxEditTitle.Text = data[2] as string;
                 textBoxEditGenre.Text = data[3] as string;
 
-                if (editView.ShowDialog() is DialogResult.OK)
+                DialogResult dialogResult;
+
+                do
                 {
-                    var args = new object?[]
+                    dialogResult = editView.ShowDialog();
+
+                    if (dialogResult is DialogResult.OK)
                     {
-                        (int)selectedItemId!,
-                        pickItemsEditView.PickedItemIds,
-                        textBoxEditTitle.Text,
-                        textBoxEditGenre.Text
-                    };
+                        var args = new object?[]
+                        {
+                            (int)selectedItemId!,
+                            pickItemsEditView.PickedItemIds,
+                            textBoxEditTitle.Text,
+                            textBoxEditGenre.Text
+                        };
 
-                    BookEdit?.Invoke(this, args);
+                        BookEdit?.Invoke(this, args);
 
-                    UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
-                }
+                        if (IsOperationSuccessful is true)
+                        {
+                            UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
+
+                            break;
+                        }
+                    }
+
+                } while (dialogResult is DialogResult.OK);
             }
             else
                 UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
@@ -995,7 +1117,8 @@ internal sealed partial class MainView : Form, IMainView
 
                 BookRemove?.Invoke(this, (int)selectedItemId!);
 
-                UpdateDataView(_currentViewType, _currentViewName, true);
+                if (IsOperationSuccessful is true)
+                    UpdateDataView(_currentViewType, _currentViewName, true);
             }
         };
 

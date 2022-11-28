@@ -12,6 +12,8 @@ public interface IMainView : IView
 
     public IEnumerable<string>? VisibleDataColumnHeadersNormalView { get; set; }
 
+    public bool IsOperationSuccessful { get; set; }
+
     public event EventHandler? AuthorsUpdateNormalView;
 
     public event EventHandler? BooksUpdateNormalView;
