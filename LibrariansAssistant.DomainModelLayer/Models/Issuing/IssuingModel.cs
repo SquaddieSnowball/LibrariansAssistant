@@ -1,6 +1,8 @@
 ﻿using LibrariansAssistant.DependenciesLayer;
 using LibrariansAssistant.DomainModelLayer.Models.Book;
 using LibrariansAssistant.DomainModelLayer.Models.Reader;
+using LibrariansAssistant.DomainModelLayer.ValidationAttributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace LibrariansAssistant.DomainModelLayer.Models.Issuing;
 
@@ -8,8 +10,10 @@ public sealed class IssuingModel : IIssuingModel
 {
     public int Id { get; set; }
 
+    [NotDefaultModel(ErrorMessage = "Reader is required.")]
     public IReaderModel Reader { get; set; }
 
+    [NotDefaultModel(ErrorMessage = "Book is required.")]
     public IBookModel Book { get; set; }
 
     public DateTime TakeDate { get; set; }
@@ -18,6 +22,7 @@ public sealed class IssuingModel : IIssuingModel
 
     public DateTime? ReturnDate { get; set; }
 
+    [Range(1, 100, ErrorMessage = "Return state must be in range of 1 to 100.")]
     public int? ReturnState { get; set; }
 
     public IssuingModel() =>
