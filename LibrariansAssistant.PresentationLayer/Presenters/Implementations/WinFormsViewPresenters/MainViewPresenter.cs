@@ -88,10 +88,23 @@ public sealed class MainViewPresenter : IPresenter
 
     private void MainViewOnAuthorsUpdateNormalView(object? sender, EventArgs e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IAuthorService authorService =
             DependenciesContainer.Resolve<IAuthorService>(_repository, _dataAnnotationModelValidationService)!;
 
-        IEnumerable<IAuthorModel> authors = authorService.AuthorGetAll();
+        IEnumerable<IAuthorModel> authors;
+
+        try
+        {
+            authors = authorService.AuthorGetAll();
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
 
         _mainView.VisibleDataNormalView = authors
             .Select(a => new
@@ -110,14 +123,29 @@ public sealed class MainViewPresenter : IPresenter
             "Last name",
             "Patronymic"
         };
+
+        _mainView.IsOperationSuccessful = true;
     }
 
     private void MainViewOnBooksUpdateNormalView(object? sender, EventArgs e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IBookService bookService =
             DependenciesContainer.Resolve<IBookService>(_repository, _dataAnnotationModelValidationService)!;
 
-        IEnumerable<IBookModel> books = bookService.BookGetAll();
+        IEnumerable<IBookModel> books;
+
+        try
+        {
+            books = bookService.BookGetAll();
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
 
         _mainView.VisibleDataNormalView = books
             .Select(b => new
@@ -140,14 +168,29 @@ public sealed class MainViewPresenter : IPresenter
             "Title",
             "Genre"
         };
+
+        _mainView.IsOperationSuccessful = true;
     }
 
     private void MainViewOnIssuingsUpdateNormalView(object? sender, EventArgs e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IIssuingService issuingService =
             DependenciesContainer.Resolve<IIssuingService>(_repository, _dataAnnotationModelValidationService)!;
 
-        IEnumerable<IIssuingModel> issuings = issuingService.IssuingGetAll();
+        IEnumerable<IIssuingModel> issuings;
+
+        try
+        {
+            issuings = issuingService.IssuingGetAll();
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
 
         _mainView.VisibleDataNormalView = issuings
             .Select(i => new
@@ -174,14 +217,29 @@ public sealed class MainViewPresenter : IPresenter
             "Return date",
             "Return state"
         };
+
+        _mainView.IsOperationSuccessful = true;
     }
 
     private void MainViewOnReadersUpdateNormalView(object? sender, EventArgs e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IReaderService readerService =
             DependenciesContainer.Resolve<IReaderService>(_repository, _dataAnnotationModelValidationService)!;
 
-        IEnumerable<IReaderModel> readers = readerService.ReaderGetAll();
+        IEnumerable<IReaderModel> readers;
+
+        try
+        {
+            readers = readerService.ReaderGetAll();
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
 
         _mainView.VisibleDataNormalView = readers
             .Select(r => new
@@ -204,16 +262,32 @@ public sealed class MainViewPresenter : IPresenter
             "Gender",
             "Date of birth"
         };
+
+        _mainView.IsOperationSuccessful = true;
     }
 
     private void MainViewOnAuthorUpdateEditView(object? sender, int e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IAuthorService authorService =
             DependenciesContainer.Resolve<IAuthorService>(_repository, _dataAnnotationModelValidationService)!;
 
-        IAuthorModel? author = authorService.AuthorGetById(e);
+        IAuthorModel? author;
+
+        try
+        {
+            author = authorService.AuthorGetById(e);
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
 
         if (author is not null)
+        {
             _mainView.VisibleDataEditView = new object?[]
             {
                 author.Id,
@@ -221,18 +295,35 @@ public sealed class MainViewPresenter : IPresenter
                 author.LastName,
                 author.Patronymic
             };
+
+            _mainView.IsOperationSuccessful = true;
+        }
         else
             _messageService.ShowError("This author is no longer exists.");
     }
 
     private void MainViewOnBookUpdateEditView(object? sender, int e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IBookService bookService =
             DependenciesContainer.Resolve<IBookService>(_repository, _dataAnnotationModelValidationService)!;
 
-        IBookModel? book = bookService.BookGetById(e);
+        IBookModel? book;
+
+        try
+        {
+            book = bookService.BookGetById(e);
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
 
         if (book is not null)
+        {
             _mainView.VisibleDataEditView = new object?[]
             {
                 book.Id,
@@ -240,18 +331,35 @@ public sealed class MainViewPresenter : IPresenter
                 book.Title,
                 book.Genre
             };
+
+            _mainView.IsOperationSuccessful = true;
+        }
         else
             _messageService.ShowError("This book is no longer exists.");
     }
 
     private void MainViewOnIssuingUpdateEditView(object? sender, int e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IIssuingService issuingService =
             DependenciesContainer.Resolve<IIssuingService>(_repository, _dataAnnotationModelValidationService)!;
 
-        IIssuingModel? issuing = issuingService.IssuingGetById(e);
+        IIssuingModel? issuing;
+
+        try
+        {
+            issuing = issuingService.IssuingGetById(e);
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
 
         if (issuing is not null)
+        {
             _mainView.VisibleDataEditView = new object?[]
             {
                 issuing.Id,
@@ -262,18 +370,35 @@ public sealed class MainViewPresenter : IPresenter
                 issuing.ReturnDate,
                 issuing.ReturnState
             };
+
+            _mainView.IsOperationSuccessful = true;
+        }
         else
             _messageService.ShowError("This issuing is no longer exists.");
     }
 
     private void MainViewOnReaderUpdateEditView(object? sender, int e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IReaderService readerService =
             DependenciesContainer.Resolve<IReaderService>(_repository, _dataAnnotationModelValidationService)!;
 
-        IReaderModel? reader = readerService.ReaderGetById(e);
+        IReaderModel? reader;
+
+        try
+        {
+            reader = readerService.ReaderGetById(e);
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
 
         if (reader is not null)
+        {
             _mainView.VisibleDataEditView = new object?[]
             {
                 reader.Id,
@@ -283,63 +408,125 @@ public sealed class MainViewPresenter : IPresenter
                 reader.Gender,
                 reader.DateOfBirth
             };
+
+            _mainView.IsOperationSuccessful = true;
+        }
         else
             _messageService.ShowError("This reader is no longer exists.");
     }
 
     private void MainViewOnAuthorsUpdatePickView(object? sender, EventArgs e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IAuthorService authorService =
             DependenciesContainer.Resolve<IAuthorService>(_repository, _dataAnnotationModelValidationService)!;
 
-        IEnumerable<IAuthorModel> authors = authorService.AuthorGetAll();
+        IEnumerable<IAuthorModel> authors;
+
+        try
+        {
+            authors = authorService.AuthorGetAll();
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
 
         _mainView.VisibleDataPickView = authors
             .Select(a => new KeyValuePair<int, string?>(
                 a.Id,
                 $"{a.LastName} {a.FirstName.First()}." +
                 $"{((string.IsNullOrEmpty(a.Patronymic) is false) ? $" {a.Patronymic.First()}." : string.Empty)}"));
+
+        _mainView.IsOperationSuccessful = true;
     }
 
     private void MainViewOnBooksUpdatePickView(object? sender, EventArgs e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IBookService bookService =
             DependenciesContainer.Resolve<IBookService>(_repository, _dataAnnotationModelValidationService)!;
 
-        IEnumerable<IBookModel> books = bookService.BookGetAll();
+        IEnumerable<IBookModel> books;
+
+        try
+        {
+            books = bookService.BookGetAll();
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
 
         _mainView.VisibleDataPickView = books.Select(b => new KeyValuePair<int, string?>(b.Id, b.Title));
+
+        _mainView.IsOperationSuccessful = true;
     }
 
     private void MainViewOnReadersUpdatePickView(object? sender, EventArgs e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IReaderService readerService =
             DependenciesContainer.Resolve<IReaderService>(_repository, _dataAnnotationModelValidationService)!;
 
-        IEnumerable<IReaderModel> readers = readerService.ReaderGetAll();
+        IEnumerable<IReaderModel> readers;
+
+        try
+        {
+            readers = readerService.ReaderGetAll();
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
 
         _mainView.VisibleDataPickView = readers
             .Select(r => new KeyValuePair<int, string?>(
                 r.Id,
                 $"{r.LastName} {r.FirstName.First()}." +
                 $"{((string.IsNullOrEmpty(r.Patronymic) is false) ? $" {r.Patronymic.First()}." : string.Empty)}"));
+
+        _mainView.IsOperationSuccessful = true;
     }
 
-    private void MainViewOnIssuingsUpdatePeriodView(object? sender, EventArgs e) =>
+    private void MainViewOnIssuingsUpdatePeriodView(object? sender, EventArgs e)
+    {
+        _mainView.IsOperationSuccessful = false;
+
         _mainView.VisibleDataPeriodView = new Dictionary<int, string>()
         {
             {3, "Take date"},
             {5, "Return date"}
         };
 
-    private void MainViewOnReadersUpdatePeriodView(object? sender, EventArgs e) =>
+        _mainView.IsOperationSuccessful = true;
+    }
+
+    private void MainViewOnReadersUpdatePeriodView(object? sender, EventArgs e)
+    {
+        _mainView.IsOperationSuccessful = false;
+
         _mainView.VisibleDataPeriodView = new Dictionary<int, string>()
         {
             {5, "Date of birth"}
         };
 
+        _mainView.IsOperationSuccessful = true;
+    }
+
     private void MainViewOnIssuingOpen(object? sender, IEnumerable<object?> e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IIssuingService issuingService =
             DependenciesContainer.Resolve<IIssuingService>(_repository, _dataAnnotationModelValidationService)!;
         IReaderService readerService =
@@ -356,7 +543,18 @@ public sealed class MainViewPresenter : IPresenter
 
         if (readerIds.Any() is true)
         {
-            IReaderModel? reader = readerService.ReaderGetById(readerIds.First());
+            IReaderModel? reader;
+
+            try
+            {
+                reader = readerService.ReaderGetById(readerIds.First());
+            }
+            catch (Exception ex)
+            {
+                _messageService.ShowError(ex.Message);
+
+                return;
+            }
 
             if (reader is not null)
                 issuing.Reader = reader;
@@ -370,7 +568,18 @@ public sealed class MainViewPresenter : IPresenter
 
         if (bookIds.Any() is true)
         {
-            IBookModel? book = bookService.BookGetById(bookIds.First());
+            IBookModel? book;
+
+            try
+            {
+                book = bookService.BookGetById(bookIds.First());
+            }
+            catch (Exception ex)
+            {
+                _messageService.ShowError(ex.Message);
+
+                return;
+            }
 
             if (book is not null)
                 issuing.Book = book;
@@ -387,6 +596,8 @@ public sealed class MainViewPresenter : IPresenter
         try
         {
             issuingService.IssuingAdd(issuing);
+
+            _mainView.IsOperationSuccessful = true;
         }
         catch (Exception ex)
         {
@@ -396,12 +607,25 @@ public sealed class MainViewPresenter : IPresenter
 
     private void MainViewOnIssuingClose(object? sender, IEnumerable<object?> e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IIssuingService issuingService =
             DependenciesContainer.Resolve<IIssuingService>(_repository, _dataAnnotationModelValidationService)!;
 
         var args = (e as object?[])!;
 
-        IIssuingModel? issuing = issuingService.IssuingGetById((int)args[0]!);
+        IIssuingModel? issuing;
+
+        try
+        {
+            issuing = issuingService.IssuingGetById((int)args[0]!);
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
 
         if (issuing is not null)
         {
@@ -412,6 +636,8 @@ public sealed class MainViewPresenter : IPresenter
             try
             {
                 issuingService.IssuingUpdate(issuing);
+
+                _mainView.IsOperationSuccessful = true;
             }
             catch (Exception ex)
             {
@@ -424,6 +650,8 @@ public sealed class MainViewPresenter : IPresenter
 
     private void MainViewOnAuthorAdd(object? sender, IEnumerable<object?> e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IAuthorService authorService =
             DependenciesContainer.Resolve<IAuthorService>(_repository, _dataAnnotationModelValidationService)!;
 
@@ -438,6 +666,8 @@ public sealed class MainViewPresenter : IPresenter
         try
         {
             authorService.AuthorAdd(author);
+
+            _mainView.IsOperationSuccessful = true;
         }
         catch (Exception ex)
         {
@@ -447,6 +677,8 @@ public sealed class MainViewPresenter : IPresenter
 
     private void MainViewOnBookAdd(object? sender, IEnumerable<object?> e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IBookService bookService =
             DependenciesContainer.Resolve<IBookService>(_repository, _dataAnnotationModelValidationService)!;
         IAuthorService authorService =
@@ -460,7 +692,18 @@ public sealed class MainViewPresenter : IPresenter
 
         foreach (int authorId in (args[0] as IEnumerable<int>)!)
         {
-            IAuthorModel? author = authorService.AuthorGetById(authorId);
+            IAuthorModel? author;
+
+            try
+            {
+                author = authorService.AuthorGetById(authorId);
+            }
+            catch (Exception ex)
+            {
+                _messageService.ShowError(ex.Message);
+
+                return;
+            }
 
             if (author is not null)
                 authors.Add(author);
@@ -473,6 +716,8 @@ public sealed class MainViewPresenter : IPresenter
         try
         {
             bookService.BookAdd(book);
+
+            _mainView.IsOperationSuccessful = true;
         }
         catch (Exception ex)
         {
@@ -482,6 +727,8 @@ public sealed class MainViewPresenter : IPresenter
 
     private void MainViewOnReaderAdd(object? sender, IEnumerable<object?> e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IReaderService readerService =
             DependenciesContainer.Resolve<IReaderService>(_repository, _dataAnnotationModelValidationService)!;
 
@@ -498,6 +745,8 @@ public sealed class MainViewPresenter : IPresenter
         try
         {
             readerService.ReaderAdd(reader);
+
+            _mainView.IsOperationSuccessful = true;
         }
         catch (Exception ex)
         {
@@ -507,6 +756,8 @@ public sealed class MainViewPresenter : IPresenter
 
     private void MainViewOnAuthorEdit(object? sender, IEnumerable<object?> e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IAuthorService authorService =
             DependenciesContainer.Resolve<IAuthorService>(_repository, _dataAnnotationModelValidationService)!;
 
@@ -522,6 +773,8 @@ public sealed class MainViewPresenter : IPresenter
         try
         {
             authorService.AuthorUpdate(author);
+
+            _mainView.IsOperationSuccessful = true;
         }
         catch (Exception ex)
         {
@@ -531,6 +784,8 @@ public sealed class MainViewPresenter : IPresenter
 
     private void MainViewOnBookEdit(object? sender, IEnumerable<object?> e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IBookService bookService =
             DependenciesContainer.Resolve<IBookService>(_repository, _dataAnnotationModelValidationService)!;
         IAuthorService authorService =
@@ -544,7 +799,18 @@ public sealed class MainViewPresenter : IPresenter
 
         foreach (int authorId in (args[1] as IEnumerable<int>)!)
         {
-            IAuthorModel? author = authorService.AuthorGetById(authorId);
+            IAuthorModel? author;
+
+            try
+            {
+                author = authorService.AuthorGetById(authorId);
+            }
+            catch (Exception ex)
+            {
+                _messageService.ShowError(ex.Message);
+
+                return;
+            }
 
             if (author is not null)
                 authors.Add(author);
@@ -558,6 +824,8 @@ public sealed class MainViewPresenter : IPresenter
         try
         {
             bookService.BookUpdate(book);
+
+            _mainView.IsOperationSuccessful = true;
         }
         catch (Exception ex)
         {
@@ -567,6 +835,8 @@ public sealed class MainViewPresenter : IPresenter
 
     private void MainViewOnIssuingEdit(object? sender, IEnumerable<object?> e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IIssuingService issuingService =
             DependenciesContainer.Resolve<IIssuingService>(_repository, _dataAnnotationModelValidationService)!;
         IReaderService readerService =
@@ -583,7 +853,18 @@ public sealed class MainViewPresenter : IPresenter
 
         if (readerIds.Any() is true)
         {
-            IReaderModel? reader = readerService.ReaderGetById(readerIds.First());
+            IReaderModel? reader;
+
+            try
+            {
+                reader = readerService.ReaderGetById(readerIds.First());
+            }
+            catch (Exception ex)
+            {
+                _messageService.ShowError(ex.Message);
+
+                return;
+            }
 
             if (reader is not null)
                 issuing.Reader = reader;
@@ -597,7 +878,18 @@ public sealed class MainViewPresenter : IPresenter
 
         if (bookIds.Any() is true)
         {
-            IBookModel? book = bookService.BookGetById(bookIds.First());
+            IBookModel? book;
+
+            try
+            {
+                book = bookService.BookGetById(bookIds.First());
+            }
+            catch (Exception ex)
+            {
+                _messageService.ShowError(ex.Message);
+
+                return;
+            }
 
             if (book is not null)
                 issuing.Book = book;
@@ -618,6 +910,8 @@ public sealed class MainViewPresenter : IPresenter
         try
         {
             issuingService.IssuingUpdate(issuing);
+
+            _mainView.IsOperationSuccessful = true;
         }
         catch (Exception ex)
         {
@@ -627,6 +921,8 @@ public sealed class MainViewPresenter : IPresenter
 
     private void MainViewOnReaderEdit(object? sender, IEnumerable<object?> e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IReaderService readerService =
             DependenciesContainer.Resolve<IReaderService>(_repository, _dataAnnotationModelValidationService)!;
 
@@ -644,6 +940,8 @@ public sealed class MainViewPresenter : IPresenter
         try
         {
             readerService.ReaderUpdate(reader);
+
+            _mainView.IsOperationSuccessful = true;
         }
         catch (Exception ex)
         {
@@ -653,34 +951,86 @@ public sealed class MainViewPresenter : IPresenter
 
     private void MainViewOnAuthorRemove(object? sender, int e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IAuthorService authorService =
             DependenciesContainer.Resolve<IAuthorService>(_repository, _dataAnnotationModelValidationService)!;
 
-        authorService.AuthorDelete(e);
+        try
+        {
+            authorService.AuthorDelete(e);
+
+            _mainView.IsOperationSuccessful = true;
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
     }
 
     private void MainViewOnBookRemove(object? sender, int e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IBookService bookService =
             DependenciesContainer.Resolve<IBookService>(_repository, _dataAnnotationModelValidationService)!;
 
-        bookService.BookDelete(e);
+        try
+        {
+            bookService.BookDelete(e);
+
+            _mainView.IsOperationSuccessful = true;
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
     }
 
     private void MainViewOnIssuingRemove(object? sender, int e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IIssuingService issuingService =
             DependenciesContainer.Resolve<IIssuingService>(_repository, _dataAnnotationModelValidationService)!;
 
-        issuingService.IssuingDelete(e);
+        try
+        {
+            issuingService.IssuingDelete(e);
+
+            _mainView.IsOperationSuccessful = true;
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
     }
 
     private void MainViewOnReaderRemove(object? sender, int e)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IReaderService readerService =
             DependenciesContainer.Resolve<IReaderService>(_repository, _dataAnnotationModelValidationService)!;
 
-        readerService.ReaderDelete(e);
+        try
+        {
+            readerService.ReaderDelete(e);
+
+            _mainView.IsOperationSuccessful = true;
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
     }
 
     private void MainViewOnExportDataText(object? sender, IEnumerable<object> e) =>
@@ -691,6 +1041,8 @@ public sealed class MainViewPresenter : IPresenter
 
     private void ExportData(string dataType, IEnumerable<object> data)
     {
+        _mainView.IsOperationSuccessful = false;
+
         IReportGenerator reportGenerator = dataType switch
         {
             "Text" => new TextReportGenerator(),
@@ -714,6 +1066,8 @@ public sealed class MainViewPresenter : IPresenter
                     reportDocument[i, j] = exportData[i, j];
 
             reportGenerator.GenerateReport(filePath, reportDocument);
+
+            _mainView.IsOperationSuccessful = true;
         }
         catch (Exception ex)
         {
