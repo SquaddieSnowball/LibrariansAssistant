@@ -40,6 +40,12 @@ public interface IMainView : IView
 
     public event EventHandler? ReadersUpdatePeriodView;
 
+    public event EventHandler? ReaderUpdateMostActiveView;
+
+    public event EventHandler? AuthorUpdateMostPopularView;
+
+    public event EventHandler? BookUpdateMostPopularGenreView;
+
     public event EventHandler<IEnumerable<object?>>? IssuingOpen;
 
     public event EventHandler<IEnumerable<object?>>? IssuingClose;

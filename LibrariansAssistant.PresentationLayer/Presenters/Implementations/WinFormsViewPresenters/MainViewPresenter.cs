@@ -66,6 +66,10 @@ public sealed class MainViewPresenter : IPresenter
         _mainView.IssuingsUpdatePeriodView += MainViewOnIssuingsUpdatePeriodView;
         _mainView.ReadersUpdatePeriodView += MainViewOnReadersUpdatePeriodView;
 
+        _mainView.ReaderUpdateMostActiveView += MainViewOnReaderUpdateMostActiveView;
+        _mainView.AuthorUpdateMostPopularView += MainViewOnAuthorUpdateMostPopularView;
+        _mainView.BookUpdateMostPopularGenreView += MainViewOnBookUpdateMostPopularGenreView;
+
         _mainView.IssuingOpen += MainViewOnIssuingOpen;
         _mainView.IssuingClose += MainViewOnIssuingClose;
         _mainView.AuthorAdd += MainViewOnAuthorAdd;
@@ -519,6 +523,134 @@ public sealed class MainViewPresenter : IPresenter
         {
             {5, "Date of birth"}
         };
+
+        _mainView.IsOperationSuccessful = true;
+    }
+
+    private void MainViewOnReaderUpdateMostActiveView(object? sender, EventArgs e)
+    {
+        _mainView.IsOperationSuccessful = false;
+
+        IIssuingService issuingService =
+            DependenciesContainer.Resolve<IIssuingService>(_repository, _dataAnnotationModelValidationService)!;
+
+        IReaderModel? reader;
+
+        try
+        {
+            reader = issuingService.ReaderMostActiveGet();
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
+
+        if (reader is not null)
+        {
+            _mainView.VisibleDataNormalView =
+                new object[] { new
+                {
+                    reader.Id,
+                    reader.FirstName,
+                    reader.LastName,
+                    reader.Patronymic,
+                    reader.Gender,
+                    reader.DateOfBirth
+                }};
+
+            _mainView.VisibleDataColumnHeadersNormalView = new string[]
+            {
+                "Id",
+                "First name",
+                "Last name",
+                "Patronymic",
+                "Gender",
+                "Date of birth"
+            };
+        }
+        else
+        {
+            _mainView.VisibleDataNormalView = null;
+            _mainView.VisibleDataColumnHeadersNormalView = null;
+        }
+
+        _mainView.IsOperationSuccessful = true;
+    }
+
+    private void MainViewOnAuthorUpdateMostPopularView(object? sender, EventArgs e)
+    {
+        _mainView.IsOperationSuccessful = false;
+
+        IIssuingService issuingService =
+            DependenciesContainer.Resolve<IIssuingService>(_repository, _dataAnnotationModelValidationService)!;
+
+        IAuthorModel? author;
+
+        try
+        {
+            author = issuingService.AuthorMostPopularGet();
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
+
+        if (author is not null)
+        {
+            _mainView.VisibleDataNormalView =
+                new object[] { new
+                {
+                    author.Id,
+                    author.FirstName,
+                    author.LastName,
+                    author.Patronymic
+                }};
+
+            _mainView.VisibleDataColumnHeadersNormalView = new string[]
+            {
+                "Id",
+                "First name",
+                "Last name",
+                "Patronymic"
+            };
+        }
+        else
+        {
+            _mainView.VisibleDataNormalView = null;
+            _mainView.VisibleDataColumnHeadersNormalView = null;
+        }
+
+        _mainView.IsOperationSuccessful = true;
+    }
+
+    private void MainViewOnBookUpdateMostPopularGenreView(object? sender, EventArgs e)
+    {
+        _mainView.IsOperationSuccessful = false;
+
+        IIssuingService issuingService =
+            DependenciesContainer.Resolve<IIssuingService>(_repository, _dataAnnotationModelValidationService)!;
+
+        string? genre;
+
+        try
+        {
+            genre = issuingService.BookMostPopularGenreGet();
+        }
+        catch (Exception ex)
+        {
+            _messageService.ShowError(ex.Message);
+
+            return;
+        }
+
+        if (genre is not null)
+            _messageService.ShowMessage($"Most popular genre: \"{genre}\"");
+        else
+            _messageService.ShowMessage("The books were never taken.");
 
         _mainView.IsOperationSuccessful = true;
     }
