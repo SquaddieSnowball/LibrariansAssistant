@@ -1,4 +1,6 @@
-﻿using LibrariansAssistant.PresentationLayer.Presenters.Implementations.WinFormsViewPresenters;
+﻿using LibrariansAssistant.InfranstructureLayer.InfranstructureCreators;
+using LibrariansAssistant.InfranstructureLayer.InfranstructureCreators.Implementations;
+using LibrariansAssistant.PresentationLayer.Presenters.Implementations.WinFormsViewPresenters;
 using LibrariansAssistant.PresentationLayer.ViewInterfaces.WinFormsViewInterfaces;
 using LibrariansAssistant.UserInterfaceLayer.Entities.WinFormsEntities;
 using LibrariansAssistant.UserInterfaceLayer.Helpers.WinFormsHelpers;
@@ -142,8 +144,22 @@ internal sealed partial class MainView : Form, IMainView
 
         try
         {
+            if (settingsView.SettingCreateEmptyDatabase is true)
+            {
+                IInfranstructureCreator infranstructureCreator = settingsView.SelectedRepositoryType switch
+                {
+                    Entities.RepositoryType.SqlServer => new SqlServerInfranstructureCreator(),
+                    _ => throw new NotImplementedException("This infranstructure creator has not yet been implemented."),
+                };
+
+                infranstructureCreator.Initialize(settingsView.InfranstructureCreatorInitializationString!);
+
+                if (infranstructureCreator.IsInfrastructureCreated is false)
+                    infranstructureCreator.Create();
+            }
+
             _ = new MainViewPresenter(this, settingsView.Repository!,
-                _winFormsMessageService, settingsView.InitializationString!);
+                _winFormsMessageService, settingsView.RepositoryInitializationString!);
 
             SwitchDataView(true);
             ShowDefaultDataView();

@@ -22,12 +22,15 @@ internal sealed partial class SettingsView : Form
     private readonly WinFormsMessageService _winFormsMessageService = new();
     private readonly Dictionary<SettingsGroup, Control[]> _settingsControls = new();
     private readonly Dictionary<string, object?> _modifiedSettings = new();
-    private readonly RepositoryType _selectedRepositoryType = RepositoryType.SqlServer;
     private SettingsGroup _selectedSettingsGroup;
 
-    internal IRepository? Repository { get; private set; }
+    internal RepositoryType SelectedRepositoryType { get; } = RepositoryType.SqlServer;
 
-    internal string? InitializationString { get; private set; }
+    internal string? InfranstructureCreatorInitializationString { get; private set; }
+
+    internal string? RepositoryInitializationString { get; private set; }
+
+    internal IRepository? Repository { get; private set; }
 
     internal bool SettingCreateEmptyDatabase { get; private set; }
 
@@ -62,23 +65,42 @@ internal sealed partial class SettingsView : Form
         IInitializationStringBuilder initializationStringBuilder;
         IRepositoryFactory repositoryFactory;
 
-        switch (_selectedRepositoryType)
+        switch (SelectedRepositoryType)
         {
             case RepositoryType.SqlServer:
 
-                var sqlServerIsbSettings = new SqlServerIsbSettings(
-                    (_applicationConfigurationService.GetSettingValue("SqlServer_ServerName") as string)!,
-                    (_applicationConfigurationService.GetSettingValue("SqlServer_ServerInstanceName") as string)!)
+                var serverName =
+                    (_applicationConfigurationService.GetSettingValue("SqlServer_ServerName") as string)!;
+                var serverInstanceName =
+                    (_applicationConfigurationService.GetSettingValue("SqlServer_ServerInstanceName") as string)!;
+                var useWindowsAuthentication =
+                    (bool)_applicationConfigurationService.GetSettingValue("SqlServer_UseWindowsAuthentication")!;
+                var userName =
+                    _applicationConfigurationService.GetSettingValue("SqlServer_UserName") as string;
+                var password =
+                    _applicationConfigurationService.GetSettingValue("SqlServer_Password") as string;
+                var databaseName =
+                    _applicationConfigurationService.GetSettingValue("DatabaseName") as string;
+
+                var infranstructureCreatorIsbSettings = new SqlServerIsbSettings(serverName, serverInstanceName)
                 {
-                    UseWindowsAuthentication =
-                        (bool)_applicationConfigurationService.GetSettingValue("SqlServer_UseWindowsAuthentication")!,
-                    UserName = _applicationConfigurationService.GetSettingValue("SqlServer_UserName") as string,
-                    Password = _applicationConfigurationService.GetSettingValue("SqlServer_Password") as string,
-                    DatabaseName = _applicationConfigurationService.GetSettingValue("DatabaseName") as string
+                    UseWindowsAuthentication = useWindowsAuthentication,
+                    UserName = userName,
+                    Password = password
                 };
 
-                initializationStringBuilder = new SqlServerInitializationStringBuilder(sqlServerIsbSettings);
-                InitializationString = initializationStringBuilder.Build();
+                var repositoryIsbSettings = new SqlServerIsbSettings(serverName, serverInstanceName)
+                {
+                    UseWindowsAuthentication = useWindowsAuthentication,
+                    UserName = userName,
+                    Password = password,
+                    DatabaseName = databaseName
+                };
+
+                initializationStringBuilder = new SqlServerInitializationStringBuilder(infranstructureCreatorIsbSettings);
+                InfranstructureCreatorInitializationString = initializationStringBuilder.Build();
+                initializationStringBuilder = new SqlServerInitializationStringBuilder(repositoryIsbSettings);
+                RepositoryInitializationString = initializationStringBuilder.Build();
 
                 repositoryFactory = new SqlServerRepositoryFactory();
                 Repository = repositoryFactory.GetRepository();
