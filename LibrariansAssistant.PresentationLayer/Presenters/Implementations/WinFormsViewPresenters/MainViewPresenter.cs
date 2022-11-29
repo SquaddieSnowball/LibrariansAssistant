@@ -1057,6 +1057,13 @@ public sealed class MainViewPresenter : IPresenter
         var exportData = (args[2] as string[,])!;
         var filePath = (args[3] as string)!;
 
+        if (exportData.Length is 0)
+        {
+            _messageService.ShowError("There is no data to export.");
+
+            return;
+        }
+
         try
         {
             var reportDocument = new ReportDocument(title, columnHeaders, exportData.GetLength(0), exportData.GetLength(1));
