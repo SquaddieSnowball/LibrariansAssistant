@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.applicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectToDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +64,9 @@
             this.tableLayoutPanelCustomActions = new System.Windows.Forms.TableLayoutPanel();
             this.statusStripMain = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelView = new System.Windows.Forms.ToolStripStatusLabel();
+            this.readersMostActiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.authorsMostPopularToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.booksMostPopularGenreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripMain.SuspendLayout();
             this.panelMain.SuspendLayout();
             this.tableLayoutPanelMain.SuspendLayout();
@@ -147,7 +150,7 @@
             this.issuingsShowAllToolStripMenuItem});
             this.issuingsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.issuingsToolStripMenuItem.Name = "issuingsToolStripMenuItem";
-            this.issuingsToolStripMenuItem.Size = new System.Drawing.Size(145, 26);
+            this.issuingsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.issuingsToolStripMenuItem.Text = "Issuings";
             // 
             // issuingsShowAllToolStripMenuItem
@@ -155,17 +158,18 @@
             this.issuingsShowAllToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.issuingsShowAllToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.issuingsShowAllToolStripMenuItem.Name = "issuingsShowAllToolStripMenuItem";
-            this.issuingsShowAllToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
+            this.issuingsShowAllToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.issuingsShowAllToolStripMenuItem.Text = "Show all";
             // 
             // readersToolStripMenuItem
             // 
             this.readersToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.readersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.readersShowAllToolStripMenuItem});
+            this.readersShowAllToolStripMenuItem,
+            this.readersMostActiveToolStripMenuItem});
             this.readersToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.readersToolStripMenuItem.Name = "readersToolStripMenuItem";
-            this.readersToolStripMenuItem.Size = new System.Drawing.Size(145, 26);
+            this.readersToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.readersToolStripMenuItem.Text = "Readers";
             // 
             // readersShowAllToolStripMenuItem
@@ -173,17 +177,18 @@
             this.readersShowAllToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.readersShowAllToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.readersShowAllToolStripMenuItem.Name = "readersShowAllToolStripMenuItem";
-            this.readersShowAllToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
+            this.readersShowAllToolStripMenuItem.Size = new System.Drawing.Size(168, 26);
             this.readersShowAllToolStripMenuItem.Text = "Show all";
             // 
             // authorsToolStripMenuItem
             // 
             this.authorsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.authorsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.authorsShowAllToolStripMenuItem});
+            this.authorsShowAllToolStripMenuItem,
+            this.authorsMostPopularToolStripMenuItem});
             this.authorsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.authorsToolStripMenuItem.Name = "authorsToolStripMenuItem";
-            this.authorsToolStripMenuItem.Size = new System.Drawing.Size(145, 26);
+            this.authorsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.authorsToolStripMenuItem.Text = "Authors";
             // 
             // authorsShowAllToolStripMenuItem
@@ -191,17 +196,18 @@
             this.authorsShowAllToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.authorsShowAllToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.authorsShowAllToolStripMenuItem.Name = "authorsShowAllToolStripMenuItem";
-            this.authorsShowAllToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
+            this.authorsShowAllToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.authorsShowAllToolStripMenuItem.Text = "Show all";
             // 
             // booksToolStripMenuItem
             // 
             this.booksToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.booksToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.booksShowAllToolStripMenuItem});
+            this.booksShowAllToolStripMenuItem,
+            this.booksMostPopularGenreToolStripMenuItem});
             this.booksToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.booksToolStripMenuItem.Name = "booksToolStripMenuItem";
-            this.booksToolStripMenuItem.Size = new System.Drawing.Size(145, 26);
+            this.booksToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.booksToolStripMenuItem.Text = "Books";
             // 
             // booksShowAllToolStripMenuItem
@@ -209,7 +215,7 @@
             this.booksShowAllToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.booksShowAllToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.booksShowAllToolStripMenuItem.Name = "booksShowAllToolStripMenuItem";
-            this.booksShowAllToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
+            this.booksShowAllToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.booksShowAllToolStripMenuItem.Text = "Show all";
             // 
             // toolsToolStripMenuItem
@@ -303,25 +309,25 @@
             this.dataGridViewData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewData.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.dataGridViewData.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            dataGridViewCellStyle1.Padding = new System.Windows.Forms.Padding(5);
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            dataGridViewCellStyle4.Padding = new System.Windows.Forms.Padding(5);
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridViewData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewData.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            dataGridViewCellStyle5.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewData.DefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridViewData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewData.EnableHeadersVisualStyles = false;
             this.dataGridViewData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
@@ -330,15 +336,15 @@
             this.dataGridViewData.MultiSelect = false;
             this.dataGridViewData.Name = "dataGridViewData";
             this.dataGridViewData.ReadOnly = true;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            dataGridViewCellStyle3.Padding = new System.Windows.Forms.Padding(5);
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewData.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            dataGridViewCellStyle6.Padding = new System.Windows.Forms.Padding(5);
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewData.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridViewData.RowHeadersVisible = false;
             this.dataGridViewData.RowHeadersWidth = 51;
             this.dataGridViewData.RowTemplate.Height = 29;
@@ -500,6 +506,30 @@
             this.toolStripStatusLabelView.Size = new System.Drawing.Size(51, 30);
             this.toolStripStatusLabelView.Text = "View";
             // 
+            // readersMostActiveToolStripMenuItem
+            // 
+            this.readersMostActiveToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.readersMostActiveToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.readersMostActiveToolStripMenuItem.Name = "readersMostActiveToolStripMenuItem";
+            this.readersMostActiveToolStripMenuItem.Size = new System.Drawing.Size(168, 26);
+            this.readersMostActiveToolStripMenuItem.Text = "Most active";
+            // 
+            // authorsMostPopularToolStripMenuItem
+            // 
+            this.authorsMostPopularToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.authorsMostPopularToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.authorsMostPopularToolStripMenuItem.Name = "authorsMostPopularToolStripMenuItem";
+            this.authorsMostPopularToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.authorsMostPopularToolStripMenuItem.Text = "Most popular";
+            // 
+            // booksMostPopularGenreToolStripMenuItem
+            // 
+            this.booksMostPopularGenreToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.booksMostPopularGenreToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.booksMostPopularGenreToolStripMenuItem.Name = "booksMostPopularGenreToolStripMenuItem";
+            this.booksMostPopularGenreToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.booksMostPopularGenreToolStripMenuItem.Text = "Most popular genre";
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -569,5 +599,8 @@
         private GroupBox groupBoxActions;
         private TableLayoutPanel tableLayoutPanelCustomActions;
         private TableLayoutPanel tableLayoutPanelCustomFilters;
+        private ToolStripMenuItem readersMostActiveToolStripMenuItem;
+        private ToolStripMenuItem authorsMostPopularToolStripMenuItem;
+        private ToolStripMenuItem booksMostPopularGenreToolStripMenuItem;
     }
 }

@@ -61,6 +61,12 @@ internal sealed partial class MainView : Form, IMainView
 
     public event EventHandler? ReadersUpdatePeriodView;
 
+    public event EventHandler? ReaderUpdateMostActiveView;
+
+    public event EventHandler? AuthorUpdateMostPopularView;
+
+    public event EventHandler? BookUpdateMostPopularGenreView;
+
     public event EventHandler<IEnumerable<object?>>? IssuingOpen;
 
     public event EventHandler<IEnumerable<object?>>? IssuingClose;
@@ -110,8 +116,11 @@ internal sealed partial class MainView : Form, IMainView
 
         issuingsShowAllToolStripMenuItem.Click += IssuingsShowAllToolStripMenuItemOnClick;
         readersShowAllToolStripMenuItem.Click += ReadersShowAllToolStripMenuItemOnClick;
+        readersMostActiveToolStripMenuItem.Click += ReadersMostActiveToolStripMenuItemOnClick;
         authorsShowAllToolStripMenuItem.Click += AuthorsShowAllToolStripMenuItemOnClick;
+        authorsMostPopularToolStripMenuItem.Click += AuthorsMostPopularToolStripMenuItemOnClick;
         booksShowAllToolStripMenuItem.Click += BooksShowAllToolStripMenuItemOnClick;
+        booksMostPopularGenreToolStripMenuItem.Click += BooksMostPopularGenreToolStripMenuItemOnClick;
 
         exportTextToolStripMenuItem.Click += ExportTextToolStripMenuItemOnClick;
         exportExcelToolStripMenuItem.Click += ExportExcelToolStripMenuItemOnClick;
@@ -254,11 +263,25 @@ internal sealed partial class MainView : Form, IMainView
         UpdateDataView(ViewType.Readers, "all");
     }
 
+    private void ReadersMostActiveToolStripMenuItemOnClick(object? sender, EventArgs e)
+    {
+        _dataUpdateEventInvokationList = ReaderUpdateMostActiveView?.GetInvocationList();
+
+        UpdateDataView(ViewType.Readers, "most active");
+    }
+
     private void AuthorsShowAllToolStripMenuItemOnClick(object? sender, EventArgs e)
     {
         _dataUpdateEventInvokationList = AuthorsUpdateNormalView?.GetInvocationList();
 
         UpdateDataView(ViewType.Authors, "all");
+    }
+
+    private void AuthorsMostPopularToolStripMenuItemOnClick(object? sender, EventArgs e)
+    {
+        _dataUpdateEventInvokationList = AuthorUpdateMostPopularView?.GetInvocationList();
+
+        UpdateDataView(ViewType.Authors, "most popular");
     }
 
     private void BooksShowAllToolStripMenuItemOnClick(object? sender, EventArgs e)
@@ -267,6 +290,9 @@ internal sealed partial class MainView : Form, IMainView
 
         UpdateDataView(ViewType.Books, "all");
     }
+
+    private void BooksMostPopularGenreToolStripMenuItemOnClick(object? sender, EventArgs e) =>
+        BookUpdateMostPopularGenreView?.Invoke(this, EventArgs.Empty);
 
     private void ExportTextToolStripMenuItemOnClick(object? sender, EventArgs e)
     {
