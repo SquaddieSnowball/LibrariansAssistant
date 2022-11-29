@@ -6,6 +6,8 @@ public sealed class SqlServerInfranstructureCreator : IInfranstructureCreator
 {
     private SqlServerOrm? _sqlServerOrm;
 
+    public bool? IsInfrastructureCreated { get; private set; }
+
     public void Initialize(string initializationString)
     {
         if (string.IsNullOrEmpty(initializationString) is true)
@@ -15,21 +17,7 @@ public sealed class SqlServerInfranstructureCreator : IInfranstructureCreator
         try
         {
             _sqlServerOrm = new SqlServerOrm(initializationString);
-        }
-        catch
-        {
-            throw;
-        }
-    }
 
-    public bool Create()
-    {
-        if (_sqlServerOrm is null)
-            throw new InvalidOperationException("The operation could not be performed " +
-                "because infranstructure creator has not been initialized.");
-
-        try
-        {
             int rowsAffected = _sqlServerOrm.ExecuteScalar<int>
                 (
 
@@ -41,20 +29,32 @@ public sealed class SqlServerInfranstructureCreator : IInfranstructureCreator
 
                 );
 
-            if (rowsAffected is not 0)
-                return false;
-
-            string[] batches =
-                Properties.Resources.SqlServerInfranstructureCreationScript
-                .Split(new string[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
-
-            _sqlServerOrm.ExecuteNonQueries(batches, default);
+            IsInfrastructureCreated = rowsAffected is not 0;
         }
         catch
         {
             throw;
         }
+    }
 
-        return true;
+    public void Create()
+    {
+        if (_sqlServerOrm is null)
+            throw new InvalidOperationException("The operation could not be performed " +
+                "because infranstructure creator has not been initialized.");
+
+        if (IsInfrastructureCreated is false)
+            try
+            {
+                string[] batches =
+                    Properties.Resources.SqlServerInfranstructureCreationScript
+                    .Split(new string[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
+
+                _sqlServerOrm.ExecuteNonQueries(batches, default);
+            }
+            catch
+            {
+                throw;
+            }
     }
 }

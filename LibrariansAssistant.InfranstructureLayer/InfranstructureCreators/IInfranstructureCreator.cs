@@ -2,7 +2,9 @@
 
 public interface IInfranstructureCreator
 {
+    public bool? IsInfrastructureCreated { get; }
+
     void Initialize(string initializationString);
 
-    bool Create();
+    void Create();
 }
