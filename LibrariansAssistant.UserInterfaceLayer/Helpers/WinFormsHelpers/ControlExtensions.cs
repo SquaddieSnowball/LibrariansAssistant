@@ -34,7 +34,7 @@ internal static class ControlExtensions
         {
             string sortedCulumnHeaderText = dataGridView.Columns[dataPrevSortColumnIndex].HeaderText;
 
-            if (sortedCulumnHeaderText.EndsWith('\u2191') || sortedCulumnHeaderText.EndsWith('\u2193'))
+            if ((sortedCulumnHeaderText.EndsWith('\u2191') is true) || (sortedCulumnHeaderText.EndsWith('\u2193') is true))
                 dataGridView.Columns[dataPrevSortColumnIndex].HeaderText =
                     sortedCulumnHeaderText.Remove(sortedCulumnHeaderText.Length - 1, 1);
         }

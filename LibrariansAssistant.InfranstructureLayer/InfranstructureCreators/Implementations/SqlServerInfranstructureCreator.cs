@@ -50,7 +50,7 @@ public sealed class SqlServerInfranstructureCreator : IInfranstructureCreator
                     Properties.Resources.SqlServerInfranstructureCreationScript
                     .Split(new string[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
 
-                _sqlServerOrm.ExecuteNonQueries(batches, default);
+                _ = _sqlServerOrm.ExecuteNonQueries(batches, default);
             }
             catch
             {

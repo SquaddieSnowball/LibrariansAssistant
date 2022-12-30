@@ -39,12 +39,12 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .AddParameter("FirstName", author.FirstName)
                 .AddParameter("LastName", author.LastName)
                 .AddParameter("Patronymic", author.Patronymic);
 
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .ExecuteNonQuery(
 
                 "INSERT INTO authors (first_name, last_name, patronymic) " +
@@ -102,7 +102,7 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .AddParameter("Id", authorId);
 
             author = _sqlServerOrm
@@ -137,13 +137,13 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .AddParameter("Id", author.Id)
                 .AddParameter("FirstName", author.FirstName)
                 .AddParameter("LastName", author.LastName)
                 .AddParameter("Patronymic", author.Patronymic);
 
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .ExecuteNonQuery(
 
                 "UPDATE authors " +
@@ -170,10 +170,10 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .AddParameter("Id", authorId);
 
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .ExecuteNonQuery(
 
                 "DELETE " +
@@ -184,7 +184,7 @@ public sealed class SqlServerRepository : IRepository
 
                 );
 
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .ExecuteNonQuery(
 
                 "DELETE " +
@@ -213,46 +213,46 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .AddParameter("Title", book.Title)
                 .AddParameter("Genre", book.Genre);
 
             IAuthorModel[] authors = book.Authors.ToArray();
 
             for (var i = 0; i < authors.Length; i++)
-                _sqlServerOrm.AddParameter("AuthorId" + (i + 1), authors[i].Id);
+                _ = _sqlServerOrm.AddParameter("AuthorId" + (i + 1), authors[i].Id);
 
-            var query = new StringBuilder();
+            StringBuilder query = new();
 
-            query.AppendLine("BEGIN TRY");
-            query.AppendLine("BEGIN TRANSACTION;");
+            _ = query.AppendLine("BEGIN TRY");
+            _ = query.AppendLine("BEGIN TRANSACTION;");
 
-            query.AppendLine(
+            _ = query.AppendLine(
 
                 "INSERT INTO books (title, genre) " +
                 "VALUES (@Title, @Genre);"
 
                 );
 
-            query.AppendLine("DECLARE @BookId INT = SCOPE_IDENTITY();");
+            _ = query.AppendLine("DECLARE @BookId INT = SCOPE_IDENTITY();");
 
             for (var i = 0; i < authors.Length; i++)
-                query.AppendLine(
+                _ = query.AppendLine(
 
                     "INSERT INTO authors_books (author_id, book_id) " +
                     $"VALUES (@AuthorId{i + 1}, @BookId);"
 
                     );
 
-            query.AppendLine("IF @@TRANCOUNT > 0 COMMIT TRANSACTION;");
-            query.AppendLine("END TRY");
+            _ = query.AppendLine("IF @@TRANCOUNT > 0 COMMIT TRANSACTION;");
+            _ = query.AppendLine("END TRY");
 
-            query.AppendLine("BEGIN CATCH");
-            query.AppendLine("IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;");
-            query.AppendLine("THROW;");
-            query.Append("END CATCH;");
+            _ = query.AppendLine("BEGIN CATCH");
+            _ = query.AppendLine("IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;");
+            _ = query.AppendLine("THROW;");
+            _ = query.Append("END CATCH;");
 
-            _sqlServerOrm.ExecuteNonQuery(query.ToString(), default);
+            _ = _sqlServerOrm.ExecuteNonQuery(query.ToString(), default);
         }
         catch
         {
@@ -314,7 +314,7 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .AddParameter("Id", bookId);
 
             book = _sqlServerOrm
@@ -362,7 +362,7 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .AddParameter("BookId", book.Id)
                 .AddParameter("Title", book.Title)
                 .AddParameter("Genre", book.Genre);
@@ -370,14 +370,14 @@ public sealed class SqlServerRepository : IRepository
             IAuthorModel[] authors = book.Authors.ToArray();
 
             for (var i = 0; i < authors.Length; i++)
-                _sqlServerOrm.AddParameter("AuthorId" + (i + 1), authors[i].Id);
+                _ = _sqlServerOrm.AddParameter("AuthorId" + (i + 1), authors[i].Id);
 
-            var query = new StringBuilder();
+            StringBuilder query = new();
 
-            query.AppendLine("BEGIN TRY");
-            query.AppendLine("BEGIN TRANSACTION;");
+            _ = query.AppendLine("BEGIN TRY");
+            _ = query.AppendLine("BEGIN TRANSACTION;");
 
-            query.AppendLine(
+            _ = query.AppendLine(
 
                 "UPDATE books " +
                 "SET title = @Title, " +
@@ -386,7 +386,7 @@ public sealed class SqlServerRepository : IRepository
 
                 );
 
-            query.AppendLine(
+            _ = query.AppendLine(
 
                 "DELETE " +
                 "FROM authors_books " +
@@ -395,22 +395,22 @@ public sealed class SqlServerRepository : IRepository
                 );
 
             for (var i = 0; i < authors.Length; i++)
-                query.AppendLine(
+                _ = query.AppendLine(
 
                     "INSERT INTO authors_books (author_id, book_id) " +
                     $"VALUES (@AuthorId{i + 1}, @BookId);"
 
                     );
 
-            query.AppendLine("IF @@TRANCOUNT > 0 COMMIT TRANSACTION;");
-            query.AppendLine("END TRY");
+            _ = query.AppendLine("IF @@TRANCOUNT > 0 COMMIT TRANSACTION;");
+            _ = query.AppendLine("END TRY");
 
-            query.AppendLine("BEGIN CATCH");
-            query.AppendLine("IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;");
-            query.AppendLine("THROW;");
-            query.Append("END CATCH;");
+            _ = query.AppendLine("BEGIN CATCH");
+            _ = query.AppendLine("IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;");
+            _ = query.AppendLine("THROW;");
+            _ = query.Append("END CATCH;");
 
-            _sqlServerOrm.ExecuteNonQuery(query.ToString(), default);
+            _ = _sqlServerOrm.ExecuteNonQuery(query.ToString(), default);
         }
         catch
         {
@@ -426,10 +426,10 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .AddParameter("Id", bookId);
 
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .ExecuteNonQuery(
 
                 "DELETE " +
@@ -454,7 +454,7 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .AddParameter("ReaderId", issuing.Reader.Id)
                 .AddParameter("BookId", issuing.Book.Id)
                 .AddParameter("TakeDate", issuing.TakeDate)
@@ -462,7 +462,7 @@ public sealed class SqlServerRepository : IRepository
                 .AddParameter("ReturnDate", issuing.ReturnDate)
                 .AddParameter("ReturnState", issuing.ReturnState);
 
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .ExecuteNonQuery(
 
                 "INSERT INTO issuings (reader_id, book_id, take_date, returned, return_date, return_state) " +
@@ -540,7 +540,7 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .AddParameter("Id", issuingId);
 
             issuing = _sqlServerOrm
@@ -596,7 +596,7 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .AddParameter("Id", issuing.Id)
                 .AddParameter("ReaderId", issuing.Reader.Id)
                 .AddParameter("BookId", issuing.Book.Id)
@@ -605,7 +605,7 @@ public sealed class SqlServerRepository : IRepository
                 .AddParameter("ReturnDate", issuing.ReturnDate)
                 .AddParameter("ReturnState", issuing.ReturnState);
 
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .ExecuteNonQuery(
 
                 "UPDATE issuings " +
@@ -635,10 +635,10 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .AddParameter("Id", issuingId);
 
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .ExecuteNonQuery(
 
                 "DELETE " +
@@ -663,14 +663,14 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .AddParameter("FirstName", reader.FirstName)
                 .AddParameter("LastName", reader.LastName)
                 .AddParameter("Patronymic", reader.Patronymic)
                 .AddParameter("Gender", reader.Gender)
                 .AddParameter("DateOfBirth", reader.DateOfBirth);
 
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .ExecuteNonQuery(
 
                 "INSERT INTO readers (first_name, last_name, patronymic, gender, date_of_birth) " +
@@ -728,7 +728,7 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .AddParameter("Id", readerId);
 
             reader = _sqlServerOrm
@@ -763,7 +763,7 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .AddParameter("Id", reader.Id)
                 .AddParameter("FirstName", reader.FirstName)
                 .AddParameter("LastName", reader.LastName)
@@ -771,7 +771,7 @@ public sealed class SqlServerRepository : IRepository
                 .AddParameter("Gender", reader.Gender)
                 .AddParameter("DateOfBirth", reader.DateOfBirth);
 
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .ExecuteNonQuery(
 
                 "UPDATE readers " +
@@ -800,10 +800,10 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .AddParameter("Id", readerId);
 
-            _sqlServerOrm
+            _ = _sqlServerOrm
                 .ExecuteNonQuery(
 
                 "DELETE " +

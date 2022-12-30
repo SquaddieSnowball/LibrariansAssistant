@@ -102,7 +102,7 @@ internal sealed partial class PickPeriodView : Form
         labelStatus.Text = "Disabled";
         _labelPickedPeriod.Text = "none";
 
-        var currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+        DateTime currentDate = new(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 
         dateTimePickerStartPeriod.MaxDate = currentDate;
         dateTimePickerEndPeriod.MaxDate = currentDate;

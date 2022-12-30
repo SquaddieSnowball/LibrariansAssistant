@@ -94,14 +94,14 @@ internal static class ControlCreation
             Text = "\u2717"
         };
 
-        var tableLayoutPanel = new TableLayoutPanel()
+        TableLayoutPanel tableLayoutPanel = new()
         {
             Height = buttonPlus.Height
         };
 
-        tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
-        tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
-        tableLayoutPanel.RowStyles.Add(new RowStyle());
+        _ = tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
+        _ = tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
+        _ = tableLayoutPanel.RowStyles.Add(new RowStyle());
 
         tableLayoutPanel.Controls.Add(buttonPlus, 0, 0);
         tableLayoutPanel.Controls.Add(labelPicked, 1, 0);
@@ -113,7 +113,7 @@ internal static class ControlCreation
 
     internal static TableLayoutPanel PickPeriodCreateTableLayoutPanel(out Label labelPickedPeriod, out Button buttonPick)
     {
-        var labelPeriod = new Label()
+        Label labelPeriod = new()
         {
             Anchor = AnchorStyles.Left,
             AutoSize = true,
@@ -140,15 +140,15 @@ internal static class ControlCreation
             Width = 30
         };
 
-        var tableLayoutPanel = new TableLayoutPanel()
+        TableLayoutPanel tableLayoutPanel = new()
         {
             Width = 270
         };
 
-        tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
-        tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
-        tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
-        tableLayoutPanel.RowStyles.Add(new RowStyle());
+        _ = tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
+        _ = tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
+        _ = tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
+        _ = tableLayoutPanel.RowStyles.Add(new RowStyle());
 
         tableLayoutPanel.Controls.Add(labelPeriod, 0, 0);
         tableLayoutPanel.Controls.Add(labelPickedPeriod, 1, 0);
@@ -161,13 +161,13 @@ internal static class ControlCreation
 
     internal static TableLayoutPanel SettingsCreateControlTableLayoutPanel(Control control)
     {
-        var tableLayoutPanel = new TableLayoutPanel()
+        TableLayoutPanel tableLayoutPanel = new()
         {
             Height = control.Height
         };
 
-        tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
-        tableLayoutPanel.RowStyles.Add(new RowStyle());
+        _ = tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
+        _ = tableLayoutPanel.RowStyles.Add(new RowStyle());
 
         tableLayoutPanel.Controls.Add(control, 0, 0);
 
@@ -178,14 +178,14 @@ internal static class ControlCreation
 
     internal static TableLayoutPanel SettingsCreateLabelControlTableLayoutPanel(Label label, Control control)
     {
-        var tableLayoutPanel = new TableLayoutPanel()
+        TableLayoutPanel tableLayoutPanel = new()
         {
             Height = (label.Height > control.Height) ? label.Height : control.Height
         };
 
-        tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
-        tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
-        tableLayoutPanel.RowStyles.Add(new RowStyle());
+        _ = tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+        _ = tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+        _ = tableLayoutPanel.RowStyles.Add(new RowStyle());
 
         tableLayoutPanel.Controls.Add(label, 0, 0);
         tableLayoutPanel.Controls.Add(control, 1, 0);

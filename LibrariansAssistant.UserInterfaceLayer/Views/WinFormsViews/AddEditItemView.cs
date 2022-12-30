@@ -28,7 +28,7 @@ internal sealed partial class AddEditItemView : Form
 
     internal AddEditItemView AddField(string name, Control control)
     {
-        var labelName = new Label()
+        Label labelName = new()
         {
             Anchor = AnchorStyles.Left,
             Margin = new Padding(30, 0, 0, 0),

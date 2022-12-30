@@ -10,14 +10,14 @@ public sealed class DataAnnotationModelValidationService : IDataAnnotationModelV
         if (model is null)
             throw new ArgumentNullException(nameof(model), "Model must not be null.");
 
-        var validationContext = new ValidationContext(model);
-        var validationResuls = new List<ValidationResult>();
-        var errorMessages = new StringBuilder();
+        ValidationContext validationContext = new(model);
+        List<ValidationResult> validationResuls = new();
+        StringBuilder errorMessages = new();
 
         if (Validator.TryValidateObject(model, validationContext, validationResuls, true) is false)
         {
             foreach (ValidationResult validationResult in validationResuls)
-                errorMessages.AppendLine(validationResult.ErrorMessage);
+                _ = errorMessages.AppendLine(validationResult.ErrorMessage);
 
             throw new ArgumentException(errorMessages.ToString());
         }

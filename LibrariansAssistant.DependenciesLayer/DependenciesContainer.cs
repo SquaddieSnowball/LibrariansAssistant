@@ -20,7 +20,7 @@ public static class DependenciesContainer
 
     public static T? Resolve<T>(params object?[]? ctorArgs)
     {
-        var type = typeof(T);
+        Type type = typeof(T);
 
         if (_dependencies.ContainsKey(type) is true)
         {

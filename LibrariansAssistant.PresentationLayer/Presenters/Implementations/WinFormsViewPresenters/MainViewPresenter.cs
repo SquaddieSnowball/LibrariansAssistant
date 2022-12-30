@@ -668,10 +668,10 @@ public sealed class MainViewPresenter : IPresenter
 
         IIssuingModel issuing = DependenciesContainer.Resolve<IIssuingModel>()!;
 
-        var args = (e as object?[])!;
+        object?[] args = (e as object?[])!;
 
-        var readerIds = (args[0] as IEnumerable<int>)!;
-        var bookIds = (args[1] as IEnumerable<int>)!;
+        IEnumerable<int> readerIds = (args[0] as IEnumerable<int>)!;
+        IEnumerable<int> bookIds = (args[1] as IEnumerable<int>)!;
 
         if (readerIds.Any() is true)
         {
@@ -744,7 +744,7 @@ public sealed class MainViewPresenter : IPresenter
         IIssuingService issuingService =
             DependenciesContainer.Resolve<IIssuingService>(_repository, _dataAnnotationModelValidationService)!;
 
-        var args = (e as object?[])!;
+        object?[] args = (e as object?[])!;
 
         IIssuingModel? issuing;
 
@@ -789,7 +789,7 @@ public sealed class MainViewPresenter : IPresenter
 
         IAuthorModel author = DependenciesContainer.Resolve<IAuthorModel>()!;
 
-        var args = (e as object?[])!;
+        object?[] args = (e as object?[])!;
 
         author.FirstName = (args[0] as string)!;
         author.LastName = (args[1] as string)!;
@@ -818,9 +818,9 @@ public sealed class MainViewPresenter : IPresenter
 
         IBookModel book = DependenciesContainer.Resolve<IBookModel>()!;
 
-        var args = (e as object?[])!;
+        object?[] args = (e as object?[])!;
 
-        var authors = new List<IAuthorModel>();
+        List<IAuthorModel> authors = new();
 
         foreach (int authorId in (args[0] as IEnumerable<int>)!)
         {
@@ -866,7 +866,7 @@ public sealed class MainViewPresenter : IPresenter
 
         IReaderModel reader = DependenciesContainer.Resolve<IReaderModel>()!;
 
-        var args = (e as object?[])!;
+        object?[] args = (e as object?[])!;
 
         reader.FirstName = (args[0] as string)!;
         reader.LastName = (args[1] as string)!;
@@ -895,7 +895,7 @@ public sealed class MainViewPresenter : IPresenter
 
         IAuthorModel author = DependenciesContainer.Resolve<IAuthorModel>()!;
 
-        var args = (e as object?[])!;
+        object?[] args = (e as object?[])!;
 
         author.Id = (int)args[0]!;
         author.FirstName = (args[1] as string)!;
@@ -925,9 +925,9 @@ public sealed class MainViewPresenter : IPresenter
 
         IBookModel book = DependenciesContainer.Resolve<IBookModel>()!;
 
-        var args = (e as object?[])!;
+        object?[] args = (e as object?[])!;
 
-        var authors = new List<IAuthorModel>();
+        List<IAuthorModel> authors = new();
 
         foreach (int authorId in (args[1] as IEnumerable<int>)!)
         {
@@ -978,10 +978,10 @@ public sealed class MainViewPresenter : IPresenter
 
         IIssuingModel issuing = DependenciesContainer.Resolve<IIssuingModel>()!;
 
-        var args = (e as object?[])!;
+        object?[] args = (e as object?[])!;
 
-        var readerIds = (args[1] as IEnumerable<int>)!;
-        var bookIds = (args[2] as IEnumerable<int>)!;
+        IEnumerable<int> readerIds = (args[1] as IEnumerable<int>)!;
+        IEnumerable<int> bookIds = (args[2] as IEnumerable<int>)!;
 
         if (readerIds.Any() is true)
         {
@@ -1060,7 +1060,7 @@ public sealed class MainViewPresenter : IPresenter
 
         IReaderModel reader = DependenciesContainer.Resolve<IReaderModel>()!;
 
-        var args = (e as object?[])!;
+        object?[] args = (e as object?[])!;
 
         reader.Id = (int)args[0]!;
         reader.FirstName = (args[1] as string)!;
@@ -1182,12 +1182,12 @@ public sealed class MainViewPresenter : IPresenter
             _ => throw new NotImplementedException("This report generator has not yet been implemented."),
         };
 
-        var args = (data as object[])!;
+        object[] args = (data as object[])!;
 
-        var title = (args[0] as string)!;
-        var columnHeaders = (args[1] as string[])!;
-        var exportData = (args[2] as string[,])!;
-        var filePath = (args[3] as string)!;
+        string title = (args[0] as string)!;
+        string[] columnHeaders = (args[1] as string[])!;
+        string[,] exportData = (args[2] as string[,])!;
+        string filePath = (args[3] as string)!;
 
         if (exportData.Length is 0)
         {
@@ -1198,7 +1198,7 @@ public sealed class MainViewPresenter : IPresenter
 
         try
         {
-            var reportDocument = new ReportDocument(title, columnHeaders, exportData.GetLength(0), exportData.GetLength(1));
+            ReportDocument reportDocument = new(title, columnHeaders, exportData.GetLength(0), exportData.GetLength(1));
 
             for (var i = 0; i < reportDocument.RowCount; i++)
                 for (var j = 0; j < reportDocument.ColumnCount; j++)

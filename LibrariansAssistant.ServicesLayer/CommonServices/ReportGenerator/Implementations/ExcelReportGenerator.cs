@@ -28,7 +28,7 @@ public sealed class ExcelReportGenerator : IReportGenerator
 
         try
         {
-            using var excelPackage = new ExcelPackage(filePath);
+            using ExcelPackage excelPackage = new(filePath);
 
             ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets.Add(reportDocument.Title);
 

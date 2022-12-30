@@ -206,14 +206,14 @@ internal sealed partial class MainView : Form, IMainView
         {
             e.PaintBackground(e.CellBounds, true);
 
-            var matchRectangles = new List<Rectangle>();
+            List<Rectangle> matchRectangles = new();
 
             string cellText = e.FormattedValue.ToString()!;
             int searchTextCellIndex = cellText.IndexOf(searchText, StringComparison.OrdinalIgnoreCase);
 
             while (searchTextCellIndex > -1)
             {
-                var matchRectangle = new Rectangle();
+                Rectangle matchRectangle = new();
 
                 string cellIndentText = cellText[..searchTextCellIndex];
                 string cellSearchText = cellText.Substring(searchTextCellIndex, searchText.Length);
@@ -238,7 +238,7 @@ internal sealed partial class MainView : Form, IMainView
                 searchTextCellIndex = cellText.IndexOf(searchText, searchTextCellIndex + 1, StringComparison.OrdinalIgnoreCase);
             }
 
-            using var solidBrush = new SolidBrush(Color.FromArgb(200, 50, 50));
+            using SolidBrush solidBrush = new(Color.FromArgb(200, 50, 50));
 
             foreach (Rectangle matchRectangle in matchRectangles)
                 e.Graphics.FillRectangle(solidBrush, matchRectangle);
@@ -296,7 +296,7 @@ internal sealed partial class MainView : Form, IMainView
 
     private void ExportTextToolStripMenuItemOnClick(object? sender, EventArgs e)
     {
-        var saveFileDialog = new SaveFileDialog()
+        SaveFileDialog saveFileDialog = new()
         {
             Filter = "Text files (*.txt)|*.txt",
             Title = "Export"
@@ -308,7 +308,7 @@ internal sealed partial class MainView : Form, IMainView
 
     private void ExportExcelToolStripMenuItemOnClick(object? sender, EventArgs e)
     {
-        var saveFileDialog = new SaveFileDialog()
+        SaveFileDialog saveFileDialog = new()
         {
             Filter = "Excel files (*.xlsx)|*.xlsx",
             Title = "Export"
@@ -403,7 +403,7 @@ internal sealed partial class MainView : Form, IMainView
 
         if (_dataUpdateEventInvokationList is not null)
             foreach (Delegate eventDelegate in _dataUpdateEventInvokationList)
-                eventDelegate.DynamicInvoke(this, EventArgs.Empty);
+                _ = eventDelegate.DynamicInvoke(this, EventArgs.Empty);
 
         dataGridViewData.DataSource = VisibleDataNormalView?.ToList();
 
@@ -445,17 +445,17 @@ internal sealed partial class MainView : Form, IMainView
         Button buttonEdit = ControlCreation.MainCreateActionButton("Edit");
         Button buttonRemove = ControlCreation.MainCreateActionButton("Remove");
 
-        var openView = new AddEditItemView()
+        AddEditItemView openView = new()
         {
             FieldsTitle = "Open issuing"
         };
 
-        var closeView = new AddEditItemView()
+        AddEditItemView closeView = new()
         {
             FieldsTitle = "Close issuing"
         };
 
-        var editView = new AddEditItemView()
+        AddEditItemView editView = new()
         {
             FieldsTitle = "Edit issuing"
         };
@@ -464,13 +464,13 @@ internal sealed partial class MainView : Form, IMainView
 
         ReadersUpdatePickView?.Invoke(this, EventArgs.Empty);
 
-        var pickItemsOpenReaderView = new PickItemsView(false)
+        PickItemsView pickItemsOpenReaderView = new(false)
         {
             ItemsTitle = "Readers",
             Items = new Dictionary<int, string?>(VisibleDataPickView ?? Enumerable.Empty<KeyValuePair<int, string?>>())
         };
 
-        var pickItemsEditReaderView = new PickItemsView(false)
+        PickItemsView pickItemsEditReaderView = new(false)
         {
             ItemsTitle = "Readers",
             Items = new Dictionary<int, string?>(VisibleDataPickView ?? Enumerable.Empty<KeyValuePair<int, string?>>())
@@ -480,13 +480,13 @@ internal sealed partial class MainView : Form, IMainView
 
         BooksUpdatePickView?.Invoke(this, EventArgs.Empty);
 
-        var pickItemsOpenBookView = new PickItemsView(false)
+        PickItemsView pickItemsOpenBookView = new(false)
         {
             ItemsTitle = "Books",
             Items = new Dictionary<int, string?>(VisibleDataPickView ?? Enumerable.Empty<KeyValuePair<int, string?>>())
         };
 
-        var pickItemsEditBookView = new PickItemsView(false)
+        PickItemsView pickItemsEditBookView = new(false)
         {
             ItemsTitle = "Books",
             Items = new Dictionary<int, string?>(VisibleDataPickView ?? Enumerable.Empty<KeyValuePair<int, string?>>())
@@ -533,7 +533,7 @@ internal sealed partial class MainView : Form, IMainView
 
                 if (dialogResult is DialogResult.OK)
                 {
-                    var args = new object?[]
+                    object?[] args = new object?[]
                     {
                         pickItemsOpenReaderView.PickedItemIds,
                         pickItemsOpenBookView.PickedItemIds
@@ -580,7 +580,7 @@ internal sealed partial class MainView : Form, IMainView
 
                 if (dialogResult is DialogResult.OK)
                 {
-                    var args = new object?[]
+                    object?[] args = new object?[]
                     {
                         (int)selectedItemId!,
                         numericUpDownCloseReturnState.Value
@@ -619,7 +619,7 @@ internal sealed partial class MainView : Form, IMainView
                 pickItemsEditReaderView.ChangeAllItemsState(false);
                 pickItemsEditBookView.ChangeAllItemsState(false);
 
-                var data = (VisibleDataEditView as object?[])!;
+                object?[] data = (VisibleDataEditView as object?[])!;
 
                 labelEditId.Text = ((int)data[0]!).ToString();
                 pickItemsEditReaderView.ChangeItemsState((data[1] as IEnumerable<int>)!, true);
@@ -639,7 +639,7 @@ internal sealed partial class MainView : Form, IMainView
 
                     if (dialogResult is DialogResult.OK)
                     {
-                        var args = new object?[]
+                        object?[] args = new object?[]
                         {
                             (int)selectedItemId!,
                             pickItemsEditReaderView.PickedItemIds,
@@ -699,12 +699,12 @@ internal sealed partial class MainView : Form, IMainView
         Button buttonEdit = ControlCreation.MainCreateActionButton("Edit");
         Button buttonRemove = ControlCreation.MainCreateActionButton("Remove");
 
-        var addView = new AddEditItemView()
+        AddEditItemView addView = new()
         {
             FieldsTitle = "New reader"
         };
 
-        var editView = new AddEditItemView()
+        AddEditItemView editView = new()
         {
             FieldsTitle = "Edit reader"
         };
@@ -747,7 +747,7 @@ internal sealed partial class MainView : Form, IMainView
 
                 if (dialogResult is DialogResult.OK)
                 {
-                    var args = new object?[]
+                    object?[] args = new object?[]
                     {
                         textBoxAddFirstName.Text,
                         textBoxAddLastName.Text,
@@ -786,7 +786,7 @@ internal sealed partial class MainView : Form, IMainView
 
             if (VisibleDataEditView is not null)
             {
-                var data = (VisibleDataEditView as object?[])!;
+                object?[] data = (VisibleDataEditView as object?[])!;
 
                 labelEditId.Text = ((int)data[0]!).ToString();
                 textBoxEditFirstName.Text = data[1] as string;
@@ -803,7 +803,7 @@ internal sealed partial class MainView : Form, IMainView
 
                     if (dialogResult is DialogResult.OK)
                     {
-                        var args = new object?[]
+                        object?[] args = new object?[]
                         {
                             (int)selectedItemId!,
                             textBoxEditFirstName.Text,
@@ -861,12 +861,12 @@ internal sealed partial class MainView : Form, IMainView
         Button buttonEdit = ControlCreation.MainCreateActionButton("Edit");
         Button buttonRemove = ControlCreation.MainCreateActionButton("Remove");
 
-        var addView = new AddEditItemView()
+        AddEditItemView addView = new()
         {
             FieldsTitle = "New author"
         };
 
-        var editView = new AddEditItemView()
+        AddEditItemView editView = new()
         {
             FieldsTitle = "Edit author"
         };
@@ -901,7 +901,7 @@ internal sealed partial class MainView : Form, IMainView
 
                 if (dialogResult is DialogResult.OK)
                 {
-                    var args = new object?[]
+                    object?[] args = new object?[]
                     {
                         textBoxAddFirstName.Text,
                         textBoxAddLastName.Text,
@@ -938,7 +938,7 @@ internal sealed partial class MainView : Form, IMainView
 
             if (VisibleDataEditView is not null)
             {
-                var data = (VisibleDataEditView as object?[])!;
+                object?[] data = (VisibleDataEditView as object?[])!;
 
                 labelEditId.Text = ((int)data[0]!).ToString();
                 textBoxEditFirstName.Text = data[1] as string;
@@ -953,7 +953,7 @@ internal sealed partial class MainView : Form, IMainView
 
                     if (dialogResult is DialogResult.OK)
                     {
-                        var args = new object?[]
+                        object?[] args = new object?[]
                         {
                             (int)selectedItemId!,
                             textBoxEditFirstName.Text,
@@ -1009,12 +1009,12 @@ internal sealed partial class MainView : Form, IMainView
         Button buttonEdit = ControlCreation.MainCreateActionButton("Edit");
         Button buttonRemove = ControlCreation.MainCreateActionButton("Remove");
 
-        var addView = new AddEditItemView()
+        AddEditItemView addView = new()
         {
             FieldsTitle = "New book"
         };
 
-        var editView = new AddEditItemView()
+        AddEditItemView editView = new()
         {
             FieldsTitle = "Edit book"
         };
@@ -1023,13 +1023,13 @@ internal sealed partial class MainView : Form, IMainView
 
         AuthorsUpdatePickView?.Invoke(this, EventArgs.Empty);
 
-        var pickItemsAddView = new PickItemsView(true)
+        PickItemsView pickItemsAddView = new(true)
         {
             ItemsTitle = "Authors",
             Items = new Dictionary<int, string?>(VisibleDataPickView ?? Enumerable.Empty<KeyValuePair<int, string?>>())
         };
 
-        var pickItemsEditView = new PickItemsView(true)
+        PickItemsView pickItemsEditView = new(true)
         {
             ItemsTitle = "Authors",
             Items = new Dictionary<int, string?>(VisibleDataPickView ?? Enumerable.Empty<KeyValuePair<int, string?>>())
@@ -1065,7 +1065,7 @@ internal sealed partial class MainView : Form, IMainView
 
                 if (dialogResult is DialogResult.OK)
                 {
-                    var args = new object?[]
+                    object?[] args = new object?[]
                     {
                         pickItemsAddView.PickedItemIds,
                         textBoxAddTitle.Text,
@@ -1104,7 +1104,7 @@ internal sealed partial class MainView : Form, IMainView
             {
                 pickItemsEditView.ChangeAllItemsState(false);
 
-                var data = (VisibleDataEditView as object?[])!;
+                object?[] data = (VisibleDataEditView as object?[])!;
 
                 labelEditId.Text = ((int)data[0]!).ToString();
                 pickItemsEditView.ChangeItemsState((data[1] as IEnumerable<int>)!, true);
@@ -1119,7 +1119,7 @@ internal sealed partial class MainView : Form, IMainView
 
                     if (dialogResult is DialogResult.OK)
                     {
-                        var args = new object?[]
+                        object?[] args = new object?[]
                         {
                             (int)selectedItemId!,
                             pickItemsEditView.PickedItemIds,
@@ -1230,7 +1230,7 @@ internal sealed partial class MainView : Form, IMainView
             (_pickPeriodView.PeriodColumnIndex is not null) &&
             (dataGridViewRow.Visible is true))
         {
-            var dateTime = (DateTime?)dataGridViewRow.Cells[(int)_pickPeriodView.PeriodColumnIndex].Value;
+            DateTime? dateTime = (DateTime?)dataGridViewRow.Cells[(int)_pickPeriodView.PeriodColumnIndex].Value;
 
             if ((dateTime is null) || (dateTime < _pickPeriodView.StartPeriod) || (dateTime > _pickPeriodView.EndPeriod))
                 dataGridViewRow.Visible = false;
@@ -1293,6 +1293,7 @@ internal sealed partial class MainView : Form, IMainView
 
         dataGridViewData.SortDataSourceObjectList(columnIndex, ref _dataIsAscSortDirection, ref _dataPrevSortColumnIndex);
 
+        UpdateFilters();
         SetSelectedItem(selectedItemId);
     }
 
@@ -1406,8 +1407,8 @@ internal sealed partial class MainView : Form, IMainView
                     rowCount++;
 
         string title = labelTableName.Text;
-        var columnHeaders = new string[columnCount];
-        var exportData = new string[rowCount, columnCount];
+        object?[] columnHeaders = new string[columnCount];
+        string[,] exportData = new string[rowCount, columnCount];
 
         for (var j = 0; j < columnCount; j++)
             columnHeaders[j] = dataGridViewData.Columns[j].HeaderText;

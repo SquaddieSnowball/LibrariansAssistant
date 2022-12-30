@@ -69,27 +69,27 @@ internal sealed partial class SettingsView : Form
         {
             case RepositoryType.SqlServer:
 
-                var serverName =
+                string serverName =
                     (_applicationConfigurationService.GetSettingValue("SqlServer_ServerName") as string)!;
-                var serverInstanceName =
+                string serverInstanceName =
                     (_applicationConfigurationService.GetSettingValue("SqlServer_ServerInstanceName") as string)!;
-                var useWindowsAuthentication =
+                bool useWindowsAuthentication =
                     (bool)_applicationConfigurationService.GetSettingValue("SqlServer_UseWindowsAuthentication")!;
-                var userName =
+                string? userName =
                     _applicationConfigurationService.GetSettingValue("SqlServer_UserName") as string;
-                var password =
+                string? password =
                     _applicationConfigurationService.GetSettingValue("SqlServer_Password") as string;
-                var databaseName =
+                string? databaseName =
                     _applicationConfigurationService.GetSettingValue("DatabaseName") as string;
 
-                var infranstructureCreatorIsbSettings = new SqlServerIsbSettings(serverName, serverInstanceName)
+                SqlServerIsbSettings infranstructureCreatorIsbSettings = new(serverName, serverInstanceName)
                 {
                     UseWindowsAuthentication = useWindowsAuthentication,
                     UserName = userName,
                     Password = password
                 };
 
-                var repositoryIsbSettings = new SqlServerIsbSettings(serverName, serverInstanceName)
+                SqlServerIsbSettings repositoryIsbSettings = new(serverName, serverInstanceName)
                 {
                     UseWindowsAuthentication = useWindowsAuthentication,
                     UserName = userName,
@@ -192,7 +192,7 @@ internal sealed partial class SettingsView : Form
         textBoxSqlServerPassword.TextChanged += (sender, e) =>
             UpdateSetting("SqlServer_Password", textBoxSqlServerPassword.Text);
 
-        var controls = new List<Control>()
+        List<Control> controls = new()
         {
             ControlCreation.SettingsCreateLabelControlTableLayoutPanel(
                 ControlCreation.SettingsCreateLabel("Server name:"), textBoxSqlServerServerName),
@@ -223,7 +223,7 @@ internal sealed partial class SettingsView : Form
         checkBoxCreateEmptyDatabase.CheckedChanged += (sender, e) =>
             UpdateSetting("CreateEmptyDatabase", checkBoxCreateEmptyDatabase.Checked);
 
-        var controls = new List<Control>()
+        List<Control> controls = new()
         {
             ControlCreation.SettingsCreateControlTableLayoutPanel(checkBoxCreateEmptyDatabase),
             ControlCreation.SettingsCreateControlTableLayoutPanel(labelCreateEmptyDatabaseNote)

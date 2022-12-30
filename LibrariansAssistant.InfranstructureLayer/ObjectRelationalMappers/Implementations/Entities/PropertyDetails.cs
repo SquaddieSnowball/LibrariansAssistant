@@ -12,10 +12,9 @@ internal sealed class PropertyDetails
 
     internal string SqlStyleName { get; }
 
-    public PropertyDetails(PropertyInfo propertyInfo, TypeDetails? typeDetails)
+    internal PropertyDetails(PropertyInfo propertyInfo, TypeDetails? typeDetails)
     {
-        PropertyInfo = propertyInfo;
-        TypeDetails = typeDetails;
+        (PropertyInfo, TypeDetails) = (propertyInfo, typeDetails);
 
         if (typeDetails is null)
             IsSimpleType = true;

@@ -13,14 +13,14 @@ public sealed class TextReportGenerator : IReportGenerator
         if (reportDocument is null)
             throw new ArgumentNullException(nameof(reportDocument), "Report document must not be null.");
 
-        var report = new StringBuilder();
+        StringBuilder report = new();
 
         string[] columnHeaders = reportDocument.ColumnHeaders.ToArray();
-        var columnMaxLength = new int[reportDocument.ColumnCount];
+        int[] columnMaxLength = new int[reportDocument.ColumnCount];
         int documentWidth;
 
-        report.AppendLine(reportDocument.Title);
-        report.AppendLine();
+        _ = report.AppendLine(reportDocument.Title);
+        _ = report.AppendLine();
 
         for (var j = 0; j < reportDocument.ColumnCount; j++)
             columnMaxLength[j] = columnHeaders[j].Length;
@@ -30,30 +30,30 @@ public sealed class TextReportGenerator : IReportGenerator
                 if (reportDocument[i, j].Length > columnMaxLength[j])
                     columnMaxLength[j] = reportDocument[i, j].Length;
 
-        documentWidth = columnMaxLength.Sum() + columnMaxLength.Length * 3 + 1;
+        documentWidth = columnMaxLength.Sum() + (columnMaxLength.Length * 3) + 1;
 
-        report.AppendLine(new string('\u2015', documentWidth));
+        _ = report.AppendLine(new string('\u2015', documentWidth));
 
-        report.Append('|');
+        _ = report.Append('|');
 
         for (var j = 0; j < reportDocument.ColumnCount; j++)
-            report.Append(" " + columnHeaders[j].PadRight(columnMaxLength[j]) + " |");
+            _ = report.Append(" " + columnHeaders[j].PadRight(columnMaxLength[j]) + " |");
 
-        report.AppendLine();
+        _ = report.AppendLine();
 
-        report.AppendLine(new string('\u2015', documentWidth));
+        _ = report.AppendLine(new string('\u2015', documentWidth));
 
         for (var i = 0; i < reportDocument.RowCount; i++)
         {
-            report.Append('|');
+            _ = report.Append('|');
 
             for (var j = 0; j < reportDocument.ColumnCount; j++)
-                report.Append(" " + reportDocument[i, j].PadRight(columnMaxLength[j]) + " |");
+                _ = report.Append(" " + reportDocument[i, j].PadRight(columnMaxLength[j]) + " |");
 
-            report.AppendLine();
+            _ = report.AppendLine();
         }
 
-        report.Append(new string('\u2015', documentWidth));
+        _ = report.Append(new string('\u2015', documentWidth));
 
         try
         {

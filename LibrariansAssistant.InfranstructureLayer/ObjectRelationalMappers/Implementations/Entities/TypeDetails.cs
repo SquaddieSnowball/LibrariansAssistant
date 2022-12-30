@@ -12,7 +12,7 @@ internal sealed class TypeDetails
 
     internal TypeDetails(Type type)
     {
-        if ((type.IsGenericType is true) && type.GetGenericTypeDefinition().Equals(typeof(IEnumerable<>)))
+        if ((type.IsGenericType is true) && (type.GetGenericTypeDefinition().Equals(typeof(IEnumerable<>)) is true))
         {
             ObjectType = type.GetGenericArguments()[0];
             IsEnumerable = true;
@@ -33,8 +33,8 @@ internal sealed class TypeDetails
 
     private static bool IsSimpleType(Type type) =>
         (type.IsPrimitive is true) ||
-        type.Equals(typeof(string)) ||
-        type.Equals(typeof(decimal)) ||
-        type.Equals(typeof(DateTime)) ||
-        ((type.IsGenericType is true) && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>)));
+        (type.Equals(typeof(string)) is true) ||
+        (type.Equals(typeof(decimal)) is true) ||
+        (type.Equals(typeof(DateTime)) is true) ||
+        ((type.IsGenericType is true) && (type.GetGenericTypeDefinition().Equals(typeof(Nullable<>)) is true));
 }

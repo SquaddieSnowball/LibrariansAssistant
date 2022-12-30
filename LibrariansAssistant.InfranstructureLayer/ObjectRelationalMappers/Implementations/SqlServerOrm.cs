@@ -9,9 +9,9 @@ namespace LibrariansAssistant.InfranstructureLayer.ObjectRelationalMappers.Imple
 
 public sealed class SqlServerOrm : IObjectRelationalMapper
 {
+    private readonly Dictionary<Type, Type> _dependencies = new();
     private readonly SqlConnection _sqlConnection;
     private SqlCommand _sqlCommand;
-    private readonly Dictionary<Type, Type> _dependencies = new();
 
     public SqlServerOrm(string connectionString)
     {
@@ -30,6 +30,35 @@ public sealed class SqlServerOrm : IObjectRelationalMapper
         {
             _sqlConnection?.Close();
         }
+    }
+
+    public IObjectRelationalMapper RegisterDependency<TAbstract, TConcrete>() where TConcrete : TAbstract
+    {
+        try
+        {
+            _dependencies.Add(typeof(TAbstract), typeof(TConcrete));
+        }
+        catch (ArgumentException)
+        {
+            throw new ArgumentException("This dependency has already been registered.");
+        }
+
+        return this;
+    }
+
+    public IObjectRelationalMapper AddParameter<T>(string name, T value)
+    {
+        try
+        {
+            _ = _sqlCommand.Parameters
+                .Add((value is not null) ? new SqlParameter(name, value) : new SqlParameter(name, DBNull.Value));
+        }
+        catch
+        {
+            throw;
+        }
+
+        return this;
     }
 
     public int ExecuteNonQuery(string query, QueryExecutionSettings? executionSettings)
@@ -72,7 +101,7 @@ public sealed class SqlServerOrm : IObjectRelationalMapper
             _sqlCommand.CommandType = CommandType.StoredProcedure;
 
         string[] queriesArray = queries.ToArray();
-        var rowsAffectedArray = new int[queriesArray.Length];
+        int[] rowsAffectedArray = new int[queriesArray.Length];
 
         try
         {
@@ -97,7 +126,8 @@ public sealed class SqlServerOrm : IObjectRelationalMapper
         return rowsAffectedArray;
     }
 
-    public IEnumerable<T> ExecuteQuery<T>(string query, QueryExecutionSettings? executionSettings, MappingSettings? mappingSettings)
+    public IEnumerable<T> ExecuteQuery<T>(string query, QueryExecutionSettings? executionSettings,
+        MappingSettings? mappingSettings)
     {
         executionSettings ??= new();
         mappingSettings ??= new();
@@ -107,8 +137,8 @@ public sealed class SqlServerOrm : IObjectRelationalMapper
         if (executionSettings.IsStoredProcedure is true)
             _sqlCommand.CommandType = CommandType.StoredProcedure;
 
-        var queryResults = new List<T>();
-        var typeDetails = new TypeDetails(typeof(T));
+        List<T> queryResults = new();
+        TypeDetails typeDetails = new(typeof(T));
 
         try
         {
@@ -190,45 +220,13 @@ public sealed class SqlServerOrm : IObjectRelationalMapper
         return queryResult;
     }
 
-    public IObjectRelationalMapper AddParameter<T>(string name, T value)
-    {
-        try
-        {
-            _sqlCommand.Parameters.Add(
-                (value is not null) ?
-                new SqlParameter(name, value) :
-                new SqlParameter(name, DBNull.Value)
-                );
-        }
-        catch
-        {
-            throw;
-        }
-
-        return this;
-    }
-
-    public IObjectRelationalMapper RegisterDependency<TAbstract, TConcrete>() where TConcrete : TAbstract
-    {
-        try
-        {
-            _dependencies.Add(typeof(TAbstract), typeof(TConcrete));
-        }
-        catch (ArgumentException)
-        {
-            throw new ArgumentException("This dependency has already been registered.");
-        }
-
-        return this;
-    }
-
     private object? CreateObject(Type type) =>
         (_dependencies.ContainsKey(type) is true) ?
         Activator.CreateInstance(_dependencies[type]) :
         Activator.CreateInstance(type);
 
-    private void InitializeObject(object? obj, TypeDetails typeDetails, SqlDataReader sqlDataReader,
-        MappingSettings mappingSettings)
+    private void InitializeObject(object? obj, TypeDetails typeDetails,
+        SqlDataReader sqlDataReader, MappingSettings mappingSettings)
     {
         string propertyNamePrefix = string.Empty;
 
@@ -298,7 +296,7 @@ public sealed class SqlServerOrm : IObjectRelationalMapper
                     {
                         _ = GetEnumerableElementNumber(sqlDataReader);
 
-                        var enumerable =
+                        IList enumerable =
                             (IList)CreateObject(typeof(List<>).MakeGenericType(propertyDetails.TypeDetails.ObjectType))!;
 
                         do
@@ -307,7 +305,7 @@ public sealed class SqlServerOrm : IObjectRelationalMapper
 
                             InitializeObject(enumerabledObj, propertyDetails.TypeDetails, sqlDataReader, mappingSettings);
 
-                            enumerable.Add(enumerabledObj);
+                            _ = enumerable.Add(enumerabledObj);
 
                         } while ((sqlDataReader.Read() is true) && (GetEnumerableElementNumber(sqlDataReader) != 0));
 
@@ -325,8 +323,8 @@ public sealed class SqlServerOrm : IObjectRelationalMapper
                     object? nestedObj = propertyDetails.PropertyInfo.GetValue(obj);
 
                     bool isEnumerableInitialized =
-                        InitializeObjectEnumerable(nestedObj, propertyDetails.TypeDetails,
-                        sqlDataReader, mappingSettings, enumerableNumber, ref currentEnumerableNumber);
+                        InitializeObjectEnumerable(nestedObj, propertyDetails.TypeDetails, sqlDataReader,
+                        mappingSettings, enumerableNumber, ref currentEnumerableNumber);
 
                     if (isEnumerableInitialized is true)
                     {
