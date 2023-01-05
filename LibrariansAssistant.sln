@@ -17,6 +17,10 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "LibrariansAssistant.Library
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibrariansAssistant.DependenciesLayer", "LibrariansAssistant.DependenciesLayer\LibrariansAssistant.DependenciesLayer.csproj", "{2DB0A28E-EF79-44E5-8D2B-6DF0CCF65C35}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3A190BEB-AEF3-4D4E-BADB-A293A762FBA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibrariansAssistant.ServicesLayer.Tests", "LibrariansAssistant.ServicesLayer.Tests\LibrariansAssistant.ServicesLayer.Tests.csproj", "{D3C23037-51DC-46D7-8773-44A7FE358BEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,9 +57,16 @@ Global
 		{2DB0A28E-EF79-44E5-8D2B-6DF0CCF65C35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DB0A28E-EF79-44E5-8D2B-6DF0CCF65C35}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DB0A28E-EF79-44E5-8D2B-6DF0CCF65C35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3C23037-51DC-46D7-8773-44A7FE358BEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3C23037-51DC-46D7-8773-44A7FE358BEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3C23037-51DC-46D7-8773-44A7FE358BEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3C23037-51DC-46D7-8773-44A7FE358BEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D3C23037-51DC-46D7-8773-44A7FE358BEC} = {3A190BEB-AEF3-4D4E-BADB-A293A762FBA8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2937D5A6-3B48-4F28-BF4D-0ED361EBB644}
