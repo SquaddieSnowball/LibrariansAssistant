@@ -5,11 +5,11 @@ namespace LibrariansAssistant.UserInterfaceLayer.Services.WinFormsServices.Imple
 internal class WinFormsMessageService : IMessageService
 {
     public void ShowMessage(string message) =>
-        MessageBox.Show(message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        _ = MessageBox.Show(message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
     public void ShowWarning(string warning) =>
-        MessageBox.Show(warning, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        _ = MessageBox.Show(warning, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
     public void ShowError(string error) =>
-        MessageBox.Show(error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        _ = MessageBox.Show(error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 }

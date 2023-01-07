@@ -136,13 +136,13 @@ internal sealed partial class PickItemsView : Form
     private void DataGridViewItemsOnCellDoubleClick(object? sender, DataGridViewCellEventArgs e)
     {
         if ((e.ColumnIndex is 0) && (e.RowIndex is not -1))
-            dataGridViewItems.EndEdit();
+            _ = dataGridViewItems.EndEdit();
     }
 
     private void DataGridViewItemsOnCellMouseUp(object? sender, DataGridViewCellMouseEventArgs e)
     {
         if ((e.ColumnIndex is 0) && (e.RowIndex is not -1))
-            dataGridViewItems.EndEdit();
+            _ = dataGridViewItems.EndEdit();
     }
 
     private void DataGridViewItemsOnCellValueChanged(object? sender, DataGridViewCellEventArgs e)
@@ -171,7 +171,7 @@ internal sealed partial class PickItemsView : Form
         dataGridViewItems.SortDataSourceObjectList(e.ColumnIndex, ref _dataIsAscSortDirection, ref _dataPrevSortColumnIndex);
 
     private void ButtonPlusOnClick(object? sender, EventArgs e) =>
-        ShowDialog();
+        _ = ShowDialog();
 
     private void PickItemsViewOnFormClosed(object? sender, FormClosedEventArgs e) =>
         UpdatePickedItems();

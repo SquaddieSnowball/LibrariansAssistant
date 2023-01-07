@@ -28,7 +28,7 @@ internal sealed partial class PickPeriodView : Form
             if ((_periodColumnIndexNames is not null) && (_periodColumnIndexNames.Any() is true))
             {
                 foreach (KeyValuePair<int, string> periodColumnIndexName in _periodColumnIndexNames)
-                    comboBoxColumn.Items.Add(periodColumnIndexName.Value);
+                    _ = comboBoxColumn.Items.Add(periodColumnIndexName.Value);
 
                 comboBoxColumn.SelectedIndex = 0;
             }
@@ -57,7 +57,7 @@ internal sealed partial class PickPeriodView : Form
         ResetPeriod();
 
     private void ButtonPickOnClick(object? sender, EventArgs e) =>
-        ShowDialog();
+        _ = ShowDialog();
 
     private void ButtonConfirmOnClick(object? sender, EventArgs e)
     {

@@ -180,7 +180,7 @@ internal sealed partial class MainView : Form, IMainView
     }
 
     private void SettingsToolStripMenuItemOnClick(object? sender, EventArgs e) =>
-        new SettingsView().ShowDialog();
+        _ = new SettingsView().ShowDialog();
 
     private void ExitToolStripMenuItemOnClick(object? sender, EventArgs e) =>
         Close();
@@ -506,15 +506,15 @@ internal sealed partial class MainView : Form, IMainView
         DateTimePicker dateTimePickerEditReturnDate = ControlCreation.AddEditCreateDateTimePicker();
         NumericUpDown numericUpDownEditReturnState = ControlCreation.AddEditCreateNumericUpDown();
 
-        openView
+        _ = openView
             .AddField("Reader:", controlOpenReader)
             .AddField("Book:", controlOpenBook);
 
-        closeView
+        _ = closeView
             .AddField("Id:", labelCloseId)
             .AddField("Return state:", numericUpDownCloseReturnState);
 
-        editView
+        _ = editView
             .AddField("Id:", labelEditId)
             .AddField("Reader:", controlEditReader)
             .AddField("Book:", controlEditBook)
@@ -722,14 +722,14 @@ internal sealed partial class MainView : Form, IMainView
         TextBox textBoxEditGender = ControlCreation.AddEditCreateTextBox();
         DateTimePicker dateTimePickerEditDateOfBirth = ControlCreation.AddEditCreateDateTimePicker();
 
-        addView
+        _ = addView
             .AddField("First name:", textBoxAddFirstName)
             .AddField("Last name:", textBoxAddLastName)
             .AddField("Patronymic:", textBoxAddPatronymic)
             .AddField("Gender:", textBoxAddGender)
             .AddField("Date of birth:", dateTimePickerAddDateOfBirth);
 
-        editView
+        _ = editView
             .AddField("Id:", labelEditId)
             .AddField("First name:", textBoxEditFirstName)
             .AddField("Last name:", textBoxEditLastName)
@@ -880,12 +880,12 @@ internal sealed partial class MainView : Form, IMainView
         TextBox textBoxEditLastName = ControlCreation.AddEditCreateTextBox();
         TextBox textBoxEditPatronymic = ControlCreation.AddEditCreateTextBox();
 
-        addView
+        _ = addView
             .AddField("First name:", textBoxAddFirstName)
             .AddField("Last name:", textBoxAddLastName)
             .AddField("Patronymic:", textBoxAddPatronymic);
 
-        editView
+        _ = editView
             .AddField("Id:", labelEditId)
             .AddField("First name:", textBoxEditFirstName)
             .AddField("Last name:", textBoxEditLastName)
@@ -1044,12 +1044,12 @@ internal sealed partial class MainView : Form, IMainView
         TextBox textBoxEditTitle = ControlCreation.AddEditCreateTextBox();
         TextBox textBoxEditGenre = ControlCreation.AddEditCreateTextBox();
 
-        addView
+        _ = addView
             .AddField("Authors:", controlAddAuthors)
             .AddField("Title:", textBoxAddTitle)
             .AddField("Genre:", textBoxAddGenre);
 
-        editView
+        _ = editView
             .AddField("Id:", labelEditId)
             .AddField("Authors:", controlEditAuthors)
             .AddField("Title:", textBoxEditTitle)
@@ -1381,7 +1381,8 @@ internal sealed partial class MainView : Form, IMainView
                     dataGridViewData.CurrentCell = dataGridViewData.Rows[i].Cells[0];
                 }
                 else
-                    for (int j = 0; j < dataGridViewData.RowCount; j++)
+                    for (var j = 0; j < dataGridViewData.RowCount; j++)
+                    {
                         if (dataGridViewData.Rows[j].Visible is true)
                         {
                             dataGridViewData.Rows[j].Selected = true;
@@ -1391,6 +1392,7 @@ internal sealed partial class MainView : Form, IMainView
                         }
                         else
                             dataGridViewData.Rows[j].Selected = false;
+                    }
 
                 break;
             }

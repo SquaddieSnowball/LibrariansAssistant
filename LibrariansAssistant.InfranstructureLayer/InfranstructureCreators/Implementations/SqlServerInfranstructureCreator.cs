@@ -44,6 +44,7 @@ public sealed class SqlServerInfranstructureCreator : IInfranstructureCreator
                 "because infranstructure creator has not been initialized.");
 
         if (IsInfrastructureCreated is false)
+        {
             try
             {
                 string[] batches =
@@ -56,5 +57,6 @@ public sealed class SqlServerInfranstructureCreator : IInfranstructureCreator
             {
                 throw;
             }
+        }
     }
 }

@@ -14,7 +14,7 @@ internal static class OrmDependenciesConfigurator
         foreach (KeyValuePair<Type, Type> dependency in DependenciesContainer.GetAll())
         {
             closedMethod = openMethod.MakeGenericMethod(dependency.Key, dependency.Value);
-            closedMethod.Invoke(objectRelationalMapper, null);
+            _ = closedMethod.Invoke(objectRelationalMapper, null);
         }
     }
 }

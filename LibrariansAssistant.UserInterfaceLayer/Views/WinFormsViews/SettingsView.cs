@@ -301,7 +301,8 @@ internal sealed partial class SettingsView : Form
             Height += newControl.Height + 20;
             newControl.Dock = DockStyle.Top;
 
-            tableLayoutPanelSettings.RowStyles.Add(new RowStyle(SizeType.Absolute, newControl.Height + 20));
+            _ = tableLayoutPanelSettings.RowStyles.Add(new RowStyle(SizeType.Absolute, newControl.Height + 20));
+
             tableLayoutPanelSettings.Controls.Add(newControl);
 
             tableLayoutPanelSettings.RowCount++;

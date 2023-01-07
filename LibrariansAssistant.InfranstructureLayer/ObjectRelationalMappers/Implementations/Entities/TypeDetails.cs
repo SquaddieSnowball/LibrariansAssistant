@@ -33,8 +33,8 @@ internal sealed class TypeDetails
 
     private static bool IsSimpleType(Type type) =>
         (type.IsPrimitive is true) ||
-        (type.Equals(typeof(string)) is true) ||
         (type.Equals(typeof(decimal)) is true) ||
+        (type.Equals(typeof(string)) is true) ||
         (type.Equals(typeof(DateTime)) is true) ||
         ((type.IsGenericType is true) && (type.GetGenericTypeDefinition().Equals(typeof(Nullable<>)) is true));
 }
