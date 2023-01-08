@@ -1,11 +1,24 @@
 ﻿namespace LibrariansAssistant.DependenciesLayer;
 
+/// <summary>
+/// Represents a dependencies container used to manage project dependencies.
+/// </summary>
 public static class DependenciesContainer
 {
     private static readonly Dictionary<Type, Type> _dependencies = new();
 
+    /// <summary>
+    /// Gets all project dependencies.
+    /// </summary>
+    /// <returns>All project dependencies.</returns>
     public static IEnumerable<KeyValuePair<Type, Type>> GetAll() => _dependencies;
 
+    /// <summary>
+    /// Registers a new dependency.
+    /// </summary>
+    /// <typeparam name="TAbstract">Abstract type.</typeparam>
+    /// <typeparam name="TConcrete">Concrete type.</typeparam>
+    /// <exception cref="ArgumentException"></exception>
     public static void Register<TAbstract, TConcrete>() where TConcrete : TAbstract
     {
         try
@@ -18,6 +31,13 @@ public static class DependenciesContainer
         }
     }
 
+    /// <summary>
+    /// Resolves an existing dependency.
+    /// </summary>
+    /// <typeparam name="T">The abstract type to get the concrete type from.</typeparam>
+    /// <param name="ctorArgs">Parameters that will be passed to the constructor when creating an object of a concrete type.</param>
+    /// <returns>An object of a concrete type.</returns>
+    /// <exception cref="ArgumentException"></exception>
     public static T? Resolve<T>(params object?[]? ctorArgs)
     {
         Type type = typeof(T);
