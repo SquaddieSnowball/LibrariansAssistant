@@ -4,8 +4,16 @@ using System.Reflection;
 
 namespace LibrariansAssistant.DomainModelLayer.ValidationAttributes;
 
+/// <summary>
+/// Specifies that the data field should not be initialized with the default model.
+/// </summary>
 internal sealed class NotDefaultModelAttribute : ValidationAttribute
 {
+    /// <summary>
+    /// Determines whether the specified value of the object is valid.
+    /// </summary>
+    /// <param name="value">The value of the object to validate.</param>
+    /// <returns>true if the specified value is valid; otherwise false.</returns>
     public override bool IsValid(object? value)
     {
         if (value is null)
