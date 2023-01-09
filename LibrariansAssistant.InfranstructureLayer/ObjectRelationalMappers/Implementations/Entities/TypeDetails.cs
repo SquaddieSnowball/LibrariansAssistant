@@ -2,14 +2,30 @@
 
 namespace LibrariansAssistant.InfranstructureLayer.ObjectRelationalMappers.Implementations.Entities;
 
+/// <summary>
+/// Represents type details.
+/// </summary>
 internal sealed class TypeDetails
 {
+    /// <summary>
+    /// Gets an instance of the property's Type object.
+    /// </summary>
     internal Type ObjectType { get; }
 
+    /// <summary>
+    /// Gets a value indicating whether the property type is an enumerable.
+    /// </summary>
     internal bool IsEnumerable { get; }
 
+    /// <summary>
+    /// Gets instances of the object's PropertyDetails objects.
+    /// </summary>
     internal IEnumerable<PropertyDetails> PropertyDetails { get; } = Enumerable.Empty<PropertyDetails>();
 
+    /// <summary>
+    /// Initializes a new instance of the TypeDetails class.
+    /// </summary>
+    /// <param name="type">Type object.</param>
     internal TypeDetails(Type type)
     {
         if ((type.IsGenericType is true) && (type.GetGenericTypeDefinition().Equals(typeof(IEnumerable<>)) is true))

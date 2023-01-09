@@ -9,10 +9,18 @@ using System.Text;
 
 namespace LibrariansAssistant.InfranstructureLayer.Repositories.Implementations;
 
+/// <summary>
+/// Represents the Sql Server repository.
+/// </summary>
 public sealed class SqlServerRepository : IRepository
 {
     private SqlServerOrm? _sqlServerOrm;
 
+    /// <summary>
+    /// Initializes the repositories using the specified initialization string.
+    /// </summary>
+    /// <param name="initializationString">Initialization string.</param>
+    /// <exception cref="ArgumentNullException"></exception>
     public void Initialize(string initializationString)
     {
         if (string.IsNullOrEmpty(initializationString) is true)
@@ -31,6 +39,11 @@ public sealed class SqlServerRepository : IRepository
         }
     }
 
+    /// <summary>
+    /// Adds a new author to the repository.
+    /// </summary>
+    /// <param name="author">Author to add to the repository.</param>
+    /// <exception cref="InvalidOperationException"></exception>
     public void AuthorAdd(IAuthorModel author)
     {
         if (_sqlServerOrm is null)
@@ -60,6 +73,11 @@ public sealed class SqlServerRepository : IRepository
         }
     }
 
+    /// <summary>
+    /// Gets all authors from the repository.
+    /// </summary>
+    /// <returns>All authors from the repository.</returns>
+    /// <exception cref="InvalidOperationException"></exception>
     public IEnumerable<IAuthorModel> AuthorGetAll()
     {
         if (_sqlServerOrm is null)
@@ -92,6 +110,12 @@ public sealed class SqlServerRepository : IRepository
         return authors;
     }
 
+    /// <summary>
+    /// Gets the author with the specified ID from the repository.
+    /// </summary>
+    /// <param name="authorId">Author ID.</param>
+    /// <returns>Author with the specified ID.</returns>
+    /// <exception cref="InvalidOperationException"></exception>
     public IAuthorModel? AuthorGetById(int authorId)
     {
         if (_sqlServerOrm is null)
@@ -129,6 +153,11 @@ public sealed class SqlServerRepository : IRepository
         return author;
     }
 
+    /// <summary>
+    /// Updates an existing author in the repository.
+    /// </summary>
+    /// <param name="author">Existing author to update.</param>
+    /// <exception cref="InvalidOperationException"></exception>
     public void AuthorUpdate(IAuthorModel author)
     {
         if (_sqlServerOrm is null)
@@ -162,6 +191,11 @@ public sealed class SqlServerRepository : IRepository
         }
     }
 
+    /// <summary>
+    /// Removes an existing author from the repository.
+    /// </summary>
+    /// <param name="authorId">Author ID.</param>
+    /// <exception cref="InvalidOperationException"></exception>
     public void AuthorDelete(int authorId)
     {
         if (_sqlServerOrm is null)
@@ -205,6 +239,11 @@ public sealed class SqlServerRepository : IRepository
         }
     }
 
+    /// <summary>
+    /// Adds a new book to the repository.
+    /// </summary>
+    /// <param name="book">Book to add to the repository.</param>
+    /// <exception cref="InvalidOperationException"></exception>
     public void BookAdd(IBookModel book)
     {
         if (_sqlServerOrm is null)
@@ -260,6 +299,11 @@ public sealed class SqlServerRepository : IRepository
         }
     }
 
+    /// <summary>
+    /// Gets all books from the repository.
+    /// </summary>
+    /// <returns>All books from the repository.</returns>
+    /// <exception cref="InvalidOperationException"></exception>
     public IEnumerable<IBookModel> BookGetAll()
     {
         if (_sqlServerOrm is null)
@@ -304,6 +348,12 @@ public sealed class SqlServerRepository : IRepository
         return books;
     }
 
+    /// <summary>
+    /// Gets the book with the specified ID from the repository.
+    /// </summary>
+    /// <param name="bookId">Book ID.</param>
+    /// <returns>Book with the specified ID.</returns>
+    /// <exception cref="InvalidOperationException"></exception>
     public IBookModel? BookGetById(int bookId)
     {
         if (_sqlServerOrm is null)
@@ -354,6 +404,11 @@ public sealed class SqlServerRepository : IRepository
         return book;
     }
 
+    /// <summary>
+    /// Updates an existing book in the repository.
+    /// </summary>
+    /// <param name="book">Existing book to update.</param>
+    /// <exception cref="InvalidOperationException"></exception>
     public void BookUpdate(IBookModel book)
     {
         if (_sqlServerOrm is null)
@@ -418,6 +473,11 @@ public sealed class SqlServerRepository : IRepository
         }
     }
 
+    /// <summary>
+    /// Removes an existing book from the repository.
+    /// </summary>
+    /// <param name="bookId">Book ID.</param>
+    /// <exception cref="InvalidOperationException"></exception>
     public void BookDelete(int bookId)
     {
         if (_sqlServerOrm is null)
@@ -446,6 +506,11 @@ public sealed class SqlServerRepository : IRepository
         }
     }
 
+    /// <summary>
+    /// Adds a new issuing to the repository.
+    /// </summary>
+    /// <param name="issuing">Issuing to add to the repository.</param>
+    /// <exception cref="InvalidOperationException"></exception>
     public void IssuingAdd(IIssuingModel issuing)
     {
         if (_sqlServerOrm is null)
@@ -478,6 +543,11 @@ public sealed class SqlServerRepository : IRepository
         }
     }
 
+    /// <summary>
+    /// Gets all issuings from the repository.
+    /// </summary>
+    /// <returns>All issuings from the repository.</returns>
+    /// <exception cref="InvalidOperationException"></exception>
     public IEnumerable<IIssuingModel> IssuingGetAll()
     {
         if (_sqlServerOrm is null)
@@ -530,6 +600,12 @@ public sealed class SqlServerRepository : IRepository
         return issuings;
     }
 
+    /// <summary>
+    /// Gets the issuing with the specified ID from the repository.
+    /// </summary>
+    /// <param name="issuingId">Issuing ID.</param>
+    /// <returns>Issuing with the specified ID.</returns>
+    /// <exception cref="InvalidOperationException"></exception>
     public IIssuingModel? IssuingGetById(int issuingId)
     {
         if (_sqlServerOrm is null)
@@ -588,6 +664,11 @@ public sealed class SqlServerRepository : IRepository
         return issuing;
     }
 
+    /// <summary>
+    /// Updates an existing issuing in the repository.
+    /// </summary>
+    /// <param name="issuing">Existing issuing to update.</param>
+    /// <exception cref="InvalidOperationException"></exception>
     public void IssuingUpdate(IIssuingModel issuing)
     {
         if (_sqlServerOrm is null)
@@ -627,6 +708,11 @@ public sealed class SqlServerRepository : IRepository
         }
     }
 
+    /// <summary>
+    /// Removes an existing issuing from the repository.
+    /// </summary>
+    /// <param name="issuingId">Issuing ID.</param>
+    /// <exception cref="InvalidOperationException"></exception>
     public void IssuingDelete(int issuingId)
     {
         if (_sqlServerOrm is null)
@@ -655,6 +741,11 @@ public sealed class SqlServerRepository : IRepository
         }
     }
 
+    /// <summary>
+    /// Adds a new reader to the repository.
+    /// </summary>
+    /// <param name="reader">Reader to add to the repository.</param>
+    /// <exception cref="InvalidOperationException"></exception>
     public void ReaderAdd(IReaderModel reader)
     {
         if (_sqlServerOrm is null)
@@ -686,6 +777,11 @@ public sealed class SqlServerRepository : IRepository
         }
     }
 
+    /// <summary>
+    /// Gets all readers from the repository.
+    /// </summary>
+    /// <returns>All readers from the repository.</returns>
+    /// <exception cref="InvalidOperationException"></exception>
     public IEnumerable<IReaderModel> ReaderGetAll()
     {
         if (_sqlServerOrm is null)
@@ -718,6 +814,12 @@ public sealed class SqlServerRepository : IRepository
         return readers;
     }
 
+    /// <summary>
+    /// Gets the reader with the specified ID from the repository.
+    /// </summary>
+    /// <param name="readerId">Reader ID.</param>
+    /// <returns>Reader with the specified ID.</returns>
+    /// <exception cref="InvalidOperationException"></exception>
     public IReaderModel? ReaderGetById(int readerId)
     {
         if (_sqlServerOrm is null)
@@ -755,6 +857,11 @@ public sealed class SqlServerRepository : IRepository
         return reader;
     }
 
+    /// <summary>
+    /// Updates an existing reader in the repository.
+    /// </summary>
+    /// <param name="reader">Existing reader to update.</param>
+    /// <exception cref="InvalidOperationException"></exception>
     public void ReaderUpdate(IReaderModel reader)
     {
         if (_sqlServerOrm is null)
@@ -792,6 +899,11 @@ public sealed class SqlServerRepository : IRepository
         }
     }
 
+    /// <summary>
+    /// Removes an existing reader from the repository.
+    /// </summary>
+    /// <param name="readerId">Reader ID.</param>
+    /// <exception cref="InvalidOperationException"></exception>
     public void ReaderDelete(int readerId)
     {
         if (_sqlServerOrm is null)

@@ -2,12 +2,23 @@
 
 namespace LibrariansAssistant.InfranstructureLayer.InfranstructureCreators.Implementations;
 
+/// <summary>
+/// Provides methods for creating infrastructure.
+/// </summary>
 public sealed class SqlServerInfranstructureCreator : IInfranstructureCreator
 {
     private SqlServerOrm? _sqlServerOrm;
 
+    /// <summary>
+    /// Gets a value indicating whether the infrastructure has been created.
+    /// </summary>
     public bool? IsInfrastructureCreated { get; private set; }
 
+    /// <summary>
+    /// Initializes the infrastructure creator.
+    /// </summary>
+    /// <param name="initializationString">Initialization string.</param>
+    /// <exception cref="ArgumentNullException"></exception>
     public void Initialize(string initializationString)
     {
         if (string.IsNullOrEmpty(initializationString) is true)
@@ -37,6 +48,10 @@ public sealed class SqlServerInfranstructureCreator : IInfranstructureCreator
         }
     }
 
+    /// <summary>
+    /// Creates infrastructure.
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
     public void Create()
     {
         if (_sqlServerOrm is null)
