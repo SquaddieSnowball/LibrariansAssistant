@@ -3,8 +3,18 @@ using System.Text;
 
 namespace LibrariansAssistant.ServicesLayer.CommonServices.ReportGenerator.Implementations;
 
+/// <summary>
+/// Represents the text report generator.
+/// </summary>
 public sealed class TextReportGenerator : IReportGenerator
 {
+    /// <summary>
+    /// Generates a report and saves it to the specified file path.
+    /// </summary>
+    /// <param name="filePath">Path to the file.</param>
+    /// <param name="reportDocument">Report document to save.</param>
+    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="ArgumentNullException"></exception>
     public void GenerateReport(string filePath, ReportDocument reportDocument)
     {
         if (string.IsNullOrEmpty(filePath) is true)

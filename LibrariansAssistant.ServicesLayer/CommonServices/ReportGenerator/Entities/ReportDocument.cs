@@ -1,17 +1,39 @@
 ﻿namespace LibrariansAssistant.ServicesLayer.CommonServices.ReportGenerator.Entities;
 
+/// <summary>
+/// Represents a report document.
+/// </summary>
 public sealed class ReportDocument
 {
     private readonly string[,] _reportData;
 
+    /// <summary>
+    /// Gets the title of the document.
+    /// </summary>
     public string Title { get; }
 
+    /// <summary>
+    /// Gets the document's column headers.
+    /// </summary>
     public IEnumerable<string> ColumnHeaders { get; }
 
+    /// <summary>
+    /// Gets the number of rows in the document.
+    /// </summary>
     public int RowCount => _reportData.GetLength(0);
 
+    /// <summary>
+    /// Gets the number of columns in the document.
+    /// </summary>
     public int ColumnCount => _reportData.GetLength(1);
 
+    /// <summary>
+    /// Gets or sets the report document element.
+    /// </summary>
+    /// <param name="rowIndex">Row index.</param>
+    /// <param name="columnIndex">Column index.</param>
+    /// <returns>Report document element.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
     public string this[int rowIndex, int columnIndex]
     {
         get
@@ -39,6 +61,15 @@ public sealed class ReportDocument
         }
     }
 
+    /// <summary>
+    /// Initializes a new instance of the ReportDocument class.
+    /// </summary>
+    /// <param name="title">Title of the document.</param>
+    /// <param name="columnHeaders">Document's column headers.</param>
+    /// <param name="rowCount">Number of rows in the document.</param>
+    /// <param name="columnCount">Number of columns in the document.</param>
+    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="ArgumentNullException"></exception>
     public ReportDocument(string title, IEnumerable<string> columnHeaders, int rowCount, int columnCount)
     {
         if (string.IsNullOrEmpty(title) is true)

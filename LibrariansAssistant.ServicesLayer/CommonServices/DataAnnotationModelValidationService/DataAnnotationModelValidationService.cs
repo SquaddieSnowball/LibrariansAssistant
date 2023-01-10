@@ -3,8 +3,18 @@ using System.Text;
 
 namespace LibrariansAssistant.ServicesLayer.CommonServices.DataAnnotationModelValidationService;
 
+/// <summary>
+/// Represents the Data Annotation model validation service.
+/// </summary>
 public sealed class DataAnnotationModelValidationService : IDataAnnotationModelValidationService
 {
+    /// <summary>
+    /// Determines whether the specified model is valid.
+    /// </summary>
+    /// <typeparam name="TModel">Type of the model to validate.</typeparam>
+    /// <param name="model">Model to validate.</param>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
     public void Validate<TModel>(TModel model)
     {
         if (model is null)

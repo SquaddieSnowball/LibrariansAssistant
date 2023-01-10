@@ -6,16 +6,29 @@ using LibrariansAssistant.ServicesLayer.CommonServices.DataAnnotationModelValida
 
 namespace LibrariansAssistant.ServicesLayer.ModelServices.Issuing;
 
+/// <summary>
+/// Represents the issuing service.
+/// </summary>
 public sealed class IssuingService : IIssuingService
 {
     private readonly IIssuingRepository _issuingRepository;
     private readonly IDataAnnotationModelValidationService _dataAnnotationModelValidationService;
 
+    /// <summary>
+    /// Initializes a new instance of the IssuingService class.
+    /// </summary>
+    /// <param name="issuingRepository">Issuing repository for management.</param>
+    /// <param name="dataAnnotationModelValidationService">Data Annotation 
+    /// model validation service used to validate models.</param>
     public IssuingService(IIssuingRepository issuingRepository,
         IDataAnnotationModelValidationService dataAnnotationModelValidationService) =>
         (_issuingRepository, _dataAnnotationModelValidationService) =
         (issuingRepository, dataAnnotationModelValidationService);
 
+    /// <summary>
+    /// Adds a new issuing to the repository.
+    /// </summary>
+    /// <param name="issuing">Issuing to add to the repository.</param>
     public void IssuingAdd(IIssuingModel issuing)
     {
         try
@@ -30,6 +43,10 @@ public sealed class IssuingService : IIssuingService
         }
     }
 
+    /// <summary>
+    /// Gets all issuings from the repository.
+    /// </summary>
+    /// <returns>All issuings from the repository.</returns>
     public IEnumerable<IIssuingModel> IssuingGetAll()
     {
         try
@@ -42,6 +59,11 @@ public sealed class IssuingService : IIssuingService
         }
     }
 
+    /// <summary>
+    /// Gets the issuing with the specified ID from the repository.
+    /// </summary>
+    /// <param name="issuingId">Issuing ID.</param>
+    /// <returns>Issuing with the specified ID.</returns>
     public IIssuingModel? IssuingGetById(int issuingId)
     {
         try
@@ -54,6 +76,10 @@ public sealed class IssuingService : IIssuingService
         }
     }
 
+    /// <summary>
+    /// Updates an existing issuing in the repository.
+    /// </summary>
+    /// <param name="issuing">Existing issuing to update.</param>
     public void IssuingUpdate(IIssuingModel issuing)
     {
         try
@@ -68,6 +94,10 @@ public sealed class IssuingService : IIssuingService
         }
     }
 
+    /// <summary>
+    /// Removes an existing issuing from the repository.
+    /// </summary>
+    /// <param name="issuingId">Issuing ID.</param>
     public void IssuingDelete(int issuingId)
     {
         try
@@ -80,6 +110,10 @@ public sealed class IssuingService : IIssuingService
         }
     }
 
+    /// <summary>
+    /// Finds the most active reader.
+    /// </summary>
+    /// <returns>The most active reader.</returns>
     public IReaderModel? ReaderMostActiveGet()
     {
         IEnumerable<IIssuingModel> issuings;
@@ -105,6 +139,10 @@ public sealed class IssuingService : IIssuingService
         return reader;
     }
 
+    /// <summary>
+    /// Finds the most popular author.
+    /// </summary>
+    /// <returns>The most popular author.</returns>
     public IAuthorModel? AuthorMostPopularGet()
     {
         IEnumerable<IIssuingModel> issuings;
@@ -131,6 +169,10 @@ public sealed class IssuingService : IIssuingService
         return author;
     }
 
+    /// <summary>
+    /// Finds the most popular book genre.
+    /// </summary>
+    /// <returns>The most popular book genre.</returns>
     public string? BookMostPopularGenreGet()
     {
         IEnumerable<IIssuingModel> issuings;
