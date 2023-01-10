@@ -4,11 +4,17 @@ using System.Reflection;
 
 namespace LibrariansAssistant.UserInterfaceLayer.Services.CommonServices.Implementations;
 
+/// <summary>
+/// Represents the application configuration service.
+/// </summary>
 internal sealed class ApplicationConfigurationService : IApplicationConfigurationService
 {
     private readonly Settings _settings;
     private readonly IEnumerable<PropertyInfo> _settingPropertyInfos;
 
+    /// <summary>
+    /// Initializes a new instance of the ApplicationConfigurationService class.
+    /// </summary>
     public ApplicationConfigurationService()
     {
         _settings = Settings.Default;
@@ -16,6 +22,12 @@ internal sealed class ApplicationConfigurationService : IApplicationConfiguratio
             .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
     }
 
+    /// <summary>
+    /// Gets the value of the application setting with the specified name.
+    /// </summary>
+    /// <param name="name">Name of the setting.</param>
+    /// <returns>Application setting value.</returns>
+    /// <exception cref="ArgumentException"></exception>
     public object? GetSettingValue(string name)
     {
         if (string.IsNullOrEmpty(name) is true)
@@ -28,6 +40,12 @@ internal sealed class ApplicationConfigurationService : IApplicationConfiguratio
         throw new ArgumentException($"The setting with the \"{name}\" name does not exist.", nameof(name));
     }
 
+    /// <summary>
+    /// Updates the application setting with the specified name.
+    /// </summary>
+    /// <param name="name">Name of the setting.</param>
+    /// <param name="value">Setting value.</param>
+    /// <exception cref="ArgumentException"></exception>
     public void UpdateSettingValue(string name, object? value)
     {
         if (string.IsNullOrEmpty(name) is true)
@@ -67,6 +85,12 @@ internal sealed class ApplicationConfigurationService : IApplicationConfiguratio
         throw new ArgumentException($"The setting with the \"{name}\" name does not exist.", nameof(name));
     }
 
+    /// <summary>
+    /// Gets the values of the application settings with the specified names.
+    /// </summary>
+    /// <param name="names">Names of the setting.</param>
+    /// <returns>Application settings values.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public IEnumerable<object?> GetSettingsValues(IEnumerable<string> names)
     {
         if (names is null)
@@ -76,6 +100,12 @@ internal sealed class ApplicationConfigurationService : IApplicationConfiguratio
             yield return GetSettingValue(name);
     }
 
+    /// <summary>
+    /// Updates the application settings with the specified names.
+    /// </summary>
+    /// <param name="nameValuePairs">Name-value pairs.</param>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
     public void UpdateSettingsValues(IEnumerable<KeyValuePair<string, object?>> nameValuePairs)
     {
         if (nameValuePairs is null)

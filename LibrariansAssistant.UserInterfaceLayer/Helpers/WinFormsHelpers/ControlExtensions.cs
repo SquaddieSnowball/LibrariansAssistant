@@ -1,7 +1,19 @@
 ﻿namespace LibrariansAssistant.UserInterfaceLayer.Helpers.WinFormsHelpers;
 
+/// <summary>
+/// Provides methods for extending the functionality of controls.
+/// </summary>
 internal static class ControlExtensions
 {
+    /// <summary>
+    /// Sorts a data source containing a list of objects.
+    /// </summary>
+    /// <param name="dataGridView">Instance of the DataGridView class for sorting.</param>
+    /// <param name="columnIndex">Index of the column to sort by.</param>
+    /// <param name="dataIsAscSortDirection">Value indicating whether ascending sorting should be applied.</param>
+    /// <param name="dataPrevSortColumnIndex">Index of the previous sorted column.</param>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="InvalidOperationException"></exception>
     internal static void SortDataSourceObjectList(this DataGridView dataGridView,
         int columnIndex, ref bool dataIsAscSortDirection, ref int dataPrevSortColumnIndex)
     {

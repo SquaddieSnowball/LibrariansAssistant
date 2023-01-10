@@ -3,6 +3,9 @@ using LibrariansAssistant.UserInterfaceLayer.Helpers.WinFormsHelpers;
 
 namespace LibrariansAssistant.UserInterfaceLayer.Views.WinFormsViews;
 
+/// <summary>
+/// Represents the Pick Items view of the application.
+/// </summary>
 internal sealed partial class PickItemsView : Form
 {
     private readonly Button _buttonPlus;
@@ -14,8 +17,14 @@ internal sealed partial class PickItemsView : Form
     private bool _dataIsAscSortDirection = true;
     private int _dataPrevSortColumnIndex = -1;
 
+    /// <summary>
+    /// Gets the main control of the view.
+    /// </summary>
     internal Control MainControl { get; }
 
+    /// <summary>
+    /// Get or sets the items of the view.
+    /// </summary>
     internal Dictionary<int, string?>? Items
     {
         get => _items;
@@ -27,6 +36,9 @@ internal sealed partial class PickItemsView : Form
         }
     }
 
+    /// <summary>
+    /// Get or sets the title of the items.
+    /// </summary>
     internal string? ItemsTitle
     {
         get => _itemsTitle;
@@ -38,8 +50,15 @@ internal sealed partial class PickItemsView : Form
         }
     }
 
+    /// <summary>
+    /// Gets the IDs of the picked items.
+    /// </summary>
     internal IEnumerable<int> PickedItemIds { get; } = new List<int>();
 
+    /// <summary>
+    /// Initializes a new instance of the PickItemsView class.
+    /// </summary>
+    /// <param name="isMultipick">A value indicating whether multiple items can be selected.</param>
     internal PickItemsView(bool isMultipick)
     {
         _isMultipick = isMultipick;
@@ -50,6 +69,10 @@ internal sealed partial class PickItemsView : Form
         UpdateView();
     }
 
+    /// <summary>
+    /// Select or deselect all items.
+    /// </summary>
+    /// <param name="pick">true to select all items; otherwise - false.</param>
     internal void ChangeAllItemsState(bool pick)
     {
         for (var i = 0; i < dataGridViewItems.Rows.Count; i++)
@@ -63,6 +86,11 @@ internal sealed partial class PickItemsView : Form
         UpdatePickedItems();
     }
 
+    /// <summary>
+    /// Select or deselect items.
+    /// </summary>
+    /// <param name="ids">Item IDs.</param>
+    /// <param name="pick">true to select items; otherwise - false.</param>
     internal void ChangeItemsState(IEnumerable<int> ids, bool pick)
     {
         foreach (int id in ids)

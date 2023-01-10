@@ -1,5 +1,8 @@
 ﻿namespace LibrariansAssistant.UserInterfaceLayer.Entities.WinFormsEntities;
 
+/// <summary>
+/// Represents a view type.
+/// </summary>
 internal enum ViewType
 {
     Issuings = 1,

@@ -1,9 +1,19 @@
 ﻿namespace LibrariansAssistant.UserInterfaceLayer.Helpers.WinFormsHelpers.Renderers;
 
+/// <summary>
+/// Represents the renderer for the Main view's MenuStrip.
+/// </summary>
 internal sealed class MenuStripMainRenderer : ToolStripProfessionalRenderer
 {
+    /// <summary>
+    /// Initializes a new instance of the MenuStripMainRenderer class.
+    /// </summary>
     internal MenuStripMainRenderer() : base() { }
 
+    /// <summary>
+    /// Initializes a new instance of the MenuStripMainRenderer class with the specified color table.
+    /// </summary>
+    /// <param name="professionalColorTable">Color table.</param>
     internal MenuStripMainRenderer(ProfessionalColorTable professionalColorTable) : base(professionalColorTable) { }
 
     protected override void OnRenderArrow(ToolStripArrowRenderEventArgs e)

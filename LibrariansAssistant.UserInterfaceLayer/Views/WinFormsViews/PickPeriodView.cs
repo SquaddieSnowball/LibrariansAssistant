@@ -3,6 +3,9 @@ using LibrariansAssistant.UserInterfaceLayer.Services.WinFormsServices.Implement
 
 namespace LibrariansAssistant.UserInterfaceLayer.Views.WinFormsViews;
 
+/// <summary>
+/// Represents the Pick Period view of the application.
+/// </summary>
 internal sealed partial class PickPeriodView : Form
 {
     private readonly WinFormsMessageService _winFormsMessageService = new();
@@ -10,14 +13,29 @@ internal sealed partial class PickPeriodView : Form
     private readonly Button _buttonPick;
     private Dictionary<int, string> _periodColumnIndexNames = new();
 
+    /// <summary>
+    /// Gets the main control of the view.
+    /// </summary>
     internal Control MainControl { get; }
 
+    /// <summary>
+    /// Get the start period.
+    /// </summary>
     internal DateTime? StartPeriod { get; private set; }
 
+    /// <summary>
+    /// Get the end period.
+    /// </summary>
     internal DateTime? EndPeriod { get; private set; }
 
+    /// <summary>
+    /// Gets the index of the column to which to apply the period.
+    /// </summary>
     internal int? PeriodColumnIndex { get; private set; }
 
+    /// <summary>
+    /// Gets or sets the names of the columns to which the period can be applied.
+    /// </summary>
     internal Dictionary<int, string> PeriodColumnIndexNames
     {
         get => _periodColumnIndexNames;
@@ -35,8 +53,14 @@ internal sealed partial class PickPeriodView : Form
         }
     }
 
+    /// <summary>
+    /// Occurs when the period is set.
+    /// </summary>
     internal event EventHandler? PeriodSet;
 
+    /// <summary>
+    /// Initializes a new instance of the PickPeriodView class.
+    /// </summary>
     internal PickPeriodView()
     {
         MainControl = ControlCreation.PickPeriodCreateTableLayoutPanel(out _labelPickedPeriod, out _buttonPick);

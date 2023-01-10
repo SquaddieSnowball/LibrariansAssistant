@@ -1,7 +1,14 @@
 ﻿namespace LibrariansAssistant.UserInterfaceLayer.Helpers.WinFormsHelpers;
 
+/// <summary>
+/// Provides methods for creating controls.
+/// </summary>
 internal static class ControlCreation
 {
+    /// <summary>
+    /// Creates a start message Label for the Main view.
+    /// </summary>
+    /// <returns>New instance of the Label class.</returns>
     internal static Label MainCreateLabelStartMessage() =>
         new()
         {
@@ -13,6 +20,10 @@ internal static class ControlCreation
             TextAlign = ContentAlignment.MiddleCenter
         };
 
+    /// <summary>
+    /// Creates an items absence Label for the Main view.
+    /// </summary>
+    /// <returns>New instance of the Label class.</returns>
     internal static Label MainCreateLabelDataNoItems() =>
         new()
         {
@@ -24,6 +35,11 @@ internal static class ControlCreation
             TextAlign = ContentAlignment.MiddleCenter
         };
 
+    /// <summary>
+    /// Creates an action Button for the Main view.
+    /// </summary>
+    /// <param name="text">Button text.</param>
+    /// <returns>New instance of the Button class.</returns>
     internal static Button MainCreateActionButton(string text) =>
         new()
         {
@@ -33,12 +49,21 @@ internal static class ControlCreation
             Text = text
         };
 
+    /// <summary>
+    /// Creates a Label for the Add/Edit Item view.
+    /// </summary>
+    /// <param name="text">Label text.</param>
+    /// <returns>New instance of the Label class.</returns>
     internal static Label AddEditCreateLabel(string text) =>
         new()
         {
             Text = text
         };
 
+    /// <summary>
+    /// Creates a TextBox for the Add/Edit Item view.
+    /// </summary>
+    /// <returns>New instance of the TextBox class.</returns>
     internal static TextBox AddEditCreateTextBox() =>
         new()
         {
@@ -48,12 +73,21 @@ internal static class ControlCreation
             Width = 130
         };
 
+    /// <summary>
+    /// Creates a CheckBox for the Add/Edit Item view.
+    /// </summary>
+    /// <param name="text">CheckBox text.</param>
+    /// <returns>New instance of the CheckBox class.</returns>
     internal static CheckBox AddEditCreateCheckBox(string text) =>
         new()
         {
             Text = text
         };
 
+    /// <summary>
+    /// Creates a NumericUpDown for the Add/Edit Item view.
+    /// </summary>
+    /// <returns>New instance of the NumericUpDown class.</returns>
     internal static NumericUpDown AddEditCreateNumericUpDown() =>
         new()
         {
@@ -65,6 +99,10 @@ internal static class ControlCreation
             Width = 50
         };
 
+    /// <summary>
+    /// Creates a DateTimePicker for the Add/Edit Item view.
+    /// </summary>
+    /// <returns>New instance of the DateTimePicker class.</returns>
     internal static DateTimePicker AddEditCreateDateTimePicker() =>
         new()
         {
@@ -74,6 +112,12 @@ internal static class ControlCreation
             Width = 130
         };
 
+    /// <summary>
+    /// Creates a main control for the Pick Items view.
+    /// </summary>
+    /// <param name="buttonPlus">Instance of the Button class that opens the view.</param>
+    /// <param name="labelPicked">Instance of the Label class that shows the number of items picked.</param>
+    /// <returns>New instance of the TableLayoutPanel class.</returns>
     internal static TableLayoutPanel PickItemsCreateTableLayoutPanel(out Button buttonPlus, out Label labelPicked)
     {
         buttonPlus = new Button()
@@ -111,6 +155,12 @@ internal static class ControlCreation
         return tableLayoutPanel;
     }
 
+    /// <summary>
+    /// Creates a main control for the Pick Period view.
+    /// </summary>
+    /// <param name="labelPickedPeriod">Instance of the Label class that shows the picked period.</param>
+    /// <param name="buttonPick">Instance of the Button class that opens the view.</param>
+    /// <returns>New instance of the TableLayoutPanel class.</returns>
     internal static TableLayoutPanel PickPeriodCreateTableLayoutPanel(out Label labelPickedPeriod, out Button buttonPick)
     {
         Label labelPeriod = new()
@@ -159,6 +209,11 @@ internal static class ControlCreation
         return tableLayoutPanel;
     }
 
+    /// <summary>
+    /// Creates a TableLayoutPanel for the Settings view that contains the control.
+    /// </summary>
+    /// <param name="control">Control to place inside the TableLayoutPanel.</param>
+    /// <returns>New instance of the TableLayoutPanel class.</returns>
     internal static TableLayoutPanel SettingsCreateControlTableLayoutPanel(Control control)
     {
         TableLayoutPanel tableLayoutPanel = new()
@@ -176,6 +231,12 @@ internal static class ControlCreation
         return tableLayoutPanel;
     }
 
+    /// <summary>
+    /// Creates a TableLayoutPanel for the Settings view that contains the control and label.
+    /// </summary>
+    /// <param name="label">Label to place inside the TableLayoutPanel.</param>
+    /// <param name="control">Control to place inside the TableLayoutPanel.</param>
+    /// <returns>New instance of the TableLayoutPanel class.</returns>
     internal static TableLayoutPanel SettingsCreateLabelControlTableLayoutPanel(Label label, Control control)
     {
         TableLayoutPanel tableLayoutPanel = new()
@@ -195,6 +256,11 @@ internal static class ControlCreation
         return tableLayoutPanel;
     }
 
+    /// <summary>
+    /// Creates a Label for the Settings view.
+    /// </summary>
+    /// <param name="text">Label text.</param>
+    /// <returns>New instance of the Label class.</returns>
     internal static Label SettingsCreateLabel(string text) =>
         new()
         {
@@ -204,6 +270,10 @@ internal static class ControlCreation
             Text = text
         };
 
+    /// <summary>
+    /// Creates a TextBox for the Settings view.
+    /// </summary>
+    /// <returns>New instance of the TextBox class.</returns>
     internal static TextBox SettingsCreateTextBox() =>
         new()
         {
@@ -215,6 +285,11 @@ internal static class ControlCreation
             Width = 180
         };
 
+    /// <summary>
+    /// Creates a CheckBox for the Settings view.
+    /// </summary>
+    /// <param name="text">CheckBox text.</param>
+    /// <returns>New instance of the CheckBox class.</returns>
     internal static CheckBox SettingsCreateCheckBox(string text) =>
         new()
         {

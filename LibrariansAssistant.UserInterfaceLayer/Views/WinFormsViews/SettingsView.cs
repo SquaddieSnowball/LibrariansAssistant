@@ -14,6 +14,9 @@ using LibrariansAssistant.UserInterfaceLayer.Services.WinFormsServices.Implement
 
 namespace LibrariansAssistant.UserInterfaceLayer.Views.WinFormsViews;
 
+/// <summary>
+/// Represents the Settings view of the application.
+/// </summary>
 internal sealed partial class SettingsView : Form
 {
     private const int FormDefaultHeight = 195;
@@ -24,16 +27,34 @@ internal sealed partial class SettingsView : Form
     private readonly Dictionary<string, object?> _modifiedSettings = new();
     private SettingsGroup _selectedSettingsGroup;
 
+    /// <summary>
+    /// Gets the selected repository type.
+    /// </summary>
     internal RepositoryType SelectedRepositoryType { get; } = RepositoryType.SqlServer;
 
-    internal string? InfranstructureCreatorInitializationString { get; private set; }
+    /// <summary>
+    /// Gets the infrastructure creator initialization string.
+    /// </summary>
+    internal string? InfrastructureCreatorInitializationString { get; private set; }
 
+    /// <summary>
+    /// Gets the repository initialization string.
+    /// </summary>
     internal string? RepositoryInitializationString { get; private set; }
 
+    /// <summary>
+    /// Gets the repository instance.
+    /// </summary>
     internal IRepository? Repository { get; private set; }
 
+    /// <summary>
+    /// Gets a value indicating whether to create an empty database if it does not exist.
+    /// </summary>
     internal bool SettingCreateEmptyDatabase { get; private set; }
 
+    /// <summary>
+    /// Initializes a new instance of the SettingsView class.
+    /// </summary>
     internal SettingsView()
     {
         InitializeComponent();
@@ -98,7 +119,7 @@ internal sealed partial class SettingsView : Form
                 };
 
                 initializationStringBuilder = new SqlServerInitializationStringBuilder(infranstructureCreatorIsbSettings);
-                InfranstructureCreatorInitializationString = initializationStringBuilder.Build();
+                InfrastructureCreatorInitializationString = initializationStringBuilder.Build();
                 initializationStringBuilder = new SqlServerInitializationStringBuilder(repositoryIsbSettings);
                 RepositoryInitializationString = initializationStringBuilder.Build();
 

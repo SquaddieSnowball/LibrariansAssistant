@@ -13,8 +13,14 @@ using LibrariansAssistant.UserInterfaceLayer.Services.CommonServices.Interfaces;
 
 namespace LibrariansAssistant.UserInterfaceLayer;
 
+/// <summary>
+/// Represents the dependencies configurator.
+/// </summary>
 internal static class DependenciesConfiguration
 {
+    /// <summary>
+    /// Configures project dependencies.
+    /// </summary>
     internal static void Configure()
     {
         DependenciesContainer.Register<IAuthorModel, AuthorModel>();

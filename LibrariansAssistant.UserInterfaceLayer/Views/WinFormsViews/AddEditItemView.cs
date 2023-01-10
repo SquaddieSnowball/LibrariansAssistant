@@ -1,31 +1,34 @@
 ﻿namespace LibrariansAssistant.UserInterfaceLayer.Views.WinFormsViews;
 
+/// <summary>
+/// Represents the Add/Edit Item view of the application.
+/// </summary>
 internal sealed partial class AddEditItemView : Form
 {
+    /// <summary>
+    /// Gets or sets the title of the fields.
+    /// </summary>
     internal string FieldsTitle
     {
         get => groupBoxFields.Text;
         set => groupBoxFields.Text = value;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the AddEditItemView class.
+    /// </summary>
     internal AddEditItemView()
     {
         InitializeComponent();
         SubscribeToControlEvents();
     }
 
-    private void SubscribeToControlEvents()
-    {
-        buttonConfirm.Click += ButtonConfirmOnClick;
-    }
-
-    private void ButtonConfirmOnClick(object? sender, EventArgs e)
-    {
-        DialogResult = DialogResult.OK;
-
-        Close();
-    }
-
+    /// <summary>
+    /// Adds a new field to the view.
+    /// </summary>
+    /// <param name="name">Field name.</param>
+    /// <param name="control">Field control.</param>
+    /// <returns>Current instance of the AddEditItemView object.</returns>
     internal AddEditItemView AddField(string name, Control control)
     {
         Label labelName = new()
@@ -51,5 +54,17 @@ internal sealed partial class AddEditItemView : Form
         tableLayoutPanelFields.RowCount++;
 
         return this;
+    }
+
+    private void SubscribeToControlEvents()
+    {
+        buttonConfirm.Click += ButtonConfirmOnClick;
+    }
+
+    private void ButtonConfirmOnClick(object? sender, EventArgs e)
+    {
+        DialogResult = DialogResult.OK;
+
+        Close();
     }
 }
