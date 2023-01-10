@@ -17,6 +17,9 @@ using LibrariansAssistant.ServicesLayer.ModelServices.Reader;
 
 namespace LibrariansAssistant.PresentationLayer.Presenters.Implementations.WinFormsViewPresenters;
 
+/// <summary>
+/// Represents the presenter that controls the MainView.
+/// </summary>
 public sealed class MainViewPresenter : IPresenter
 {
     private readonly IMainView _mainView;
@@ -26,6 +29,13 @@ public sealed class MainViewPresenter : IPresenter
     private readonly IDataAnnotationModelValidationService _dataAnnotationModelValidationService =
         DependenciesContainer.Resolve<IDataAnnotationModelValidationService>()!;
 
+    /// <summary>
+    /// Initializes a new instance of the MainViewPresenter class.
+    /// </summary>
+    /// <param name="mainView">Instance of the MainView class to manage.</param>
+    /// <param name="repository">The repository used to store view data.</param>
+    /// <param name="messageService">Message service for passing messages to the view.</param>
+    /// <param name="initializationString">Initialization string to initialize the repository.</param>
     public MainViewPresenter(IMainView mainView, IRepository repository,
         IMessageService messageService, string initializationString)
     {
@@ -44,6 +54,9 @@ public sealed class MainViewPresenter : IPresenter
         SubscribeToViewEvents();
     }
 
+    /// <summary>
+    /// Runs the view controlled by the current presenter.
+    /// </summary>
     public void RunView() =>
         _mainView.Show();
 
