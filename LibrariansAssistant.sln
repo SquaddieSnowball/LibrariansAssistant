@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibrariansAssistant.DomainModelLayer", "LibrariansAssistant.DomainModelLayer\LibrariansAssistant.DomainModelLayer.csproj", "{B3747587-68EE-4E44-B5B0-89C8AD78B437}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibrariansAssistant.InfranstructureLayer", "LibrariansAssistant.InfranstructureLayer\LibrariansAssistant.InfranstructureLayer.csproj", "{8EE65A24-1586-42E2-831D-7074CCC27A36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibrariansAssistant.InfrastructureLayer", "LibrariansAssistant.InfrastructureLayer\LibrariansAssistant.InfrastructureLayer.csproj", "{8EE65A24-1586-42E2-831D-7074CCC27A36}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibrariansAssistant.ServicesLayer", "LibrariansAssistant.ServicesLayer\LibrariansAssistant.ServicesLayer.csproj", "{D76E0534-2537-4997-A46D-502BDAC02468}"
 EndProject
@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibrariansAssistant.Depende
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3A190BEB-AEF3-4D4E-BADB-A293A762FBA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibrariansAssistant.ServicesLayer.Tests", "LibrariansAssistant.ServicesLayer.Tests\LibrariansAssistant.ServicesLayer.Tests.csproj", "{D3C23037-51DC-46D7-8773-44A7FE358BEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibrariansAssistant.ServicesLayer.Tests", "LibrariansAssistant.ServicesLayer.Tests\LibrariansAssistant.ServicesLayer.Tests.csproj", "{D3C23037-51DC-46D7-8773-44A7FE358BEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

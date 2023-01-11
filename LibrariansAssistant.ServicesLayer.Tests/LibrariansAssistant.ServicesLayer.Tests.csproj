@@ -18,7 +18,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\LibrariansAssistant.DependenciesLayer\LibrariansAssistant.DependenciesLayer.csproj" />
 		<ProjectReference Include="..\LibrariansAssistant.DomainModelLayer\LibrariansAssistant.DomainModelLayer.csproj" />
-		<ProjectReference Include="..\LibrariansAssistant.InfranstructureLayer\LibrariansAssistant.InfranstructureLayer.csproj" />
+		<ProjectReference Include="..\LibrariansAssistant.InfrastructureLayer\LibrariansAssistant.InfrastructureLayer.csproj" />
 		<ProjectReference Include="..\LibrariansAssistant.ServicesLayer\LibrariansAssistant.ServicesLayer.csproj" />
 	</ItemGroup>
 

@@ -12,7 +12,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\LibrariansAssistant.DomainModelLayer\LibrariansAssistant.DomainModelLayer.csproj" />
-		<ProjectReference Include="..\LibrariansAssistant.InfranstructureLayer\LibrariansAssistant.InfranstructureLayer.csproj" />
+		<ProjectReference Include="..\LibrariansAssistant.InfrastructureLayer\LibrariansAssistant.InfrastructureLayer.csproj" />
 	</ItemGroup>
 
 </Project>

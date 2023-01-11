@@ -1,5 +1,5 @@
 ﻿using LibrariansAssistant.DomainModelLayer.Models.Author;
-using LibrariansAssistant.InfranstructureLayer.Repositories.Interfaces;
+using LibrariansAssistant.InfrastructureLayer.Repositories.Interfaces;
 using LibrariansAssistant.ServicesLayer.CommonServices.DataAnnotationModelValidationService;
 
 namespace LibrariansAssistant.ServicesLayer.ModelServices.Author;

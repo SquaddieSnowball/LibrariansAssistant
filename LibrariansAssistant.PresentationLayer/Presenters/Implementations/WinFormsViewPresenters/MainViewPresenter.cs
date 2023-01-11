@@ -3,7 +3,7 @@ using LibrariansAssistant.DomainModelLayer.Models.Author;
 using LibrariansAssistant.DomainModelLayer.Models.Book;
 using LibrariansAssistant.DomainModelLayer.Models.Issuing;
 using LibrariansAssistant.DomainModelLayer.Models.Reader;
-using LibrariansAssistant.InfranstructureLayer.Repositories.Interfaces;
+using LibrariansAssistant.InfrastructureLayer.Repositories.Interfaces;
 using LibrariansAssistant.PresentationLayer.ViewInterfaces.WinFormsViewInterfaces;
 using LibrariansAssistant.PresentationLayer.ViewServiceInterfaces;
 using LibrariansAssistant.ServicesLayer.CommonServices.DataAnnotationModelValidationService;
@@ -33,7 +33,7 @@ public sealed class MainViewPresenter : IPresenter
     /// Initializes a new instance of the MainViewPresenter class.
     /// </summary>
     /// <param name="mainView">Instance of the MainView class to manage.</param>
-    /// <param name="repository">The repository used to store view data.</param>
+    /// <param name="repository">Repository used to store view data.</param>
     /// <param name="messageService">Message service for passing messages to the view.</param>
     /// <param name="initializationString">Initialization string to initialize the repository.</param>
     public MainViewPresenter(IMainView mainView, IRepository repository,

@@ -1,4 +1,4 @@
-﻿using LibrariansAssistant.InfranstructureLayer.Repositories.Interfaces;
+﻿using LibrariansAssistant.InfrastructureLayer.Repositories.Interfaces;
 
 namespace LibrariansAssistant.ServicesLayer.ModelServices.Book;
 

@@ -36,7 +36,7 @@ public static class DependenciesContainer
     /// </summary>
     /// <typeparam name="T">The abstract type to get the concrete type from.</typeparam>
     /// <param name="ctorArgs">Parameters that will be passed to the constructor when creating an object of a concrete type.</param>
-    /// <returns>An object of a concrete type.</returns>
+    /// <returns>Object of a concrete type.</returns>
     /// <exception cref="ArgumentException"></exception>
     public static T? Resolve<T>(params object?[]? ctorArgs)
     {

@@ -3,7 +3,7 @@ using LibrariansAssistant.DomainModelLayer.Models.Author;
 using LibrariansAssistant.DomainModelLayer.Models.Book;
 using LibrariansAssistant.DomainModelLayer.Models.Issuing;
 using LibrariansAssistant.DomainModelLayer.Models.Reader;
-using LibrariansAssistant.InfranstructureLayer.Repositories.Interfaces;
+using LibrariansAssistant.InfrastructureLayer.Repositories.Interfaces;
 
 namespace LibrariansAssistant.ServicesLayer.Tests.Mocks;
 

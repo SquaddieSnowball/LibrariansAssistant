@@ -1,6 +1,6 @@
 ﻿using LibrariansAssistant.DomainModelLayer.Models.Author;
 using LibrariansAssistant.DomainModelLayer.Models.Reader;
-using LibrariansAssistant.InfranstructureLayer.Repositories.Interfaces;
+using LibrariansAssistant.InfrastructureLayer.Repositories.Interfaces;
 
 namespace LibrariansAssistant.ServicesLayer.ModelServices.Issuing;
 

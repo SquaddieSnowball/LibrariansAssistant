@@ -1,5 +1,5 @@
-﻿using LibrariansAssistant.InfranstructureLayer.InfranstructureCreators;
-using LibrariansAssistant.InfranstructureLayer.InfranstructureCreators.Implementations;
+﻿using LibrariansAssistant.InfrastructureLayer.InfrastructureCreators;
+using LibrariansAssistant.InfrastructureLayer.InfrastructureCreators.Implementations;
 using LibrariansAssistant.PresentationLayer.Presenters.Implementations.WinFormsViewPresenters;
 using LibrariansAssistant.PresentationLayer.ViewInterfaces.WinFormsViewInterfaces;
 using LibrariansAssistant.UserInterfaceLayer.Entities.WinFormsEntities;
@@ -272,9 +272,9 @@ internal sealed partial class MainView : Form, IMainView
         {
             if (settingsView.SettingCreateEmptyDatabase is true)
             {
-                IInfranstructureCreator infrastructureCreator = settingsView.SelectedRepositoryType switch
+                IInfrastructureCreator infrastructureCreator = settingsView.SelectedRepositoryType switch
                 {
-                    Entities.RepositoryType.SqlServer => new SqlServerInfranstructureCreator(),
+                    Entities.RepositoryType.SqlServer => new SqlServerInfrastructureCreator(),
                     _ => throw new NotImplementedException("This infrastructure creator has not yet been implemented."),
                 };
 
