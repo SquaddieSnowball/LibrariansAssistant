@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibrariansAssistant.Present
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibrariansAssistant.UserInterfaceLayer", "LibrariansAssistant.UserInterfaceLayer\LibrariansAssistant.UserInterfaceLayer.csproj", "{0496B863-666E-448F-9396-5F36AB62825E}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "LibrariansAssistant.LibraryDatabase", "LibrariansAssistant.LibraryDatabase\LibrariansAssistant.LibraryDatabase.sqlproj", "{30245BC9-530D-43AF-9E9B-B8C4AE3D2A9A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibrariansAssistant.DependenciesLayer", "LibrariansAssistant.DependenciesLayer\LibrariansAssistant.DependenciesLayer.csproj", "{2DB0A28E-EF79-44E5-8D2B-6DF0CCF65C35}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3A190BEB-AEF3-4D4E-BADB-A293A762FBA8}"
@@ -47,12 +45,6 @@ Global
 		{0496B863-666E-448F-9396-5F36AB62825E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0496B863-666E-448F-9396-5F36AB62825E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0496B863-666E-448F-9396-5F36AB62825E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{30245BC9-530D-43AF-9E9B-B8C4AE3D2A9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{30245BC9-530D-43AF-9E9B-B8C4AE3D2A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{30245BC9-530D-43AF-9E9B-B8C4AE3D2A9A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{30245BC9-530D-43AF-9E9B-B8C4AE3D2A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{30245BC9-530D-43AF-9E9B-B8C4AE3D2A9A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{30245BC9-530D-43AF-9E9B-B8C4AE3D2A9A}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{2DB0A28E-EF79-44E5-8D2B-6DF0CCF65C35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2DB0A28E-EF79-44E5-8D2B-6DF0CCF65C35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DB0A28E-EF79-44E5-8D2B-6DF0CCF65C35}.Release|Any CPU.ActiveCfg = Release|Any CPU
