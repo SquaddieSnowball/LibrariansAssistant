@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\LibrariansAssistant.Dependencies\LibrariansAssistant.Dependencies.csproj" />
+		<ProjectReference Include="..\LibrariansAssistant.Domain\LibrariansAssistant.Domain.csproj" />
+		<ProjectReference Include="..\LibrariansAssistant.Infrastructure\LibrariansAssistant.Infrastructure.csproj" />
+		<ProjectReference Include="..\LibrariansAssistant.Services\LibrariansAssistant.Services.csproj" />
+	</ItemGroup>
+
+</Project>
