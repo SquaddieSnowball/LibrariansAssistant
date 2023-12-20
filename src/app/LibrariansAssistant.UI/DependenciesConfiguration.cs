@@ -1,15 +1,12 @@
 ﻿using LibrariansAssistant.Dependencies;
-using LibrariansAssistant.Domain.Models.Author;
-using LibrariansAssistant.Domain.Models.Book;
-using LibrariansAssistant.Domain.Models.Issuing;
-using LibrariansAssistant.Domain.Models.Reader;
-using LibrariansAssistant.Services.CommonServices.DataAnnotationModelValidationService;
-using LibrariansAssistant.Services.ModelServices.Author;
-using LibrariansAssistant.Services.ModelServices.Book;
-using LibrariansAssistant.Services.ModelServices.Issuing;
-using LibrariansAssistant.Services.ModelServices.Reader;
-using LibrariansAssistant.UI.Services.CommonServices.Implementations;
-using LibrariansAssistant.UI.Services.CommonServices.Interfaces;
+using LibrariansAssistant.Domain.Models.Abstractions;
+using LibrariansAssistant.Domain.Models.Implementations;
+using LibrariansAssistant.Services.Common.Abstractions;
+using LibrariansAssistant.Services.Common.Implementations;
+using LibrariansAssistant.Services.Model.Abstractions;
+using LibrariansAssistant.Services.Model.Implementations;
+using LibrariansAssistant.UI.Services.Abstractions;
+using LibrariansAssistant.UI.Services.Implementations;
 
 namespace LibrariansAssistant.UI;
 

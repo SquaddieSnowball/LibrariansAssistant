@@ -1,4 +1,4 @@
-using LibrariansAssistant.UI.Views.WinFormsViews;
+using LibrariansAssistant.UI.Views;
 
 namespace LibrariansAssistant.UI;
 

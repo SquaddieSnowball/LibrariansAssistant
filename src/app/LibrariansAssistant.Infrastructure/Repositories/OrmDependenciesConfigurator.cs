@@ -1,5 +1,5 @@
 ﻿using LibrariansAssistant.Dependencies;
-using LibrariansAssistant.Infrastructure.ObjectRelationalMappers;
+using LibrariansAssistant.Infrastructure.Services.Abstractions;
 using System.Reflection;
 
 namespace LibrariansAssistant.Infrastructure.Repositories;

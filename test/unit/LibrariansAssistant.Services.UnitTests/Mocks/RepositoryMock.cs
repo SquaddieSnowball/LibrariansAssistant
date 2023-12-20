@@ -1,9 +1,6 @@
 ﻿using LibrariansAssistant.Dependencies;
-using LibrariansAssistant.Domain.Models.Author;
-using LibrariansAssistant.Domain.Models.Book;
-using LibrariansAssistant.Domain.Models.Issuing;
-using LibrariansAssistant.Domain.Models.Reader;
-using LibrariansAssistant.Infrastructure.Repositories.Interfaces;
+using LibrariansAssistant.Domain.Models.Abstractions;
+using LibrariansAssistant.Infrastructure.Repositories.Abstractions;
 
 namespace LibrariansAssistant.Services.UnitTests.Mocks;
 

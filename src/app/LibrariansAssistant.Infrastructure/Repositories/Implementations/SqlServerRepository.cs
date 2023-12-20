@@ -1,10 +1,7 @@
-﻿using LibrariansAssistant.Domain.Models.Author;
-using LibrariansAssistant.Domain.Models.Book;
-using LibrariansAssistant.Domain.Models.Issuing;
-using LibrariansAssistant.Domain.Models.Reader;
-using LibrariansAssistant.Infrastructure.ObjectRelationalMappers.Entities;
-using LibrariansAssistant.Infrastructure.ObjectRelationalMappers.Implementations;
-using LibrariansAssistant.Infrastructure.Repositories.Interfaces;
+﻿using LibrariansAssistant.Domain.Models.Abstractions;
+using LibrariansAssistant.Infrastructure.Repositories.Abstractions;
+using LibrariansAssistant.Infrastructure.Services.Entities.ObjectRelationalMapper;
+using LibrariansAssistant.Infrastructure.Services.Implementations.ObjectRelationalMapper;
 using System.Text;
 
 namespace LibrariansAssistant.Infrastructure.Repositories.Implementations;
@@ -14,7 +11,7 @@ namespace LibrariansAssistant.Infrastructure.Repositories.Implementations;
 /// </summary>
 public sealed class SqlServerRepository : IRepository
 {
-    private SqlServerOrm? _sqlServerOrm;
+    private SqlServerObjectRelationalMapper? _sqlServerObjectRelationalMapper;
 
     /// <summary>
     /// Initializes the repositories using the specified initialization string.
@@ -29,9 +26,9 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _sqlServerOrm = new SqlServerOrm(initializationString);
+            _sqlServerObjectRelationalMapper = new SqlServerObjectRelationalMapper(initializationString);
 
-            OrmDependenciesConfigurator.Configure(_sqlServerOrm);
+            OrmDependenciesConfigurator.Configure(_sqlServerObjectRelationalMapper);
         }
         catch
         {
@@ -46,18 +43,18 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public void AuthorAdd(IAuthorModel author)
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
         try
         {
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .AddParameter("FirstName", author.FirstName)
                 .AddParameter("LastName", author.LastName)
                 .AddParameter("Patronymic", author.Patronymic);
 
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .ExecuteNonQuery(
 
                 "INSERT INTO authors (first_name, last_name, patronymic) " +
@@ -80,7 +77,7 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public IEnumerable<IAuthorModel> AuthorGetAll()
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
@@ -88,7 +85,7 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            authors = _sqlServerOrm
+            authors = _sqlServerObjectRelationalMapper
                 .ExecuteQuery<IAuthorModel>(
 
                 "SELECT * " +
@@ -118,7 +115,7 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public IAuthorModel? AuthorGetById(int authorId)
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
@@ -126,10 +123,10 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .AddParameter("Id", authorId);
 
-            author = _sqlServerOrm
+            author = _sqlServerObjectRelationalMapper
                 .ExecuteQuery<IAuthorModel>(
 
                 "SELECT * " +
@@ -160,19 +157,19 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public void AuthorUpdate(IAuthorModel author)
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
         try
         {
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .AddParameter("Id", author.Id)
                 .AddParameter("FirstName", author.FirstName)
                 .AddParameter("LastName", author.LastName)
                 .AddParameter("Patronymic", author.Patronymic);
 
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .ExecuteNonQuery(
 
                 "UPDATE authors " +
@@ -198,16 +195,16 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public void AuthorDelete(int authorId)
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
         try
         {
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .AddParameter("Id", authorId);
 
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .ExecuteNonQuery(
 
                 "DELETE " +
@@ -218,7 +215,7 @@ public sealed class SqlServerRepository : IRepository
 
                 );
 
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .ExecuteNonQuery(
 
                 "DELETE " +
@@ -246,20 +243,20 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public void BookAdd(IBookModel book)
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
         try
         {
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .AddParameter("Title", book.Title)
                 .AddParameter("Genre", book.Genre);
 
             IAuthorModel[] authors = book.Authors.ToArray();
 
             for (var i = 0; i < authors.Length; i++)
-                _ = _sqlServerOrm.AddParameter("AuthorId" + (i + 1), authors[i].Id);
+                _ = _sqlServerObjectRelationalMapper.AddParameter("AuthorId" + (i + 1), authors[i].Id);
 
             StringBuilder query = new();
 
@@ -291,7 +288,7 @@ public sealed class SqlServerRepository : IRepository
             _ = query.AppendLine("THROW;");
             _ = query.Append("END CATCH;");
 
-            _ = _sqlServerOrm.ExecuteNonQuery(query.ToString(), default);
+            _ = _sqlServerObjectRelationalMapper.ExecuteNonQuery(query.ToString(), default);
         }
         catch
         {
@@ -306,7 +303,7 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public IEnumerable<IBookModel> BookGetAll()
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
@@ -314,7 +311,7 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            books = _sqlServerOrm
+            books = _sqlServerObjectRelationalMapper
                 .ExecuteQuery<IBookModel>(
 
                 "SELECT id AS book_id, title AS book_title, genre AS book_genre " +
@@ -356,7 +353,7 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public IBookModel? BookGetById(int bookId)
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
@@ -364,10 +361,10 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .AddParameter("Id", bookId);
 
-            book = _sqlServerOrm
+            book = _sqlServerObjectRelationalMapper
                 .ExecuteQuery<IBookModel>(
 
                 "SELECT id AS book_id, title AS book_title, genre AS book_genre " +
@@ -411,13 +408,13 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public void BookUpdate(IBookModel book)
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
         try
         {
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .AddParameter("BookId", book.Id)
                 .AddParameter("Title", book.Title)
                 .AddParameter("Genre", book.Genre);
@@ -425,7 +422,7 @@ public sealed class SqlServerRepository : IRepository
             IAuthorModel[] authors = book.Authors.ToArray();
 
             for (var i = 0; i < authors.Length; i++)
-                _ = _sqlServerOrm.AddParameter("AuthorId" + (i + 1), authors[i].Id);
+                _ = _sqlServerObjectRelationalMapper.AddParameter("AuthorId" + (i + 1), authors[i].Id);
 
             StringBuilder query = new();
 
@@ -465,7 +462,7 @@ public sealed class SqlServerRepository : IRepository
             _ = query.AppendLine("THROW;");
             _ = query.Append("END CATCH;");
 
-            _ = _sqlServerOrm.ExecuteNonQuery(query.ToString(), default);
+            _ = _sqlServerObjectRelationalMapper.ExecuteNonQuery(query.ToString(), default);
         }
         catch
         {
@@ -480,16 +477,16 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public void BookDelete(int bookId)
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
         try
         {
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .AddParameter("Id", bookId);
 
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .ExecuteNonQuery(
 
                 "DELETE " +
@@ -513,13 +510,13 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public void IssuingAdd(IIssuingModel issuing)
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
         try
         {
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .AddParameter("ReaderId", issuing.Reader.Id)
                 .AddParameter("BookId", issuing.Book.Id)
                 .AddParameter("TakeDate", issuing.TakeDate)
@@ -527,7 +524,7 @@ public sealed class SqlServerRepository : IRepository
                 .AddParameter("ReturnDate", issuing.ReturnDate)
                 .AddParameter("ReturnState", issuing.ReturnState);
 
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .ExecuteNonQuery(
 
                 "INSERT INTO issuings (reader_id, book_id, take_date, returned, return_date, return_state) " +
@@ -550,7 +547,7 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public IEnumerable<IIssuingModel> IssuingGetAll()
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
@@ -558,7 +555,7 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            issuings = _sqlServerOrm
+            issuings = _sqlServerObjectRelationalMapper
                 .ExecuteQuery<IIssuingModel>(
 
                 "SELECT issuings.id AS issuing_id, readers.id AS reader_id, readers.first_name AS reader_first_name, " +
@@ -608,7 +605,7 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public IIssuingModel? IssuingGetById(int issuingId)
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
@@ -616,10 +613,10 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .AddParameter("Id", issuingId);
 
-            issuing = _sqlServerOrm
+            issuing = _sqlServerObjectRelationalMapper
                 .ExecuteQuery<IIssuingModel>(
 
                 "SELECT issuings.id AS issuing_id, readers.id AS reader_id, readers.first_name AS reader_first_name, " +
@@ -671,13 +668,13 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public void IssuingUpdate(IIssuingModel issuing)
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
         try
         {
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .AddParameter("Id", issuing.Id)
                 .AddParameter("ReaderId", issuing.Reader.Id)
                 .AddParameter("BookId", issuing.Book.Id)
@@ -686,7 +683,7 @@ public sealed class SqlServerRepository : IRepository
                 .AddParameter("ReturnDate", issuing.ReturnDate)
                 .AddParameter("ReturnState", issuing.ReturnState);
 
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .ExecuteNonQuery(
 
                 "UPDATE issuings " +
@@ -715,16 +712,16 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public void IssuingDelete(int issuingId)
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
         try
         {
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .AddParameter("Id", issuingId);
 
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .ExecuteNonQuery(
 
                 "DELETE " +
@@ -748,20 +745,20 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public void ReaderAdd(IReaderModel reader)
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
         try
         {
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .AddParameter("FirstName", reader.FirstName)
                 .AddParameter("LastName", reader.LastName)
                 .AddParameter("Patronymic", reader.Patronymic)
                 .AddParameter("Gender", reader.Gender)
                 .AddParameter("DateOfBirth", reader.DateOfBirth);
 
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .ExecuteNonQuery(
 
                 "INSERT INTO readers (first_name, last_name, patronymic, gender, date_of_birth) " +
@@ -784,7 +781,7 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public IEnumerable<IReaderModel> ReaderGetAll()
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
@@ -792,7 +789,7 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            readers = _sqlServerOrm
+            readers = _sqlServerObjectRelationalMapper
                 .ExecuteQuery<IReaderModel>(
 
                 "SELECT * " +
@@ -822,7 +819,7 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public IReaderModel? ReaderGetById(int readerId)
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
@@ -830,10 +827,10 @@ public sealed class SqlServerRepository : IRepository
 
         try
         {
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .AddParameter("Id", readerId);
 
-            reader = _sqlServerOrm
+            reader = _sqlServerObjectRelationalMapper
                 .ExecuteQuery<IReaderModel>(
 
                 "SELECT * " +
@@ -864,13 +861,13 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public void ReaderUpdate(IReaderModel reader)
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
         try
         {
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .AddParameter("Id", reader.Id)
                 .AddParameter("FirstName", reader.FirstName)
                 .AddParameter("LastName", reader.LastName)
@@ -878,7 +875,7 @@ public sealed class SqlServerRepository : IRepository
                 .AddParameter("Gender", reader.Gender)
                 .AddParameter("DateOfBirth", reader.DateOfBirth);
 
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .ExecuteNonQuery(
 
                 "UPDATE readers " +
@@ -906,16 +903,16 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="InvalidOperationException"></exception>
     public void ReaderDelete(int readerId)
     {
-        if (_sqlServerOrm is null)
+        if (_sqlServerObjectRelationalMapper is null)
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
 
         try
         {
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .AddParameter("Id", readerId);
 
-            _ = _sqlServerOrm
+            _ = _sqlServerObjectRelationalMapper
                 .ExecuteNonQuery(
 
                 "DELETE " +
