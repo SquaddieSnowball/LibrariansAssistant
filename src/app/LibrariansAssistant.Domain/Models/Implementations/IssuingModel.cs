@@ -1,6 +1,6 @@
 ﻿using LibrariansAssistant.Dependencies;
 using LibrariansAssistant.Domain.Models.Abstractions;
-using LibrariansAssistant.Domain.Validation.Attributes;
+using LibrariansAssistant.Validation.Attributes;
 using System.ComponentModel.DataAnnotations;
 
 namespace LibrariansAssistant.Domain.Models.Implementations;

@@ -1,4 +1,6 @@
-﻿namespace LibrariansAssistant.UI.Helpers;
+﻿using LibrariansAssistant.Validation.Helpers;
+
+namespace LibrariansAssistant.UI.Helpers;
 
 /// <summary>
 /// Provides methods for extending the functionality of controls.
@@ -17,11 +19,8 @@ internal static class ControlExtensions
     internal static void SortDataSourceObjectList(this DataGridView dataGridView,
         int columnIndex, ref bool dataIsAscSortDirection, ref int dataPrevSortColumnIndex)
     {
-        if (dataGridView is null)
-            throw new ArgumentNullException(nameof(dataGridView), "Data grid view must not be null.");
-
-        if (dataGridView.DataSource is null)
-            throw new ArgumentNullException(nameof(dataGridView.DataSource), "Data source must not be null.");
+        Verify.NotNull(dataGridView);
+        Verify.NotNull(dataGridView.DataSource);
 
         List<object> data;
 

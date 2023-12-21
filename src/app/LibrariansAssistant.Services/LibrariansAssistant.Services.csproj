@@ -11,6 +11,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\LibrariansAssistant.Validation\LibrariansAssistant.Validation.csproj" />
 		<ProjectReference Include="..\LibrariansAssistant.Domain\LibrariansAssistant.Domain.csproj" />
 		<ProjectReference Include="..\LibrariansAssistant.Infrastructure\LibrariansAssistant.Infrastructure.csproj" />
 	</ItemGroup>

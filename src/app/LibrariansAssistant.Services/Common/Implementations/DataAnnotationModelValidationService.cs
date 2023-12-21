@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text;
 using LibrariansAssistant.Services.Common.Abstractions;
+using LibrariansAssistant.Validation.Helpers;
 
 namespace LibrariansAssistant.Services.Common.Implementations;
 
@@ -16,10 +17,9 @@ public sealed class DataAnnotationModelValidationService : IDataAnnotationModelV
     /// <param name="model">Model to validate.</param>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="ArgumentException"></exception>
-    public void Validate<TModel>(TModel model)
+    public void Validate<TModel>(TModel model) where TModel : class
     {
-        if (model is null)
-            throw new ArgumentNullException(nameof(model), "Model must not be null.");
+        Verify.NotNull(model);
 
         ValidationContext validationContext = new(model);
         List<ValidationResult> validationResuls = new();

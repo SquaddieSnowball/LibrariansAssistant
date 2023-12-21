@@ -2,6 +2,7 @@
 using LibrariansAssistant.Infrastructure.Services.Entities.ObjectRelationalMapper;
 using LibrariansAssistant.Infrastructure.Services.Entities.ObjectRelationalMapper.SqlServerObjectRelationalMapper;
 using LibrariansAssistant.Infrastructure.Services.Exceptions.ObjectRelationalMapper;
+using LibrariansAssistant.Validation.Helpers;
 using Microsoft.Data.SqlClient;
 using System.Collections;
 using System.Data;
@@ -127,8 +128,7 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
     /// <exception cref="ArgumentNullException"></exception>
     public IEnumerable<int> ExecuteNonQueries(IEnumerable<string> queries, QueryExecutionSettings? executionSettings)
     {
-        if (queries is null)
-            throw new ArgumentNullException(nameof(queries), "Queries must not be null.");
+        Verify.NotNull(queries);
 
         executionSettings ??= new();
 

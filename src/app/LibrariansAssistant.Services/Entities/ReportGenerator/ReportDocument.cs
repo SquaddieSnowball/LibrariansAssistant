@@ -1,4 +1,6 @@
-﻿namespace LibrariansAssistant.Services.Entities.ReportGenerator;
+﻿using LibrariansAssistant.Validation.Helpers;
+
+namespace LibrariansAssistant.Services.Entities.ReportGenerator;
 
 /// <summary>
 /// Represents a report document.
@@ -72,11 +74,8 @@ public sealed class ReportDocument
     /// <exception cref="ArgumentNullException"></exception>
     public ReportDocument(string title, IEnumerable<string> columnHeaders, int rowCount, int columnCount)
     {
-        if (string.IsNullOrEmpty(title) is true)
-            throw new ArgumentException("Title must not be null or empty.", nameof(title));
-
-        if (columnHeaders is null)
-            throw new ArgumentNullException(nameof(columnHeaders), "Column headers must not be null.");
+        Verify.NotNullOrEmpty(title);
+        Verify.NotNull(columnHeaders);
 
         if (rowCount < 1)
             throw new ArgumentException("The report document must contain at least one row.", nameof(rowCount));

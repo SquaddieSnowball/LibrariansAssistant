@@ -10,5 +10,5 @@ public interface IDataAnnotationModelValidationService
     /// </summary>
     /// <typeparam name="TModel">Type of the model to validate.</typeparam>
     /// <param name="model">Model to validate.</param>
-    void Validate<TModel>(TModel model);
+    void Validate<TModel>(TModel model) where TModel : class;
 }
