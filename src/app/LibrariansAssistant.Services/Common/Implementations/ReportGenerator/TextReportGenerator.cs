@@ -1,6 +1,5 @@
 ﻿using LibrariansAssistant.Services.Common.Abstractions;
 using LibrariansAssistant.Services.Entities.ReportGenerator;
-using LibrariansAssistant.Validation.Helpers;
 using System.Text;
 
 namespace LibrariansAssistant.Services.Common.Implementations.ReportGenerator;
@@ -19,8 +18,11 @@ public sealed class TextReportGenerator : IReportGenerator
     /// <exception cref="ArgumentNullException"></exception>
     public void GenerateReport(string filePath, ReportDocument reportDocument)
     {
-        Verify.NotNullOrEmpty(filePath);
-        Verify.NotNull(reportDocument);
+        if (string.IsNullOrEmpty(filePath) is true)
+            throw new ArgumentException("File path must not be null or empty.", nameof(filePath));
+
+        if (reportDocument is null)
+            throw new ArgumentNullException(nameof(reportDocument), "Report document must not be null.");
 
         StringBuilder report = new();
 

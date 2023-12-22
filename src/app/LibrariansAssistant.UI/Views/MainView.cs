@@ -274,7 +274,7 @@ internal sealed partial class MainView : Form, IMainView
             {
                 IInfrastructureCreator infrastructureCreator = settingsView.SelectedRepositoryType switch
                 {
-                    RepositoryType.SqlServer => new SqlServerInfrastructureCreator(),
+                    Entities.RepositoryType.SqlServer => new SqlServerInfrastructureCreator(),
                     _ => throw new NotImplementedException("This infrastructure creator has not yet been implemented."),
                 };
 

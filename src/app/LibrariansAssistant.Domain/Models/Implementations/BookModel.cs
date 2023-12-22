@@ -1,5 +1,5 @@
 ﻿using LibrariansAssistant.Domain.Models.Abstractions;
-using LibrariansAssistant.Validation.Attributes;
+using LibrariansAssistant.Domain.Validation.Attributes;
 using System.ComponentModel.DataAnnotations;
 
 namespace LibrariansAssistant.Domain.Models.Implementations;

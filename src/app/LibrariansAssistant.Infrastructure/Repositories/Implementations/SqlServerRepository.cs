@@ -2,7 +2,6 @@
 using LibrariansAssistant.Infrastructure.Repositories.Abstractions;
 using LibrariansAssistant.Infrastructure.Services.Entities.ObjectRelationalMapper;
 using LibrariansAssistant.Infrastructure.Services.Implementations.ObjectRelationalMapper;
-using LibrariansAssistant.Validation.Helpers;
 using System.Text;
 
 namespace LibrariansAssistant.Infrastructure.Repositories.Implementations;
@@ -21,7 +20,9 @@ public sealed class SqlServerRepository : IRepository
     /// <exception cref="ArgumentNullException"></exception>
     public void Initialize(string initializationString)
     {
-        Verify.NotNullOrEmpty(initializationString);
+        if (string.IsNullOrEmpty(initializationString) is true)
+            throw new ArgumentNullException(nameof(initializationString),
+                "Initialization string must not be null or empty.");
 
         try
         {

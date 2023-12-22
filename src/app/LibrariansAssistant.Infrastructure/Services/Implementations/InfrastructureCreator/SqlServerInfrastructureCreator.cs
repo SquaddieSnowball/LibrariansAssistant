@@ -1,7 +1,6 @@
 ﻿using LibrariansAssistant.Infrastructure.Resources.Services.InfrastructureCreator;
 using LibrariansAssistant.Infrastructure.Services.Abstractions;
 using LibrariansAssistant.Infrastructure.Services.Implementations.ObjectRelationalMapper;
-using LibrariansAssistant.Validation.Helpers;
 
 namespace LibrariansAssistant.Infrastructure.Services.Implementations.InfrastructureCreator;
 
@@ -24,7 +23,9 @@ public sealed class SqlServerInfrastructureCreator : IInfrastructureCreator
     /// <exception cref="ArgumentNullException"></exception>
     public void Initialize(string initializationString)
     {
-        Verify.NotNullOrEmpty(initializationString);
+        if (string.IsNullOrEmpty(initializationString) is true)
+            throw new ArgumentNullException(nameof(initializationString),
+            "Initialization string must not be null or empty.");
 
         try
         {

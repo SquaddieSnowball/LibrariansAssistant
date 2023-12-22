@@ -1,6 +1,5 @@
 ﻿using LibrariansAssistant.Infrastructure.Services.Abstractions;
 using LibrariansAssistant.Infrastructure.Services.Implementations.RepositoryInitializationStringBuilder.Entities;
-using LibrariansAssistant.Validation.Helpers;
 using Microsoft.Data.SqlClient;
 
 namespace LibrariansAssistant.Infrastructure.Services.Implementations.RepositoryInitializationStringBuilder;
@@ -19,7 +18,9 @@ public sealed class SqlServerInitializationStringBuilder : IRepositoryInitializa
     /// <exception cref="ArgumentNullException"></exception>
     public SqlServerInitializationStringBuilder(SqlServerInitializationStringBuilderSettings sqlServerIsbSettings)
     {
-        Verify.NotNull(sqlServerIsbSettings);
+        if (sqlServerIsbSettings is null)
+            throw new ArgumentNullException(nameof(sqlServerIsbSettings),
+                "SQL Server initialization string builder settings must not be null.");
 
         _sqlConnectionStringBuilder["Data Source"] =
             string.IsNullOrEmpty(sqlServerIsbSettings.ServerInstanceName) is true ?

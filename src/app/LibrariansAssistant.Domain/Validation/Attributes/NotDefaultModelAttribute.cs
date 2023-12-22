@@ -1,20 +1,14 @@
 ﻿using LibrariansAssistant.Dependencies;
-using LibrariansAssistant.Validation.Resources.Attributes.ErrorMessages;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace LibrariansAssistant.Validation.Attributes;
+namespace LibrariansAssistant.Domain.Validation.Attributes;
 
 /// <summary>
 /// Specifies that the data field should not be initialized with the default model.
 /// </summary>
-public sealed class NotDefaultModelAttribute : ValidationAttribute
+internal sealed class NotDefaultModelAttribute : ValidationAttribute
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="NotDefaultModelAttribute"/> class.
-    /// </summary>
-    public NotDefaultModelAttribute() => SetUpValidation();
-
     /// <summary>
     /// Determines whether the specified value of the object is valid.
     /// </summary>
@@ -38,10 +32,5 @@ public sealed class NotDefaultModelAttribute : ValidationAttribute
                 return true;
 
         return false;
-    }
-
-    private void SetUpValidation()
-    {
-        ErrorMessage = AttributesErrorMessages.NotDefaultModelAttribute;
     }
 }

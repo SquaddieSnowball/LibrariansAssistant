@@ -1,6 +1,5 @@
 ﻿using LibrariansAssistant.UI.Resources;
 using LibrariansAssistant.UI.Services.Abstractions;
-using LibrariansAssistant.Validation.Helpers;
 using System.Reflection;
 
 namespace LibrariansAssistant.UI.Services.Implementations;
@@ -31,7 +30,8 @@ internal sealed class ApplicationConfigurationService : IApplicationConfiguratio
     /// <exception cref="ArgumentException"></exception>
     public object? GetSettingValue(string name)
     {
-        Verify.NotNullOrEmpty(name);
+        if (string.IsNullOrEmpty(name) is true)
+            throw new ArgumentException($"Name must not be null or empty.", nameof(name));
 
         foreach (PropertyInfo settingPropertyInfo in _settingPropertyInfos)
             if (settingPropertyInfo.Name.Equals(name, StringComparison.Ordinal) is true)
@@ -48,7 +48,8 @@ internal sealed class ApplicationConfigurationService : IApplicationConfiguratio
     /// <exception cref="ArgumentException"></exception>
     public void UpdateSettingValue(string name, object? value)
     {
-        Verify.NotNullOrEmpty(name);
+        if (string.IsNullOrEmpty(name) is true)
+            throw new ArgumentException($"Name must not be null or empty.", nameof(name));
 
         foreach (PropertyInfo settingPropertyInfo in _settingPropertyInfos)
             if (settingPropertyInfo.Name.Equals(name, StringComparison.Ordinal) is true)
@@ -92,7 +93,8 @@ internal sealed class ApplicationConfigurationService : IApplicationConfiguratio
     /// <exception cref="ArgumentNullException"></exception>
     public IEnumerable<object?> GetSettingsValues(IEnumerable<string> names)
     {
-        Verify.NotNull(names);
+        if (names is null)
+            throw new ArgumentNullException(nameof(names), "Names must not be null.");
 
         foreach (string name in names)
             yield return GetSettingValue(name);
@@ -106,11 +108,13 @@ internal sealed class ApplicationConfigurationService : IApplicationConfiguratio
     /// <exception cref="ArgumentException"></exception>
     public void UpdateSettingsValues(IEnumerable<KeyValuePair<string, object?>> nameValuePairs)
     {
-        Verify.NotNull(nameValuePairs);
+        if (nameValuePairs is null)
+            throw new ArgumentNullException(nameof(nameValuePairs), "Name-value pairs must not be null.");
 
         foreach (KeyValuePair<string, object?> nameValuePair in nameValuePairs)
         {
-            Verify.NotNullOrEmpty(nameValuePair.Key);
+            if (string.IsNullOrEmpty(nameValuePair.Key) is true)
+                throw new ArgumentException($"Name must not be null or empty.", nameof(nameValuePairs));
 
             bool isSettingPropertyInfoFound = false;
 

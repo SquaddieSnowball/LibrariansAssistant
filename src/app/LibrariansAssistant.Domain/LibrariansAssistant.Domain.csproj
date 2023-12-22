@@ -7,7 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\LibrariansAssistant.Validation\LibrariansAssistant.Validation.csproj" />
 		<ProjectReference Include="..\LibrariansAssistant.Dependencies\LibrariansAssistant.Dependencies.csproj" />
 	</ItemGroup>
 
