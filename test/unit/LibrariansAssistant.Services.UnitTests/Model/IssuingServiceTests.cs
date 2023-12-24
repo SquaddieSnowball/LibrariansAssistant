@@ -1,6 +1,7 @@
 ﻿using LibrariansAssistant.Dependencies;
 using LibrariansAssistant.Domain.Models.Abstractions;
 using LibrariansAssistant.Domain.Models.Implementations;
+using LibrariansAssistant.Infrastructure.Repositories.Abstractions;
 using LibrariansAssistant.Services.Common.Abstractions;
 using LibrariansAssistant.Services.Common.Implementations;
 using LibrariansAssistant.Services.Model.Abstractions;
@@ -19,7 +20,7 @@ public sealed class IssuingServiceTests
         DependenciesContainer.Register<IBookModel, BookModel>();
         DependenciesContainer.Register<IIssuingModel, IssuingModel>();
         DependenciesContainer.Register<IReaderModel, ReaderModel>();
-        DependenciesContainer.Register<IDataAnnotationModelValidationService, DataAnnotationModelValidationService>();
+        DependenciesContainer.Register<IDataAnnotationsModelValidationService, DataAnnotationsModelValidationService>();
         DependenciesContainer.Register<IIssuingService, IssuingService>();
     }
 
@@ -55,12 +56,11 @@ public sealed class IssuingServiceTests
 
     private static IIssuingService CreateIssuingService()
     {
-        RepositoryMock repository = new();
+        IRepository repository = new MockRepository();
         repository.Initialize(string.Empty);
 
-        IDataAnnotationModelValidationService dataAnnotationModelValidationService =
-            DependenciesContainer.Resolve<IDataAnnotationModelValidationService>()!;
-
+        IDataAnnotationsModelValidationService dataAnnotationModelValidationService =
+            DependenciesContainer.Resolve<IDataAnnotationsModelValidationService>()!;
         IIssuingService issuingService =
             DependenciesContainer.Resolve<IIssuingService>(repository, dataAnnotationModelValidationService)!;
 

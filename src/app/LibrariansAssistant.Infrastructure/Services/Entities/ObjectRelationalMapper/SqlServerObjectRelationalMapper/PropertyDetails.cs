@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 
 namespace LibrariansAssistant.Infrastructure.Services.Entities.ObjectRelationalMapper.SqlServerObjectRelationalMapper;
 
@@ -8,39 +9,47 @@ namespace LibrariansAssistant.Infrastructure.Services.Entities.ObjectRelationalM
 internal sealed class PropertyDetails
 {
     /// <summary>
-    /// Gets an instance of the property's PropertyInfo object.
+    /// Gets an instance of the property's <see cref="System.Reflection.PropertyInfo"/> object.
     /// </summary>
-    internal PropertyInfo PropertyInfo { get; }
+    public PropertyInfo PropertyInfo { get; }
 
     /// <summary>
-    /// Gets an instance of the property's TypeDetails object.
+    /// Gets an instance of the property's <see cref="SqlServerObjectRelationalMapper.TypeDetails"/> object.
     /// </summary>
-    internal TypeDetails? TypeDetails { get; }
+    public TypeDetails? TypeDetails { get; }
 
     /// <summary>
     /// Gets a value indicating whether the property type is simple.
     /// </summary>
-    internal bool IsSimpleType { get; }
+    public bool IsSimpleType { get; private set; }
 
     /// <summary>
-    /// Gets the property name in Sql style.
+    /// Gets the property name in SQL style.
     /// </summary>
-    internal string SqlStyleName { get; }
+    public string SqlStyleName { get; private set; }
 
     /// <summary>
-    /// Initializes a new instance of the PropertyDetails class.
+    /// Initializes a new instance of the <see cref="PropertyDetails"/> class.
     /// </summary>
-    /// <param name="propertyInfo">Instance of the property's PropertyInfo object.</param>
-    /// <param name="typeDetails">Instance of the property's TypeDetails object.</param>
-    internal PropertyDetails(PropertyInfo propertyInfo, TypeDetails? typeDetails)
+    /// <param name="propertyInfo">Instance of the property's 
+    /// <see cref="System.Reflection.PropertyInfo"/> object.</param>
+    /// <param name="typeDetails">Instance of the property's 
+    /// <see cref="SqlServerObjectRelationalMapper.TypeDetails"/> object.</param>
+    public PropertyDetails(PropertyInfo propertyInfo, TypeDetails? typeDetails)
     {
         (PropertyInfo, TypeDetails) = (propertyInfo, typeDetails);
 
-        if (typeDetails is null)
+        InitializePropertyDetails();
+    }
+
+    [MemberNotNull(nameof(SqlStyleName))]
+    private void InitializePropertyDetails()
+    {
+        if (TypeDetails is null)
             IsSimpleType = true;
 
         SqlStyleName =
-            string.Concat(propertyInfo.Name.Select(c => char.IsUpper(c) ? "_" + c : c.ToString()))
+            string.Concat(PropertyInfo.Name.Select(c => (char.IsUpper(c) is true) ? $"_{c}" : c.ToString()))
             .TrimStart('_')
             .ToLower();
     }

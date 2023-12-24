@@ -46,13 +46,12 @@ public sealed class ReaderModel : IReaderModel
     public DateTime DateOfBirth { get; set; }
 
     /// <summary>
-    /// Initializes a new instance of the ReaderModel class.
+    /// Initializes a new instance of the <see cref="ReaderModel"/> class.
     /// </summary>
-    public ReaderModel() =>
-        (FirstName, LastName, Gender) = (string.Empty, string.Empty, string.Empty);
+    public ReaderModel() => (FirstName, LastName, Gender) = (default!, default!, default!);
 
     /// <summary>
-    /// Initializes a new instance of the AuthorModel class with the specified 
+    /// Initializes a new instance of the <see cref="ReaderModel"/> class with the specified 
     /// first name, last name, patronymic, gender and date of birth.
     /// </summary>
     /// <param name="firstName">First name of the author.</param>
@@ -60,8 +59,7 @@ public sealed class ReaderModel : IReaderModel
     /// <param name="patronymic">Author's patronymic.</param>
     /// <param name="gender">Gender of the reader.</param>
     /// <param name="dateOfBirth">Date of birth of the reader.</param>
-    public ReaderModel(string firstName, string lastName, string? patronymic,
-        string gender, DateTime dateOfBirth) =>
+    public ReaderModel(string firstName, string lastName, string? patronymic, string gender, DateTime dateOfBirth) =>
         (FirstName, LastName, Patronymic, Gender, DateOfBirth) =
         (firstName, lastName, patronymic, gender, dateOfBirth);
 }

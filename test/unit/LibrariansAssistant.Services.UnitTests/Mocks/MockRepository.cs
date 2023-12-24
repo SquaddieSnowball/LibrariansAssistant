@@ -4,7 +4,7 @@ using LibrariansAssistant.Infrastructure.Repositories.Abstractions;
 
 namespace LibrariansAssistant.Services.UnitTests.Mocks;
 
-internal sealed class RepositoryMock : IRepository
+internal sealed class MockRepository : IRepository
 {
     private readonly List<IAuthorModel> _authors = new();
     private readonly List<IBookModel> _books = new();
@@ -13,16 +13,16 @@ internal sealed class RepositoryMock : IRepository
 
     public void Initialize(string initializationString)
     {
-        IReaderModel reader1 = DependenciesContainer.Resolve<IReaderModel>("Ila", "Hodge", "W",
-            "Female", new DateTime(1997, 2, 4))!;
-        IReaderModel reader2 = DependenciesContainer.Resolve<IReaderModel>("Octavius", "Becker", "L",
-            "Female", new DateTime(1985, 5, 30))!;
-        IReaderModel reader3 = DependenciesContainer.Resolve<IReaderModel>("Hammett", "Mcneil", "V",
-            "Male", new DateTime(1956, 5, 22))!;
-        IReaderModel reader4 = DependenciesContainer.Resolve<IReaderModel>("Macaulay", "Harrison", "B",
-            "Female", new DateTime(1957, 7, 26))!;
-        IReaderModel reader5 = DependenciesContainer.Resolve<IReaderModel>("Clinton", "Alvarado", "Z",
-            "Female", new DateTime(1963, 3, 24))!;
+        IReaderModel reader1 = DependenciesContainer.Resolve<IReaderModel>(
+            "Ila", "Hodge", "W", "Female", new DateTime(1997, 2, 4))!;
+        IReaderModel reader2 = DependenciesContainer.Resolve<IReaderModel>(
+            "Octavius", "Becker", "L", "Female", new DateTime(1985, 5, 30))!;
+        IReaderModel reader3 = DependenciesContainer.Resolve<IReaderModel>(
+            "Hammett", "Mcneil", "V", "Male", new DateTime(1956, 5, 22))!;
+        IReaderModel reader4 = DependenciesContainer.Resolve<IReaderModel>(
+            "Macaulay", "Harrison", "B", "Female", new DateTime(1957, 7, 26))!;
+        IReaderModel reader5 = DependenciesContainer.Resolve<IReaderModel>(
+            "Clinton", "Alvarado", "Z", "Female", new DateTime(1963, 3, 24))!;
 
         reader1.Id = 1;
         reader2.Id = 2;
@@ -54,16 +54,16 @@ internal sealed class RepositoryMock : IRepository
         _authors.Add(author4);
         _authors.Add(author5);
 
-        IBookModel book1 = DependenciesContainer.Resolve<IBookModel>(new IAuthorModel[] { author1 },
-            "Nulla magna, malesuada vel", "Vestibulum")!;
-        IBookModel book2 = DependenciesContainer.Resolve<IBookModel>(new IAuthorModel[] { author2 },
-            "Et nunc", "Eget lacus")!;
-        IBookModel book3 = DependenciesContainer.Resolve<IBookModel>(new IAuthorModel[] { author3 },
-            "Etiam laoreet, libero et", "Ipsum donec")!;
-        IBookModel book4 = DependenciesContainer.Resolve<IBookModel>(new IAuthorModel[] { author4 },
-            "Eget odio. Aliquam vulputate", "Tempor augue")!;
-        IBookModel book5 = DependenciesContainer.Resolve<IBookModel>(new IAuthorModel[] { author5 },
-            "Pede. Nunc", "Enim")!;
+        IBookModel book1 = DependenciesContainer.Resolve<IBookModel>(
+            new IAuthorModel[] { author1 }, "Nulla magna, malesuada vel", "Vestibulum")!;
+        IBookModel book2 = DependenciesContainer.Resolve<IBookModel>(
+            new IAuthorModel[] { author2 }, "Et nunc", "Eget lacus")!;
+        IBookModel book3 = DependenciesContainer.Resolve<IBookModel>(
+            new IAuthorModel[] { author3 }, "Etiam laoreet, libero et", "Ipsum donec")!;
+        IBookModel book4 = DependenciesContainer.Resolve<IBookModel>(
+            new IAuthorModel[] { author4 }, "Eget odio. Aliquam vulputate", "Tempor augue")!;
+        IBookModel book5 = DependenciesContainer.Resolve<IBookModel>(
+            new IAuthorModel[] { author5 }, "Pede. Nunc", "Enim")!;
 
         book1.Id = 1;
         book2.Id = 2;
@@ -77,16 +77,16 @@ internal sealed class RepositoryMock : IRepository
         _books.Add(book4);
         _books.Add(book5);
 
-        IIssuingModel issuing1 = DependenciesContainer.Resolve<IIssuingModel>(reader1, book1,
-            new DateTime(2020, 10, 8), true, new DateTime(2022, 8, 5), 28)!;
-        IIssuingModel issuing2 = DependenciesContainer.Resolve<IIssuingModel>(reader2, book2,
-            new DateTime(2021, 12, 5), true, new DateTime(2023, 1, 22), 61)!;
-        IIssuingModel issuing3 = DependenciesContainer.Resolve<IIssuingModel>(reader3, book3,
-            new DateTime(2021, 10, 31), true, new DateTime(2023, 1, 17), 55)!;
-        IIssuingModel issuing4 = DependenciesContainer.Resolve<IIssuingModel>(reader4, book4,
-            new DateTime(2021, 12, 3), true, new DateTime(2022, 7, 27), 18)!;
-        IIssuingModel issuing5 = DependenciesContainer.Resolve<IIssuingModel>(reader5, book5,
-            new DateTime(2022, 5, 19), true, new DateTime(2023, 1, 3), 91)!;
+        IIssuingModel issuing1 = DependenciesContainer.Resolve<IIssuingModel>(
+            reader1, book1, new DateTime(2020, 10, 8), true, new DateTime(2022, 8, 5), 28)!;
+        IIssuingModel issuing2 = DependenciesContainer.Resolve<IIssuingModel>(
+            reader2, book2, new DateTime(2021, 12, 5), true, new DateTime(2023, 1, 22), 61)!;
+        IIssuingModel issuing3 = DependenciesContainer.Resolve<IIssuingModel>(
+            reader3, book3, new DateTime(2021, 10, 31), true, new DateTime(2023, 1, 17), 55)!;
+        IIssuingModel issuing4 = DependenciesContainer.Resolve<IIssuingModel>(
+            reader4, book4, new DateTime(2021, 12, 3), true, new DateTime(2022, 7, 27), 18)!;
+        IIssuingModel issuing5 = DependenciesContainer.Resolve<IIssuingModel>(
+            reader5, book5, new DateTime(2022, 5, 19), true, new DateTime(2023, 1, 3), 91)!;
 
         issuing1.Id = 1;
         issuing2.Id = 2;

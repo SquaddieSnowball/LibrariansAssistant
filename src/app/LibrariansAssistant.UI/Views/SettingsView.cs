@@ -14,7 +14,7 @@ using LibrariansAssistant.UI.Services.Implementations;
 namespace LibrariansAssistant.UI.Views;
 
 /// <summary>
-/// Represents the Settings view of the application.
+/// Represents the "Settings" view of the application.
 /// </summary>
 internal sealed partial class SettingsView : Form
 {
@@ -26,35 +26,39 @@ internal sealed partial class SettingsView : Form
     private readonly Dictionary<string, object?> _modifiedSettings = new();
     private SettingsGroup _selectedSettingsGroup;
 
+    #region Properties
+
     /// <summary>
     /// Gets the selected repository type.
     /// </summary>
-    internal RepositoryType SelectedRepositoryType { get; } = RepositoryType.SqlServer;
+    public RepositoryType SelectedRepositoryType { get; } = RepositoryType.SqlServer;
 
     /// <summary>
     /// Gets the infrastructure creator initialization string.
     /// </summary>
-    internal string? InfrastructureCreatorInitializationString { get; private set; }
+    public string? InfrastructureCreatorInitializationString { get; private set; }
 
     /// <summary>
     /// Gets the repository initialization string.
     /// </summary>
-    internal string? RepositoryInitializationString { get; private set; }
+    public string? RepositoryInitializationString { get; private set; }
 
     /// <summary>
     /// Gets the repository instance.
     /// </summary>
-    internal IRepository? Repository { get; private set; }
+    public IRepository? Repository { get; private set; }
 
     /// <summary>
     /// Gets a value indicating whether to create an empty database if it does not exist.
     /// </summary>
-    internal bool SettingCreateEmptyDatabase { get; private set; }
+    public bool SettingCreateEmptyDatabase { get; private set; }
+
+    #endregion
 
     /// <summary>
-    /// Initializes a new instance of the SettingsView class.
+    /// Initializes a new instance of the <see cref="SettingsView"/> class.
     /// </summary>
-    internal SettingsView()
+    public SettingsView()
     {
         InitializeComponent();
         SubsribeToControlEvents();
@@ -102,20 +106,22 @@ internal sealed partial class SettingsView : Form
                 string? databaseName =
                     _applicationConfigurationService.GetSettingValue("DatabaseName") as string;
 
-                SqlServerInitializationStringBuilderSettings infranstructureCreatorIsbSettings = new(serverName, serverInstanceName)
-                {
-                    UseWindowsAuthentication = useWindowsAuthentication,
-                    UserName = userName,
-                    Password = password
-                };
+                SqlServerInitializationStringBuilderSettings infranstructureCreatorIsbSettings =
+                    new(serverName, serverInstanceName)
+                    {
+                        UseWindowsAuthentication = useWindowsAuthentication,
+                        UserName = userName,
+                        Password = password
+                    };
 
-                SqlServerInitializationStringBuilderSettings repositoryIsbSettings = new(serverName, serverInstanceName)
-                {
-                    UseWindowsAuthentication = useWindowsAuthentication,
-                    UserName = userName,
-                    Password = password,
-                    DatabaseName = databaseName
-                };
+                SqlServerInitializationStringBuilderSettings repositoryIsbSettings =
+                    new(serverName, serverInstanceName)
+                    {
+                        UseWindowsAuthentication = useWindowsAuthentication,
+                        UserName = userName,
+                        Password = password,
+                        DatabaseName = databaseName
+                    };
 
                 initializationStringBuilder = new SqlServerInitializationStringBuilder(infranstructureCreatorIsbSettings);
                 InfrastructureCreatorInitializationString = initializationStringBuilder.Build();
@@ -132,6 +138,8 @@ internal sealed partial class SettingsView : Form
 
         SettingCreateEmptyDatabase = (bool)_applicationConfigurationService.GetSettingValue("CreateEmptyDatabase")!;
     }
+
+    #region Control event handlers
 
     private void ConnectionToolStripMenuItemOnClick(object? sender, EventArgs e) =>
         SwitchSettingsGroupView(SettingsGroup.Connection);
@@ -170,6 +178,8 @@ internal sealed partial class SettingsView : Form
             }
         }
     }
+
+    #endregion
 
     private Control[] GenerateConnectionSettingsControls()
     {

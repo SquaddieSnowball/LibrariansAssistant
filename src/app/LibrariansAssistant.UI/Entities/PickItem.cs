@@ -21,10 +21,9 @@ internal sealed class PickItem
     public string? Description { get; }
 
     /// <summary>
-    /// Initializes a new instance of the PickItem class.
+    /// Initializes a new instance of the <see cref="PickItem"/> class.
     /// </summary>
     /// <param name="id">Item ID.</param>
     /// <param name="description">Item description.</param>
-    internal PickItem(int id, string? description) =>
-        (Id, Description) = (id, description);
+    public PickItem(int id, string? description) => (Id, Description) = (id, description);
 }

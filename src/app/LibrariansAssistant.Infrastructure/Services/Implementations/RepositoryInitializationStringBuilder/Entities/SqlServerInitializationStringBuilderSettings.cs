@@ -1,7 +1,7 @@
 ﻿namespace LibrariansAssistant.Infrastructure.Services.Implementations.RepositoryInitializationStringBuilder.Entities;
 
 /// <summary>
-/// Represents Sql Server initialization string builder settings.
+/// Represents "SQL Server" initialization string builder settings.
 /// </summary>
 public sealed class SqlServerInitializationStringBuilderSettings
 {
@@ -36,10 +36,11 @@ public sealed class SqlServerInitializationStringBuilderSettings
     public string? DatabaseName { get; set; }
 
     /// <summary>
-    /// Initializes a new instance of the SqlServerIsbSettings class.
+    /// Initializes a new instance of the <see cref="SqlServerInitializationStringBuilderSettings"/> class.
     /// </summary>
     /// <param name="serverName">Name of the server.</param>
     /// <param name="serverInstanceName">Server instance name.</param>
     public SqlServerInitializationStringBuilderSettings(string serverName, string serverInstanceName) =>
-        (ServerName, ServerInstanceName) = (serverName, serverInstanceName);
+        (ServerName, ServerInstanceName) =
+        (serverName, serverInstanceName);
 }

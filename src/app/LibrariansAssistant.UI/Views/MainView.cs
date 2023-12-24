@@ -11,7 +11,7 @@ using LibrariansAssistant.UI.Services.Implementations;
 namespace LibrariansAssistant.UI.Views;
 
 /// <summary>
-/// Represents the Main view of the application.
+/// Represents the "Main" view of the application.
 /// </summary>
 internal sealed partial class MainView : Form, IMainView
 {
@@ -26,28 +26,30 @@ internal sealed partial class MainView : Form, IMainView
     private Action<DataGridViewRow>? _filterMethods;
     private PickPeriodView? _pickPeriodView;
 
+    #region Properties
+
     /// <summary>
-    /// Gets or sets the data for Normal view.
+    /// Gets or sets the data for "Normal" view.
     /// </summary>
     public IEnumerable<object>? VisibleDataNormalView { get; set; }
 
     /// <summary>
-    /// Gets or sets the data for Edit view.
+    /// Gets or sets the data for "Edit" view.
     /// </summary>
     public IEnumerable<object?>? VisibleDataEditView { get; set; }
 
     /// <summary>
-    /// Gets or sets the data for Pick view.
+    /// Gets or sets the data for "Pick" view.
     /// </summary>
     public IEnumerable<KeyValuePair<int, string?>>? VisibleDataPickView { get; set; }
 
     /// <summary>
-    /// Gets or sets the data for Period view.
+    /// Gets or sets the data for "Period" view.
     /// </summary>
     public IEnumerable<KeyValuePair<int, string>>? VisibleDataPeriodView { get; set; }
 
     /// <summary>
-    /// Gets or sets data for column headers in the Normal view.
+    /// Gets or sets data for column headers in the "Normal" view.
     /// </summary>
     public IEnumerable<string>? VisibleDataColumnHeadersNormalView { get; set; }
 
@@ -56,68 +58,72 @@ internal sealed partial class MainView : Form, IMainView
     /// </summary>
     public bool IsOperationSuccessful { get; set; }
 
+    #endregion
+
+    #region Events
+
     /// <summary>
-    /// Occurs when the Normal view requests an update of the authors.
+    /// Occurs when the "Normal" view requests an update of the authors.
     /// </summary>
     public event EventHandler? AuthorsUpdateNormalView;
 
     /// <summary>
-    /// Occurs when the Normal view requests an update of the books.
+    /// Occurs when the "Normal" view requests an update of the books.
     /// </summary>
     public event EventHandler? BooksUpdateNormalView;
 
     /// <summary>
-    /// Occurs when the Normal view requests an update of the issuings.
+    /// Occurs when the "Normal" view requests an update of the issuings.
     /// </summary>
     public event EventHandler? IssuingsUpdateNormalView;
 
     /// <summary>
-    /// Occurs when the Normal view requests an update of the readers.
+    /// Occurs when the "Normal" view requests an update of the readers.
     /// </summary>
     public event EventHandler? ReadersUpdateNormalView;
 
     /// <summary>
-    /// Occurs when the Edit view requests an update of the authors.
+    /// Occurs when the "Edit" view requests an update of the authors.
     /// </summary>
     public event EventHandler<int>? AuthorUpdateEditView;
 
     /// <summary>
-    /// Occurs when the Edit view requests an update of the books.
+    /// Occurs when the "Edit" view requests an update of the books.
     /// </summary>
     public event EventHandler<int>? BookUpdateEditView;
 
     /// <summary>
-    /// Occurs when the Edit view requests an update of the issuings.
+    /// Occurs when the "Edit" view requests an update of the issuings.
     /// </summary>
     public event EventHandler<int>? IssuingUpdateEditView;
 
     /// <summary>
-    /// Occurs when the Edit view requests an update of the readers.
+    /// Occurs when the "Edit" view requests an update of the readers.
     /// </summary>
     public event EventHandler<int>? ReaderUpdateEditView;
 
     /// <summary>
-    /// Occurs when the Pick view requests an update of the authors.
+    /// Occurs when the "Pick" view requests an update of the authors.
     /// </summary>
     public event EventHandler? AuthorsUpdatePickView;
 
     /// <summary>
-    /// Occurs when the Pick view requests an update of the books.
+    /// Occurs when the "Pick" view requests an update of the books.
     /// </summary>
     public event EventHandler? BooksUpdatePickView;
 
     /// <summary>
-    /// Occurs when the Pick view requests an update of the readers.
+    /// Occurs when the "Pick" view requests an update of the readers.
     /// </summary>
     public event EventHandler? ReadersUpdatePickView;
 
     /// <summary>
-    /// Occurs when the Period view requests an update of the issuings.
+    /// Occurs when the "Period" view requests an update of the issuings.
     /// </summary>
     public event EventHandler? IssuingsUpdatePeriodView;
 
     /// <summary>
-    /// Occurs when the Period view requests an update of the readers.
+    /// Occurs when the "Period" view requests an update of the readers.
     /// </summary>
     public event EventHandler? ReadersUpdatePeriodView;
 
@@ -207,14 +213,16 @@ internal sealed partial class MainView : Form, IMainView
     public event EventHandler<IEnumerable<object>>? ExportDataText;
 
     /// <summary>
-    /// Occurs when the view requests that data be exported in Excel format.
+    /// Occurs when the view requests that data be exported in "Excel" format.
     /// </summary>
     public event EventHandler<IEnumerable<object>>? ExportDataExcel;
 
+    #endregion
+
     /// <summary>
-    /// Initializes a new instance of the MainView class.
+    /// Initializes a new instance of the <see cref="MainView"/> class.
     /// </summary>
-    internal MainView()
+    public MainView()
     {
         InitializeComponent();
         SubscribeToControlEvents();
@@ -255,18 +263,11 @@ internal sealed partial class MainView : Form, IMainView
         SwitchDataView(false);
     }
 
+    #region Control event handlers
+
     private void ConnectToDatabaseToolStripMenuItemOnClick(object? sender, EventArgs e)
     {
-        SettingsView settingsView;
-
-        try
-        {
-            settingsView = new SettingsView();
-        }
-        catch
-        {
-            throw;
-        }
+        SettingsView settingsView = new();
 
         try
         {
@@ -274,7 +275,7 @@ internal sealed partial class MainView : Form, IMainView
             {
                 IInfrastructureCreator infrastructureCreator = settingsView.SelectedRepositoryType switch
                 {
-                    Entities.RepositoryType.SqlServer => new SqlServerInfrastructureCreator(),
+                    RepositoryType.SqlServer => new SqlServerInfrastructureCreator(),
                     _ => throw new NotImplementedException("This infrastructure creator has not yet been implemented."),
                 };
 
@@ -284,8 +285,11 @@ internal sealed partial class MainView : Form, IMainView
                     infrastructureCreator.Create();
             }
 
-            _ = new MainViewPresenter(this, settingsView.Repository!,
-                _winFormsMessageService, settingsView.RepositoryInitializationString!);
+            _ = new MainViewPresenter(
+                this,
+                settingsView.Repository!,
+                _winFormsMessageService,
+                settingsView.RepositoryInitializationString!);
 
             SwitchDataView(true);
             ShowDefaultDataView();
@@ -296,16 +300,19 @@ internal sealed partial class MainView : Form, IMainView
         }
     }
 
-    private void SettingsToolStripMenuItemOnClick(object? sender, EventArgs e) =>
-        _ = new SettingsView().ShowDialog();
+    private void SettingsToolStripMenuItemOnClick(object? sender, EventArgs e) => _ = new SettingsView().ShowDialog();
 
-    private void ExitToolStripMenuItemOnClick(object? sender, EventArgs e) =>
-        Close();
+    private void ExitToolStripMenuItemOnClick(object? sender, EventArgs e) => Close();
 
     private void DataGridViewDataOnColumnAdded(object? sender, DataGridViewColumnEventArgs e)
     {
         if (e.Column.ValueType == typeof(bool))
-            e.Column.CellTemplate = new DataGridViewCheckBoxCell() { FlatStyle = FlatStyle.Flat };
+        {
+            e.Column.CellTemplate = new DataGridViewCheckBoxCell()
+            {
+                FlatStyle = FlatStyle.Flat
+            };
+        }
     }
 
     private void DataGridViewDataOnColumnHeaderMouseClick(object? sender, DataGridViewCellMouseEventArgs e) =>
@@ -324,7 +331,6 @@ internal sealed partial class MainView : Form, IMainView
             e.PaintBackground(e.CellBounds, true);
 
             List<Rectangle> matchRectangles = new();
-
             string cellText = e.FormattedValue.ToString()!;
             int searchTextCellIndex = cellText.IndexOf(searchText, StringComparison.OrdinalIgnoreCase);
 
@@ -349,7 +355,7 @@ internal sealed partial class MainView : Form, IMainView
 
                 matchRectangle.Y =
                     e.CellBounds.Y +
-                    (e.CellBounds.Height - matchRectangle.Height) / 2;
+                    ((e.CellBounds.Height - matchRectangle.Height) / 2);
 
                 matchRectangles.Add(matchRectangle);
                 searchTextCellIndex = cellText.IndexOf(searchText, searchTextCellIndex + 1, StringComparison.OrdinalIgnoreCase);
@@ -361,7 +367,6 @@ internal sealed partial class MainView : Form, IMainView
                 e.Graphics.FillRectangle(solidBrush, matchRectangle);
 
             e.PaintContent(e.CellBounds);
-
             e.Handled = true;
         }
     }
@@ -369,42 +374,36 @@ internal sealed partial class MainView : Form, IMainView
     private void IssuingsShowAllToolStripMenuItemOnClick(object? sender, EventArgs e)
     {
         _dataUpdateEventInvokationList = IssuingsUpdateNormalView?.GetInvocationList();
-
         UpdateDataView(ViewType.Issuings, "all");
     }
 
     private void ReadersShowAllToolStripMenuItemOnClick(object? sender, EventArgs e)
     {
         _dataUpdateEventInvokationList = ReadersUpdateNormalView?.GetInvocationList();
-
         UpdateDataView(ViewType.Readers, "all");
     }
 
     private void ReadersMostActiveToolStripMenuItemOnClick(object? sender, EventArgs e)
     {
         _dataUpdateEventInvokationList = ReaderUpdateMostActiveView?.GetInvocationList();
-
         UpdateDataView(ViewType.Readers, "most active");
     }
 
     private void AuthorsShowAllToolStripMenuItemOnClick(object? sender, EventArgs e)
     {
         _dataUpdateEventInvokationList = AuthorsUpdateNormalView?.GetInvocationList();
-
         UpdateDataView(ViewType.Authors, "all");
     }
 
     private void AuthorsMostPopularToolStripMenuItemOnClick(object? sender, EventArgs e)
     {
         _dataUpdateEventInvokationList = AuthorUpdateMostPopularView?.GetInvocationList();
-
         UpdateDataView(ViewType.Authors, "most popular");
     }
 
     private void BooksShowAllToolStripMenuItemOnClick(object? sender, EventArgs e)
     {
         _dataUpdateEventInvokationList = BooksUpdateNormalView?.GetInvocationList();
-
         UpdateDataView(ViewType.Books, "all");
     }
 
@@ -435,8 +434,7 @@ internal sealed partial class MainView : Form, IMainView
             ExportDataExcel?.Invoke(this, GenerateExportData(saveFileDialog.FileName));
     }
 
-    private void TextBoxSearchOnTextChanged(object? sender, EventArgs e) =>
-        UpdateFilters();
+    private void TextBoxSearchOnTextChanged(object? sender, EventArgs e) => UpdateFilters();
 
     private void CheckBoxApplyFiltersOnCheckedChanged(object? sender, EventArgs e)
     {
@@ -446,29 +444,26 @@ internal sealed partial class MainView : Form, IMainView
             DisableFilters();
     }
 
-    private void ShowDefaultDataView() =>
-        IssuingsShowAllToolStripMenuItemOnClick(this, EventArgs.Empty);
+    #endregion
+
+    private void ShowDefaultDataView() => IssuingsShowAllToolStripMenuItemOnClick(this, EventArgs.Empty);
 
     private void SwitchDataView(bool isDataVisible)
     {
         if (isDataVisible is true)
         {
             _labelStartMessage.Visible = false;
-
             viewToolStripMenuItem.Visible = true;
             toolsToolStripMenuItem.Visible = true;
             panelMain.Visible = true;
-
             connectToDatabaseToolStripMenuItem.Visible = false;
         }
         else
         {
             _labelStartMessage.Visible = true;
-
             viewToolStripMenuItem.Visible = false;
             toolsToolStripMenuItem.Visible = false;
             panelMain.Visible = false;
-
             connectToDatabaseToolStripMenuItem.Visible = true;
         }
     }
@@ -519,8 +514,10 @@ internal sealed partial class MainView : Form, IMainView
         toolStripStatusLabelView.Text = viewType.ToString() + ": " + viewName;
 
         if (_dataUpdateEventInvokationList is not null)
+        {
             foreach (Delegate eventDelegate in _dataUpdateEventInvokationList)
                 _ = eventDelegate.DynamicInvoke(this, EventArgs.Empty);
+        }
 
         dataGridViewData.DataSource = VisibleDataNormalView?.ToList();
 
@@ -533,8 +530,10 @@ internal sealed partial class MainView : Form, IMainView
             string[]? dataColumnHeaders = VisibleDataColumnHeadersNormalView?.ToArray();
 
             if (dataColumnHeaders is not null)
+            {
                 for (var i = 0; (i < dataGridViewData.ColumnCount) && (i < dataColumnHeaders.Length); i++)
                     dataGridViewData.Columns[i].HeaderText = dataColumnHeaders[i];
+            }
 
             SetSelectedItem(selectedItemId);
 
@@ -554,6 +553,8 @@ internal sealed partial class MainView : Form, IMainView
         _currentViewType = viewType;
         _currentViewName = viewName;
     }
+
+    #region Actions creation
 
     private void AddIssuingActions()
     {
@@ -665,8 +666,8 @@ internal sealed partial class MainView : Form, IMainView
                         break;
                     }
                 }
-
-            } while (dialogResult is DialogResult.OK);
+            }
+            while (dialogResult is DialogResult.OK);
         };
 
         buttonClose.Click += (sender, e) =>
@@ -712,8 +713,8 @@ internal sealed partial class MainView : Form, IMainView
                         break;
                     }
                 }
-
-            } while (dialogResult is DialogResult.OK);
+            }
+            while (dialogResult is DialogResult.OK);
         };
 
         buttonEdit.Click += (sender, e) =>
@@ -776,8 +777,8 @@ internal sealed partial class MainView : Form, IMainView
                             break;
                         }
                     }
-
-                } while (dialogResult is DialogResult.OK);
+                }
+                while (dialogResult is DialogResult.OK);
             }
             else
                 UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
@@ -882,8 +883,8 @@ internal sealed partial class MainView : Form, IMainView
                         break;
                     }
                 }
-
-            } while (dialogResult is DialogResult.OK);
+            }
+            while (dialogResult is DialogResult.OK);
         };
 
         buttonEdit.Click += (sender, e) =>
@@ -939,8 +940,8 @@ internal sealed partial class MainView : Form, IMainView
                             break;
                         }
                     }
-
-                } while (dialogResult is DialogResult.OK);
+                }
+                while (dialogResult is DialogResult.OK);
             }
             else
                 UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
@@ -1034,8 +1035,8 @@ internal sealed partial class MainView : Form, IMainView
                         break;
                     }
                 }
-
-            } while (dialogResult is DialogResult.OK);
+            }
+            while (dialogResult is DialogResult.OK);
         };
 
         buttonEdit.Click += (sender, e) =>
@@ -1087,8 +1088,8 @@ internal sealed partial class MainView : Form, IMainView
                             break;
                         }
                     }
-
-                } while (dialogResult is DialogResult.OK);
+                }
+                while (dialogResult is DialogResult.OK);
             }
             else
                 UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
@@ -1198,8 +1199,8 @@ internal sealed partial class MainView : Form, IMainView
                         break;
                     }
                 }
-
-            } while (dialogResult is DialogResult.OK);
+            }
+            while (dialogResult is DialogResult.OK);
         };
 
         buttonEdit.Click += (sender, e) =>
@@ -1253,8 +1254,8 @@ internal sealed partial class MainView : Form, IMainView
                             break;
                         }
                     }
-
-                } while (dialogResult is DialogResult.OK);
+                }
+                while (dialogResult is DialogResult.OK);
             }
             else
                 UpdateDataView(_currentViewType, _currentViewName, true, selectedItemId);
@@ -1286,11 +1287,11 @@ internal sealed partial class MainView : Form, IMainView
         AddCustomAction(buttonRemove);
     }
 
-    private void AddIssuingFilters() =>
-        AddPeriodFilter(ViewType.Issuings);
+    #endregion
 
-    private void AddReaderFilters() =>
-        AddPeriodFilter(ViewType.Readers);
+    private void AddIssuingFilters() => AddPeriodFilter(ViewType.Issuings);
+
+    private void AddReaderFilters() => AddPeriodFilter(ViewType.Readers);
 
     private void AddPeriodFilter(ViewType viewType)
     {
@@ -1490,6 +1491,7 @@ internal sealed partial class MainView : Form, IMainView
         }
 
         for (var i = 0; i < dataGridViewData.RowCount; i++)
+        {
             if ((int)dataGridViewData.Rows[i].Cells[0].Value == itemId)
             {
                 if (dataGridViewData.Rows[i].Visible is true)
@@ -1498,6 +1500,7 @@ internal sealed partial class MainView : Form, IMainView
                     dataGridViewData.CurrentCell = dataGridViewData.Rows[i].Cells[0];
                 }
                 else
+                {
                     for (var j = 0; j < dataGridViewData.RowCount; j++)
                     {
                         if (dataGridViewData.Rows[j].Visible is true)
@@ -1510,9 +1513,11 @@ internal sealed partial class MainView : Form, IMainView
                         else
                             dataGridViewData.Rows[j].Selected = false;
                     }
+                }
 
                 break;
             }
+        }
     }
 
     private IEnumerable<object> GenerateExportData(string filePath)
@@ -1521,9 +1526,13 @@ internal sealed partial class MainView : Form, IMainView
         int columnCount = dataGridViewData.ColumnCount;
 
         if (tableLayoutPanelMain.Controls.Contains(dataGridViewData) is true)
+        {
             for (var i = 0; i < dataGridViewData.RowCount; i++)
+            {
                 if (dataGridViewData.Rows[i].Visible is true)
                     rowCount++;
+            }
+        }
 
         string title = labelTableName.Text;
         object?[] columnHeaders = new string[columnCount];
@@ -1535,7 +1544,9 @@ internal sealed partial class MainView : Form, IMainView
         rowCount = 0;
 
         if (tableLayoutPanelMain.Controls.Contains(dataGridViewData) is true)
+        {
             for (var i = 0; i < dataGridViewData.RowCount; i++)
+            {
                 if (dataGridViewData.Rows[i].Visible is true)
                 {
                     columnCount = 0;
@@ -1552,10 +1563,8 @@ internal sealed partial class MainView : Form, IMainView
 
                             if (cellValueType == typeof(bool))
                                 exportData[rowCount, columnCount] = ((bool)cellValue is true) ? "Yes" : "No";
-
                             else if (cellValueType == typeof(DateTime))
                                 exportData[rowCount, columnCount] = ((DateTime)cellValue).ToString("d");
-
                             else
                                 exportData[rowCount, columnCount] = cellValue.ToString()!;
                         }
@@ -1565,6 +1574,8 @@ internal sealed partial class MainView : Form, IMainView
 
                     rowCount++;
                 }
+            }
+        }
 
         return new object[]
         {

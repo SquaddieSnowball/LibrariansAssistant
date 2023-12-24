@@ -11,7 +11,7 @@ using LibrariansAssistant.Services.Model.Abstractions;
 namespace LibrariansAssistant.Presentation.Presenters.WinForms;
 
 /// <summary>
-/// Represents the presenter that controls the MainView.
+/// Represents the presenter that controls the "Main" view.
 /// </summary>
 public sealed class MainViewPresenter : IPresenter
 {
@@ -19,13 +19,13 @@ public sealed class MainViewPresenter : IPresenter
     private readonly IRepository _repository;
     private readonly IMessageService _messageService;
     private readonly string _initializationString;
-    private readonly IDataAnnotationModelValidationService _dataAnnotationModelValidationService =
-        DependenciesContainer.Resolve<IDataAnnotationModelValidationService>()!;
+    private readonly IDataAnnotationsModelValidationService _dataAnnotationModelValidationService =
+        DependenciesContainer.Resolve<IDataAnnotationsModelValidationService>()!;
 
     /// <summary>
-    /// Initializes a new instance of the MainViewPresenter class.
+    /// Initializes a new instance of the <see cref="MainViewPresenter"/> class.
     /// </summary>
-    /// <param name="mainView">Instance of the MainView class to manage.</param>
+    /// <param name="mainView">Instance of the "Main" view class to manage.</param>
     /// <param name="repository">Repository used to store view data.</param>
     /// <param name="messageService">Message service for passing messages to the view.</param>
     /// <param name="initializationString">Initialization string to initialize the repository.</param>
@@ -35,23 +35,14 @@ public sealed class MainViewPresenter : IPresenter
         (_mainView, _repository, _messageService, _initializationString) =
             (mainView, repository, messageService, initializationString);
 
-        try
-        {
-            _repository.Initialize(_initializationString);
-        }
-        catch
-        {
-            throw;
-        }
-
+        _repository.Initialize(_initializationString);
         SubscribeToViewEvents();
     }
 
     /// <summary>
     /// Runs the view controlled by the current presenter.
     /// </summary>
-    public void RunView() =>
-        _mainView.Show();
+    public void RunView() => _mainView.Show();
 
     private void SubscribeToViewEvents()
     {
@@ -95,6 +86,8 @@ public sealed class MainViewPresenter : IPresenter
         _mainView.ExportDataText += MainViewOnExportDataText;
         _mainView.ExportDataExcel += MainViewOnExportDataExcel;
     }
+
+    #region "Normal" view update handlers
 
     private void MainViewOnAuthorsUpdateNormalView(object? sender, EventArgs e)
     {
@@ -164,7 +157,7 @@ public sealed class MainViewPresenter : IPresenter
                 Authors =
                     b.Authors.Select(a =>
                         $"{a.LastName} {a.FirstName.First()}." +
-                        $"{(string.IsNullOrEmpty(a.Patronymic) is false ? $" {a.Patronymic.First()}." : string.Empty)}")
+                        $"{((string.IsNullOrEmpty(a.Patronymic) is false) ? $" {a.Patronymic.First()}." : string.Empty)}")
                     .Aggregate((a1, a2) => a1 + " | " + a2),
                 b.Title,
                 b.Genre
@@ -275,6 +268,10 @@ public sealed class MainViewPresenter : IPresenter
 
         _mainView.IsOperationSuccessful = true;
     }
+
+    #endregion
+
+    #region "Edit" view update handlers
 
     private void MainViewOnAuthorUpdateEditView(object? sender, int e)
     {
@@ -425,6 +422,10 @@ public sealed class MainViewPresenter : IPresenter
             _messageService.ShowError("This reader is no longer exists.");
     }
 
+    #endregion
+
+    #region "Pick" view update handlers
+
     private void MainViewOnAuthorsUpdatePickView(object? sender, EventArgs e)
     {
         _mainView.IsOperationSuccessful = false;
@@ -449,7 +450,7 @@ public sealed class MainViewPresenter : IPresenter
             .Select(a => new KeyValuePair<int, string?>(
                 a.Id,
                 $"{a.LastName} {a.FirstName.First()}." +
-                $"{(string.IsNullOrEmpty(a.Patronymic) is false ? $" {a.Patronymic.First()}." : string.Empty)}"));
+                $"{((string.IsNullOrEmpty(a.Patronymic) is false) ? $" {a.Patronymic.First()}." : string.Empty)}"));
 
         _mainView.IsOperationSuccessful = true;
     }
@@ -503,10 +504,14 @@ public sealed class MainViewPresenter : IPresenter
             .Select(r => new KeyValuePair<int, string?>(
                 r.Id,
                 $"{r.LastName} {r.FirstName.First()}." +
-                $"{(string.IsNullOrEmpty(r.Patronymic) is false ? $" {r.Patronymic.First()}." : string.Empty)}"));
+                $"{((string.IsNullOrEmpty(r.Patronymic) is false) ? $" {r.Patronymic.First()}." : string.Empty)}"));
 
         _mainView.IsOperationSuccessful = true;
     }
+
+    #endregion
+
+    #region "Period" view update handlers
 
     private void MainViewOnIssuingsUpdatePeriodView(object? sender, EventArgs e)
     {
@@ -532,6 +537,10 @@ public sealed class MainViewPresenter : IPresenter
 
         _mainView.IsOperationSuccessful = true;
     }
+
+    #endregion
+
+    #region Special view update handlers
 
     private void MainViewOnReaderUpdateMostActiveView(object? sender, EventArgs e)
     {
@@ -578,8 +587,8 @@ public sealed class MainViewPresenter : IPresenter
         }
         else
         {
-            _mainView.VisibleDataNormalView = null;
-            _mainView.VisibleDataColumnHeadersNormalView = null;
+            _mainView.VisibleDataNormalView = default;
+            _mainView.VisibleDataColumnHeadersNormalView = default;
         }
 
         _mainView.IsOperationSuccessful = true;
@@ -626,8 +635,8 @@ public sealed class MainViewPresenter : IPresenter
         }
         else
         {
-            _mainView.VisibleDataNormalView = null;
-            _mainView.VisibleDataColumnHeadersNormalView = null;
+            _mainView.VisibleDataNormalView = default;
+            _mainView.VisibleDataColumnHeadersNormalView = default;
         }
 
         _mainView.IsOperationSuccessful = true;
@@ -660,6 +669,10 @@ public sealed class MainViewPresenter : IPresenter
 
         _mainView.IsOperationSuccessful = true;
     }
+
+    #endregion
+
+    #region "Add" handlers
 
     private void MainViewOnIssuingOpen(object? sender, IEnumerable<object?> e)
     {
@@ -892,6 +905,10 @@ public sealed class MainViewPresenter : IPresenter
         }
     }
 
+    #endregion
+
+    #region "Edit" nandlers
+
     private void MainViewOnAuthorEdit(object? sender, IEnumerable<object?> e)
     {
         _mainView.IsOperationSuccessful = false;
@@ -1087,6 +1104,10 @@ public sealed class MainViewPresenter : IPresenter
         }
     }
 
+    #endregion
+
+    #region "Remove" handlers
+
     private void MainViewOnAuthorRemove(object? sender, int e)
     {
         _mainView.IsOperationSuccessful = false;
@@ -1171,11 +1192,13 @@ public sealed class MainViewPresenter : IPresenter
         }
     }
 
-    private void MainViewOnExportDataText(object? sender, IEnumerable<object> e) =>
-        ExportData("Text", e);
+    #endregion
 
-    private void MainViewOnExportDataExcel(object? sender, IEnumerable<object> e) =>
-        ExportData("Excel", e);
+    #region "Export data" handlers
+
+    private void MainViewOnExportDataText(object? sender, IEnumerable<object> e) => ExportData("Text", e);
+
+    private void MainViewOnExportDataExcel(object? sender, IEnumerable<object> e) => ExportData("Excel", e);
 
     private void ExportData(string dataType, IEnumerable<object> data)
     {
@@ -1221,4 +1244,6 @@ public sealed class MainViewPresenter : IPresenter
             return;
         }
     }
+
+    #endregion
 }

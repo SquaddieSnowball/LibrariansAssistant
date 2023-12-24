@@ -8,7 +8,7 @@ public interface IInfrastructureCreator
     /// <summary>
     /// Gets a value indicating whether the infrastructure has been created.
     /// </summary>
-    public bool? IsInfrastructureCreated { get; }
+    bool IsInfrastructureCreated { get; }
 
     /// <summary>
     /// Initializes the infrastructure creator.

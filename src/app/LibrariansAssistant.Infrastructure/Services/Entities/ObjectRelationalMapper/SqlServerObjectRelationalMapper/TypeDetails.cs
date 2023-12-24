@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 
 namespace LibrariansAssistant.Infrastructure.Services.Entities.ObjectRelationalMapper.SqlServerObjectRelationalMapper;
 
@@ -7,28 +8,33 @@ namespace LibrariansAssistant.Infrastructure.Services.Entities.ObjectRelationalM
 /// </summary>
 internal sealed class TypeDetails
 {
+    private readonly List<PropertyDetails> _propertiesDetails = new();
+
     /// <summary>
-    /// Gets an instance of the property's Type object.
+    /// Gets an instance of the property's <see cref="Type"/> object.
     /// </summary>
-    internal Type ObjectType { get; }
+    public Type ObjectType { get; private set; }
 
     /// <summary>
     /// Gets a value indicating whether the property type is an enumerable.
     /// </summary>
-    internal bool IsEnumerable { get; }
+    public bool IsEnumerable { get; private set; }
 
     /// <summary>
-    /// Gets instances of the object's PropertyDetails objects.
+    /// Gets instances of the object's <see cref="PropertyDetails"/> objects.
     /// </summary>
-    internal IEnumerable<PropertyDetails> PropertyDetails { get; } = Enumerable.Empty<PropertyDetails>();
+    public IEnumerable<PropertyDetails> PropertiesDetails => _propertiesDetails;
 
     /// <summary>
-    /// Initializes a new instance of the TypeDetails class.
+    /// Initializes a new instance of the <see cref="TypeDetails"/> class.
     /// </summary>
-    /// <param name="type">Type object.</param>
-    internal TypeDetails(Type type)
+    /// <param name="type"><see cref="Type"/> object.</param>
+    public TypeDetails(Type type) => InitializeTypeDetails(type);
+
+    [MemberNotNull(nameof(ObjectType))]
+    private void InitializeTypeDetails(Type type)
     {
-        if (type.IsGenericType is true && type.GetGenericTypeDefinition().Equals(typeof(IEnumerable<>)) is true)
+        if ((type.IsGenericType is true) && (type.GetGenericTypeDefinition().Equals(typeof(IEnumerable<>)) is true))
         {
             ObjectType = type.GetGenericArguments()[0];
             IsEnumerable = true;
@@ -43,14 +49,14 @@ internal sealed class TypeDetails
             if (IsSimpleType(propertyInfo.PropertyType) is false)
                 typeDetails = new TypeDetails(propertyInfo.PropertyType);
 
-            PropertyDetails = PropertyDetails.Append(new PropertyDetails(propertyInfo, typeDetails));
+            _propertiesDetails.Add(new PropertyDetails(propertyInfo, typeDetails));
         }
     }
 
     private static bool IsSimpleType(Type type) =>
-        type.IsPrimitive is true ||
-        type.Equals(typeof(decimal)) is true ||
-        type.Equals(typeof(string)) is true ||
-        type.Equals(typeof(DateTime)) is true ||
-        type.IsGenericType is true && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>)) is true;
+        (type.IsPrimitive is true) ||
+        (type.Equals(typeof(string)) is true) ||
+        (type.Equals(typeof(decimal)) is true) ||
+        (type.Equals(typeof(DateTime)) is true) ||
+        ((type.IsGenericType is true) && (type.GetGenericTypeDefinition().Equals(typeof(Nullable<>)) is true));
 }

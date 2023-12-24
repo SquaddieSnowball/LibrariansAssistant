@@ -18,7 +18,7 @@ internal static class DependenciesConfiguration
     /// <summary>
     /// Configures project dependencies.
     /// </summary>
-    internal static void Configure()
+    public static void Configure()
     {
         DependenciesContainer.Register<IAuthorModel, AuthorModel>();
         DependenciesContainer.Register<IBookModel, BookModel>();
@@ -28,7 +28,7 @@ internal static class DependenciesConfiguration
         DependenciesContainer.Register<IBookService, BookService>();
         DependenciesContainer.Register<IIssuingService, IssuingService>();
         DependenciesContainer.Register<IReaderService, ReaderService>();
-        DependenciesContainer.Register<IDataAnnotationModelValidationService, DataAnnotationModelValidationService>();
+        DependenciesContainer.Register<IDataAnnotationsModelValidationService, DataAnnotationsModelValidationService>();
         DependenciesContainer.Register<IApplicationConfigurationService, ApplicationConfigurationService>();
     }
 }

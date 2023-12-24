@@ -5,9 +5,9 @@ using LibrariansAssistant.Services.Common.Abstractions;
 namespace LibrariansAssistant.Services.Common.Implementations;
 
 /// <summary>
-/// Represents the Data Annotation model validation service.
+/// Represents the Data Annotations model validation service.
 /// </summary>
-public sealed class DataAnnotationModelValidationService : IDataAnnotationModelValidationService
+public sealed class DataAnnotationsModelValidationService : IDataAnnotationsModelValidationService
 {
     /// <summary>
     /// Determines whether the specified model is valid.
@@ -23,14 +23,14 @@ public sealed class DataAnnotationModelValidationService : IDataAnnotationModelV
 
         ValidationContext validationContext = new(model);
         List<ValidationResult> validationResuls = new();
-        StringBuilder errorMessages = new();
+        StringBuilder errorMessagesStringBuilder = new();
 
         if (Validator.TryValidateObject(model, validationContext, validationResuls, true) is false)
         {
             foreach (ValidationResult validationResult in validationResuls)
-                _ = errorMessages.AppendLine(validationResult.ErrorMessage);
+                _ = errorMessagesStringBuilder.AppendLine(validationResult.ErrorMessage);
 
-            throw new ArgumentException(errorMessages.ToString());
+            throw new ArgumentException(errorMessagesStringBuilder.ToString());
         }
     }
 }

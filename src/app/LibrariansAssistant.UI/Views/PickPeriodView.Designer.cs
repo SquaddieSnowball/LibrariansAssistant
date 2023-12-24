@@ -28,268 +28,267 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanelActions = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonCancel = new System.Windows.Forms.Button();
-            this.buttonConfirm = new System.Windows.Forms.Button();
-            this.buttonReset = new System.Windows.Forms.Button();
-            this.labelStatus = new System.Windows.Forms.Label();
-            this.tableLayoutPanelPeriod = new System.Windows.Forms.TableLayoutPanel();
-            this.labelStartPeriod = new System.Windows.Forms.Label();
-            this.labelEndPeriod = new System.Windows.Forms.Label();
-            this.dateTimePickerStartPeriod = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePickerEndPeriod = new System.Windows.Forms.DateTimePicker();
-            this.tableLayoutPanelColumn = new System.Windows.Forms.TableLayoutPanel();
-            this.labelColumn = new System.Windows.Forms.Label();
-            this.comboBoxColumn = new System.Windows.Forms.ComboBox();
-            this.tableLayoutPanelMain.SuspendLayout();
-            this.tableLayoutPanelActions.SuspendLayout();
-            this.tableLayoutPanelPeriod.SuspendLayout();
-            this.tableLayoutPanelColumn.SuspendLayout();
-            this.SuspendLayout();
+            tableLayoutPanelMain = new TableLayoutPanel();
+            tableLayoutPanelActions = new TableLayoutPanel();
+            buttonCancel = new Button();
+            buttonConfirm = new Button();
+            buttonReset = new Button();
+            labelStatus = new Label();
+            tableLayoutPanelPeriod = new TableLayoutPanel();
+            labelStartPeriod = new Label();
+            labelEndPeriod = new Label();
+            dateTimePickerStartPeriod = new DateTimePicker();
+            dateTimePickerEndPeriod = new DateTimePicker();
+            tableLayoutPanelColumn = new TableLayoutPanel();
+            labelColumn = new Label();
+            comboBoxColumn = new ComboBox();
+            tableLayoutPanelMain.SuspendLayout();
+            tableLayoutPanelActions.SuspendLayout();
+            tableLayoutPanelPeriod.SuspendLayout();
+            tableLayoutPanelColumn.SuspendLayout();
+            SuspendLayout();
             // 
             // tableLayoutPanelMain
             // 
-            this.tableLayoutPanelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.tableLayoutPanelMain.ColumnCount = 1;
-            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelActions, 0, 3);
-            this.tableLayoutPanelMain.Controls.Add(this.labelStatus, 0, 0);
-            this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelPeriod, 0, 1);
-            this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelColumn, 0, 2);
-            this.tableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelMain.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
-            this.tableLayoutPanelMain.RowCount = 4;
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(342, 223);
-            this.tableLayoutPanelMain.TabIndex = 0;
+            tableLayoutPanelMain.BackColor = Color.FromArgb(30, 30, 30);
+            tableLayoutPanelMain.ColumnCount = 1;
+            tableLayoutPanelMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanelMain.Controls.Add(tableLayoutPanelActions, 0, 3);
+            tableLayoutPanelMain.Controls.Add(labelStatus, 0, 0);
+            tableLayoutPanelMain.Controls.Add(tableLayoutPanelPeriod, 0, 1);
+            tableLayoutPanelMain.Controls.Add(tableLayoutPanelColumn, 0, 2);
+            tableLayoutPanelMain.Dock = DockStyle.Fill;
+            tableLayoutPanelMain.ForeColor = Color.FromArgb(230, 230, 230);
+            tableLayoutPanelMain.Location = new Point(0, 0);
+            tableLayoutPanelMain.Name = "tableLayoutPanelMain";
+            tableLayoutPanelMain.RowCount = 4;
+            tableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            tableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            tableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
+            tableLayoutPanelMain.Size = new Size(342, 223);
+            tableLayoutPanelMain.TabIndex = 0;
             // 
             // tableLayoutPanelActions
             // 
-            this.tableLayoutPanelActions.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.tableLayoutPanelActions.ColumnCount = 3;
-            this.tableLayoutPanelActions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanelActions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanelActions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanelActions.Controls.Add(this.buttonCancel, 2, 0);
-            this.tableLayoutPanelActions.Controls.Add(this.buttonConfirm, 0, 0);
-            this.tableLayoutPanelActions.Controls.Add(this.buttonReset, 1, 0);
-            this.tableLayoutPanelActions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelActions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.tableLayoutPanelActions.Location = new System.Drawing.Point(3, 166);
-            this.tableLayoutPanelActions.Name = "tableLayoutPanelActions";
-            this.tableLayoutPanelActions.RowCount = 1;
-            this.tableLayoutPanelActions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelActions.Size = new System.Drawing.Size(336, 54);
-            this.tableLayoutPanelActions.TabIndex = 0;
+            tableLayoutPanelActions.BackColor = Color.FromArgb(30, 30, 30);
+            tableLayoutPanelActions.ColumnCount = 3;
+            tableLayoutPanelActions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            tableLayoutPanelActions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            tableLayoutPanelActions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            tableLayoutPanelActions.Controls.Add(buttonCancel, 2, 0);
+            tableLayoutPanelActions.Controls.Add(buttonConfirm, 0, 0);
+            tableLayoutPanelActions.Controls.Add(buttonReset, 1, 0);
+            tableLayoutPanelActions.Dock = DockStyle.Fill;
+            tableLayoutPanelActions.ForeColor = Color.FromArgb(230, 230, 230);
+            tableLayoutPanelActions.Location = new Point(3, 166);
+            tableLayoutPanelActions.Name = "tableLayoutPanelActions";
+            tableLayoutPanelActions.RowCount = 1;
+            tableLayoutPanelActions.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanelActions.Size = new Size(336, 54);
+            tableLayoutPanelActions.TabIndex = 0;
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonCancel.AutoSize = true;
-            this.buttonCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.buttonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.buttonCancel.Location = new System.Drawing.Point(226, 7);
-            this.buttonCancel.Margin = new System.Windows.Forms.Padding(2, 3, 3, 10);
-            this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(94, 32);
-            this.buttonCancel.TabIndex = 3;
-            this.buttonCancel.Text = "Cancel";
-            this.buttonCancel.UseVisualStyleBackColor = false;
+            buttonCancel.Anchor = AnchorStyles.Left;
+            buttonCancel.AutoSize = true;
+            buttonCancel.BackColor = Color.FromArgb(30, 30, 30);
+            buttonCancel.FlatStyle = FlatStyle.Flat;
+            buttonCancel.ForeColor = Color.FromArgb(230, 230, 230);
+            buttonCancel.Location = new Point(226, 7);
+            buttonCancel.Margin = new Padding(2, 3, 3, 10);
+            buttonCancel.Name = "buttonCancel";
+            buttonCancel.Size = new Size(94, 32);
+            buttonCancel.TabIndex = 3;
+            buttonCancel.Text = "Cancel";
+            buttonCancel.UseVisualStyleBackColor = false;
             // 
             // buttonConfirm
             // 
-            this.buttonConfirm.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.buttonConfirm.AutoSize = true;
-            this.buttonConfirm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonConfirm.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.buttonConfirm.Location = new System.Drawing.Point(16, 7);
-            this.buttonConfirm.Margin = new System.Windows.Forms.Padding(3, 3, 2, 10);
-            this.buttonConfirm.Name = "buttonConfirm";
-            this.buttonConfirm.Size = new System.Drawing.Size(94, 32);
-            this.buttonConfirm.TabIndex = 0;
-            this.buttonConfirm.Text = "Confirm";
-            this.buttonConfirm.UseVisualStyleBackColor = false;
+            buttonConfirm.Anchor = AnchorStyles.Right;
+            buttonConfirm.AutoSize = true;
+            buttonConfirm.FlatStyle = FlatStyle.Flat;
+            buttonConfirm.ForeColor = Color.FromArgb(230, 230, 230);
+            buttonConfirm.Location = new Point(16, 7);
+            buttonConfirm.Margin = new Padding(3, 3, 2, 10);
+            buttonConfirm.Name = "buttonConfirm";
+            buttonConfirm.Size = new Size(94, 32);
+            buttonConfirm.TabIndex = 0;
+            buttonConfirm.Text = "Confirm";
+            buttonConfirm.UseVisualStyleBackColor = false;
             // 
             // buttonReset
             // 
-            this.buttonReset.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.buttonReset.AutoSize = true;
-            this.buttonReset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.buttonReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonReset.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.buttonReset.Location = new System.Drawing.Point(121, 7);
-            this.buttonReset.Margin = new System.Windows.Forms.Padding(3, 3, 3, 15);
-            this.buttonReset.Name = "buttonReset";
-            this.buttonReset.Size = new System.Drawing.Size(94, 32);
-            this.buttonReset.TabIndex = 1;
-            this.buttonReset.Text = "Reset";
-            this.buttonReset.UseVisualStyleBackColor = false;
+            buttonReset.Anchor = AnchorStyles.Bottom;
+            buttonReset.AutoSize = true;
+            buttonReset.BackColor = Color.FromArgb(30, 30, 30);
+            buttonReset.FlatStyle = FlatStyle.Flat;
+            buttonReset.ForeColor = Color.FromArgb(230, 230, 230);
+            buttonReset.Location = new Point(121, 7);
+            buttonReset.Margin = new Padding(3, 3, 3, 15);
+            buttonReset.Name = "buttonReset";
+            buttonReset.Size = new Size(94, 32);
+            buttonReset.TabIndex = 1;
+            buttonReset.Text = "Reset";
+            buttonReset.UseVisualStyleBackColor = false;
             // 
             // labelStatus
             // 
-            this.labelStatus.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.labelStatus.AutoSize = true;
-            this.labelStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.labelStatus.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.labelStatus.Location = new System.Drawing.Point(143, 12);
-            this.labelStatus.Margin = new System.Windows.Forms.Padding(3, 0, 3, 5);
-            this.labelStatus.Name = "labelStatus";
-            this.labelStatus.Size = new System.Drawing.Size(56, 23);
-            this.labelStatus.TabIndex = 1;
-            this.labelStatus.Text = "Status";
+            labelStatus.Anchor = AnchorStyles.Bottom;
+            labelStatus.AutoSize = true;
+            labelStatus.BackColor = Color.FromArgb(30, 30, 30);
+            labelStatus.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            labelStatus.ForeColor = Color.FromArgb(230, 230, 230);
+            labelStatus.Location = new Point(143, 12);
+            labelStatus.Margin = new Padding(3, 0, 3, 5);
+            labelStatus.Name = "labelStatus";
+            labelStatus.Size = new Size(56, 23);
+            labelStatus.TabIndex = 1;
+            labelStatus.Text = "Status";
             // 
             // tableLayoutPanelPeriod
             // 
-            this.tableLayoutPanelPeriod.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.tableLayoutPanelPeriod.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tableLayoutPanelPeriod.ColumnCount = 2;
-            this.tableLayoutPanelPeriod.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelPeriod.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelPeriod.Controls.Add(this.labelStartPeriod, 0, 0);
-            this.tableLayoutPanelPeriod.Controls.Add(this.labelEndPeriod, 1, 0);
-            this.tableLayoutPanelPeriod.Controls.Add(this.dateTimePickerStartPeriod, 0, 1);
-            this.tableLayoutPanelPeriod.Controls.Add(this.dateTimePickerEndPeriod, 1, 1);
-            this.tableLayoutPanelPeriod.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelPeriod.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.tableLayoutPanelPeriod.Location = new System.Drawing.Point(20, 43);
-            this.tableLayoutPanelPeriod.Margin = new System.Windows.Forms.Padding(20, 3, 20, 3);
-            this.tableLayoutPanelPeriod.Name = "tableLayoutPanelPeriod";
-            this.tableLayoutPanelPeriod.RowCount = 2;
-            this.tableLayoutPanelPeriod.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanelPeriod.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.tableLayoutPanelPeriod.Size = new System.Drawing.Size(302, 77);
-            this.tableLayoutPanelPeriod.TabIndex = 2;
+            tableLayoutPanelPeriod.BackColor = Color.FromArgb(30, 30, 30);
+            tableLayoutPanelPeriod.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
+            tableLayoutPanelPeriod.ColumnCount = 2;
+            tableLayoutPanelPeriod.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanelPeriod.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanelPeriod.Controls.Add(labelStartPeriod, 0, 0);
+            tableLayoutPanelPeriod.Controls.Add(labelEndPeriod, 1, 0);
+            tableLayoutPanelPeriod.Controls.Add(dateTimePickerStartPeriod, 0, 1);
+            tableLayoutPanelPeriod.Controls.Add(dateTimePickerEndPeriod, 1, 1);
+            tableLayoutPanelPeriod.Dock = DockStyle.Fill;
+            tableLayoutPanelPeriod.ForeColor = Color.FromArgb(230, 230, 230);
+            tableLayoutPanelPeriod.Location = new Point(20, 43);
+            tableLayoutPanelPeriod.Margin = new Padding(20, 3, 20, 3);
+            tableLayoutPanelPeriod.Name = "tableLayoutPanelPeriod";
+            tableLayoutPanelPeriod.RowCount = 2;
+            tableLayoutPanelPeriod.RowStyles.Add(new RowStyle(SizeType.Percent, 40F));
+            tableLayoutPanelPeriod.RowStyles.Add(new RowStyle(SizeType.Percent, 60F));
+            tableLayoutPanelPeriod.Size = new Size(302, 77);
+            tableLayoutPanelPeriod.TabIndex = 2;
             // 
             // labelStartPeriod
             // 
-            this.labelStartPeriod.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.labelStartPeriod.AutoSize = true;
-            this.labelStartPeriod.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.labelStartPeriod.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.labelStartPeriod.Location = new System.Drawing.Point(31, 5);
-            this.labelStartPeriod.Margin = new System.Windows.Forms.Padding(3, 0, 3, 5);
-            this.labelStartPeriod.Name = "labelStartPeriod";
-            this.labelStartPeriod.Size = new System.Drawing.Size(88, 20);
-            this.labelStartPeriod.TabIndex = 0;
-            this.labelStartPeriod.Text = "Start period";
+            labelStartPeriod.Anchor = AnchorStyles.Bottom;
+            labelStartPeriod.AutoSize = true;
+            labelStartPeriod.BackColor = Color.FromArgb(30, 30, 30);
+            labelStartPeriod.ForeColor = Color.FromArgb(230, 230, 230);
+            labelStartPeriod.Location = new Point(31, 5);
+            labelStartPeriod.Margin = new Padding(3, 0, 3, 5);
+            labelStartPeriod.Name = "labelStartPeriod";
+            labelStartPeriod.Size = new Size(88, 20);
+            labelStartPeriod.TabIndex = 0;
+            labelStartPeriod.Text = "Start period";
             // 
             // labelEndPeriod
             // 
-            this.labelEndPeriod.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.labelEndPeriod.AutoSize = true;
-            this.labelEndPeriod.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.labelEndPeriod.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.labelEndPeriod.Location = new System.Drawing.Point(185, 5);
-            this.labelEndPeriod.Margin = new System.Windows.Forms.Padding(3, 0, 3, 5);
-            this.labelEndPeriod.Name = "labelEndPeriod";
-            this.labelEndPeriod.Size = new System.Drawing.Size(82, 20);
-            this.labelEndPeriod.TabIndex = 1;
-            this.labelEndPeriod.Text = "End period";
+            labelEndPeriod.Anchor = AnchorStyles.Bottom;
+            labelEndPeriod.AutoSize = true;
+            labelEndPeriod.BackColor = Color.FromArgb(30, 30, 30);
+            labelEndPeriod.ForeColor = Color.FromArgb(230, 230, 230);
+            labelEndPeriod.Location = new Point(185, 5);
+            labelEndPeriod.Margin = new Padding(3, 0, 3, 5);
+            labelEndPeriod.Name = "labelEndPeriod";
+            labelEndPeriod.Size = new Size(82, 20);
+            labelEndPeriod.TabIndex = 1;
+            labelEndPeriod.Text = "End period";
             // 
             // dateTimePickerStartPeriod
             // 
-            this.dateTimePickerStartPeriod.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.dateTimePickerStartPeriod.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePickerStartPeriod.Location = new System.Drawing.Point(10, 40);
-            this.dateTimePickerStartPeriod.Margin = new System.Windows.Forms.Padding(3, 3, 3, 9);
-            this.dateTimePickerStartPeriod.MaxDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
-            this.dateTimePickerStartPeriod.MinDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
-            this.dateTimePickerStartPeriod.Name = "dateTimePickerStartPeriod";
-            this.dateTimePickerStartPeriod.Size = new System.Drawing.Size(130, 27);
-            this.dateTimePickerStartPeriod.TabIndex = 2;
-            this.dateTimePickerStartPeriod.Value = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
+            dateTimePickerStartPeriod.Anchor = AnchorStyles.Bottom;
+            dateTimePickerStartPeriod.Format = DateTimePickerFormat.Short;
+            dateTimePickerStartPeriod.Location = new Point(10, 40);
+            dateTimePickerStartPeriod.Margin = new Padding(3, 3, 3, 9);
+            dateTimePickerStartPeriod.MaxDate = new DateTime(1900, 1, 1, 0, 0, 0, 0);
+            dateTimePickerStartPeriod.MinDate = new DateTime(1900, 1, 1, 0, 0, 0, 0);
+            dateTimePickerStartPeriod.Name = "dateTimePickerStartPeriod";
+            dateTimePickerStartPeriod.Size = new Size(130, 27);
+            dateTimePickerStartPeriod.TabIndex = 2;
+            dateTimePickerStartPeriod.Value = new DateTime(1900, 1, 1, 0, 0, 0, 0);
             // 
             // dateTimePickerEndPeriod
             // 
-            this.dateTimePickerEndPeriod.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.dateTimePickerEndPeriod.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePickerEndPeriod.Location = new System.Drawing.Point(161, 40);
-            this.dateTimePickerEndPeriod.Margin = new System.Windows.Forms.Padding(3, 3, 3, 9);
-            this.dateTimePickerEndPeriod.MaxDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
-            this.dateTimePickerEndPeriod.MinDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
-            this.dateTimePickerEndPeriod.Name = "dateTimePickerEndPeriod";
-            this.dateTimePickerEndPeriod.Size = new System.Drawing.Size(130, 27);
-            this.dateTimePickerEndPeriod.TabIndex = 3;
-            this.dateTimePickerEndPeriod.Value = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
+            dateTimePickerEndPeriod.Anchor = AnchorStyles.Bottom;
+            dateTimePickerEndPeriod.Format = DateTimePickerFormat.Short;
+            dateTimePickerEndPeriod.Location = new Point(161, 40);
+            dateTimePickerEndPeriod.Margin = new Padding(3, 3, 3, 9);
+            dateTimePickerEndPeriod.MaxDate = new DateTime(1900, 1, 1, 0, 0, 0, 0);
+            dateTimePickerEndPeriod.MinDate = new DateTime(1900, 1, 1, 0, 0, 0, 0);
+            dateTimePickerEndPeriod.Name = "dateTimePickerEndPeriod";
+            dateTimePickerEndPeriod.Size = new Size(130, 27);
+            dateTimePickerEndPeriod.TabIndex = 3;
+            dateTimePickerEndPeriod.Value = new DateTime(1900, 1, 1, 0, 0, 0, 0);
             // 
             // tableLayoutPanelColumn
             // 
-            this.tableLayoutPanelColumn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.tableLayoutPanelColumn.ColumnCount = 2;
-            this.tableLayoutPanelColumn.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanelColumn.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.tableLayoutPanelColumn.Controls.Add(this.labelColumn, 0, 0);
-            this.tableLayoutPanelColumn.Controls.Add(this.comboBoxColumn, 1, 0);
-            this.tableLayoutPanelColumn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelColumn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.tableLayoutPanelColumn.Location = new System.Drawing.Point(3, 126);
-            this.tableLayoutPanelColumn.Name = "tableLayoutPanelColumn";
-            this.tableLayoutPanelColumn.RowCount = 1;
-            this.tableLayoutPanelColumn.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelColumn.Size = new System.Drawing.Size(336, 34);
-            this.tableLayoutPanelColumn.TabIndex = 3;
+            tableLayoutPanelColumn.BackColor = Color.FromArgb(30, 30, 30);
+            tableLayoutPanelColumn.ColumnCount = 2;
+            tableLayoutPanelColumn.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            tableLayoutPanelColumn.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
+            tableLayoutPanelColumn.Controls.Add(labelColumn, 0, 0);
+            tableLayoutPanelColumn.Controls.Add(comboBoxColumn, 1, 0);
+            tableLayoutPanelColumn.Dock = DockStyle.Fill;
+            tableLayoutPanelColumn.ForeColor = Color.FromArgb(230, 230, 230);
+            tableLayoutPanelColumn.Location = new Point(3, 126);
+            tableLayoutPanelColumn.Name = "tableLayoutPanelColumn";
+            tableLayoutPanelColumn.RowCount = 1;
+            tableLayoutPanelColumn.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanelColumn.Size = new Size(336, 34);
+            tableLayoutPanelColumn.TabIndex = 3;
             // 
             // labelColumn
             // 
-            this.labelColumn.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.labelColumn.AutoSize = true;
-            this.labelColumn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.labelColumn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.labelColumn.Location = new System.Drawing.Point(66, 8);
-            this.labelColumn.Margin = new System.Windows.Forms.Padding(3, 3, 5, 0);
-            this.labelColumn.Name = "labelColumn";
-            this.labelColumn.Size = new System.Drawing.Size(63, 20);
-            this.labelColumn.TabIndex = 0;
-            this.labelColumn.Text = "Column:";
+            labelColumn.Anchor = AnchorStyles.Right;
+            labelColumn.AutoSize = true;
+            labelColumn.BackColor = Color.FromArgb(30, 30, 30);
+            labelColumn.ForeColor = Color.FromArgb(230, 230, 230);
+            labelColumn.Location = new Point(66, 8);
+            labelColumn.Margin = new Padding(3, 3, 5, 0);
+            labelColumn.Name = "labelColumn";
+            labelColumn.Size = new Size(63, 20);
+            labelColumn.TabIndex = 0;
+            labelColumn.Text = "Column:";
             // 
             // comboBoxColumn
             // 
-            this.comboBoxColumn.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.comboBoxColumn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.comboBoxColumn.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxColumn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboBoxColumn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.comboBoxColumn.FormattingEnabled = true;
-            this.comboBoxColumn.Location = new System.Drawing.Point(139, 5);
-            this.comboBoxColumn.Margin = new System.Windows.Forms.Padding(5, 5, 3, 3);
-            this.comboBoxColumn.Name = "comboBoxColumn";
-            this.comboBoxColumn.Size = new System.Drawing.Size(130, 28);
-            this.comboBoxColumn.TabIndex = 1;
+            comboBoxColumn.Anchor = AnchorStyles.Left;
+            comboBoxColumn.BackColor = Color.FromArgb(30, 30, 30);
+            comboBoxColumn.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxColumn.FlatStyle = FlatStyle.Flat;
+            comboBoxColumn.ForeColor = Color.FromArgb(230, 230, 230);
+            comboBoxColumn.FormattingEnabled = true;
+            comboBoxColumn.Location = new Point(139, 5);
+            comboBoxColumn.Margin = new Padding(5, 5, 3, 3);
+            comboBoxColumn.Name = "comboBoxColumn";
+            comboBoxColumn.Size = new Size(130, 28);
+            comboBoxColumn.TabIndex = 1;
             // 
             // PickPeriodView
             // 
-            this.AcceptButton = this.buttonConfirm;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(342, 223);
-            this.Controls.Add(this.tableLayoutPanelMain);
-            this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "PickPeriodView";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Pick period";
-            this.tableLayoutPanelMain.ResumeLayout(false);
-            this.tableLayoutPanelMain.PerformLayout();
-            this.tableLayoutPanelActions.ResumeLayout(false);
-            this.tableLayoutPanelActions.PerformLayout();
-            this.tableLayoutPanelPeriod.ResumeLayout(false);
-            this.tableLayoutPanelPeriod.PerformLayout();
-            this.tableLayoutPanelColumn.ResumeLayout(false);
-            this.tableLayoutPanelColumn.PerformLayout();
-            this.ResumeLayout(false);
-
+            AcceptButton = buttonConfirm;
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(30, 30, 30);
+            CancelButton = buttonCancel;
+            ClientSize = new Size(342, 223);
+            Controls.Add(tableLayoutPanelMain);
+            ForeColor = Color.FromArgb(230, 230, 230);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "PickPeriodView";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Pick period";
+            tableLayoutPanelMain.ResumeLayout(false);
+            tableLayoutPanelMain.PerformLayout();
+            tableLayoutPanelActions.ResumeLayout(false);
+            tableLayoutPanelActions.PerformLayout();
+            tableLayoutPanelPeriod.ResumeLayout(false);
+            tableLayoutPanelPeriod.PerformLayout();
+            tableLayoutPanelColumn.ResumeLayout(false);
+            tableLayoutPanelColumn.PerformLayout();
+            ResumeLayout(false);
         }
 
         #endregion

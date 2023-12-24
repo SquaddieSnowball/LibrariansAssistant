@@ -11,16 +11,16 @@ namespace LibrariansAssistant.Services.Model.Implementations;
 public sealed class IssuingService : IIssuingService
 {
     private readonly IIssuingRepository _issuingRepository;
-    private readonly IDataAnnotationModelValidationService _dataAnnotationModelValidationService;
+    private readonly IDataAnnotationsModelValidationService _dataAnnotationModelValidationService;
 
     /// <summary>
-    /// Initializes a new instance of the IssuingService class.
+    /// Initializes a new instance of the <see cref="IssuingService"/> class.
     /// </summary>
     /// <param name="issuingRepository">Issuing repository for management.</param>
-    /// <param name="dataAnnotationModelValidationService">Data Annotation 
+    /// <param name="dataAnnotationModelValidationService">Data Annotations 
     /// model validation service used to validate models.</param>
     public IssuingService(IIssuingRepository issuingRepository,
-        IDataAnnotationModelValidationService dataAnnotationModelValidationService) =>
+        IDataAnnotationsModelValidationService dataAnnotationModelValidationService) =>
         (_issuingRepository, _dataAnnotationModelValidationService) =
         (issuingRepository, dataAnnotationModelValidationService);
 
@@ -30,50 +30,22 @@ public sealed class IssuingService : IIssuingService
     /// <param name="issuing">Issuing to add to the repository.</param>
     public void IssuingAdd(IIssuingModel issuing)
     {
-        try
-        {
-            _dataAnnotationModelValidationService.Validate(issuing);
-
-            _issuingRepository.IssuingAdd(issuing);
-        }
-        catch
-        {
-            throw;
-        }
+        _dataAnnotationModelValidationService.Validate(issuing);
+        _issuingRepository.IssuingAdd(issuing);
     }
 
     /// <summary>
     /// Gets all issuings from the repository.
     /// </summary>
     /// <returns>All issuings from the repository.</returns>
-    public IEnumerable<IIssuingModel> IssuingGetAll()
-    {
-        try
-        {
-            return _issuingRepository.IssuingGetAll();
-        }
-        catch
-        {
-            throw;
-        }
-    }
+    public IEnumerable<IIssuingModel> IssuingGetAll() => _issuingRepository.IssuingGetAll();
 
     /// <summary>
     /// Gets the issuing with the specified ID from the repository.
     /// </summary>
     /// <param name="issuingId">Issuing ID.</param>
     /// <returns>Issuing with the specified ID.</returns>
-    public IIssuingModel? IssuingGetById(int issuingId)
-    {
-        try
-        {
-            return _issuingRepository.IssuingGetById(issuingId);
-        }
-        catch
-        {
-            throw;
-        }
-    }
+    public IIssuingModel? IssuingGetById(int issuingId) => _issuingRepository.IssuingGetById(issuingId);
 
     /// <summary>
     /// Updates an existing issuing in the repository.
@@ -81,33 +53,15 @@ public sealed class IssuingService : IIssuingService
     /// <param name="issuing">Existing issuing to update.</param>
     public void IssuingUpdate(IIssuingModel issuing)
     {
-        try
-        {
-            _dataAnnotationModelValidationService.Validate(issuing);
-
-            _issuingRepository.IssuingUpdate(issuing);
-        }
-        catch
-        {
-            throw;
-        }
+        _dataAnnotationModelValidationService.Validate(issuing);
+        _issuingRepository.IssuingUpdate(issuing);
     }
 
     /// <summary>
     /// Removes an existing issuing from the repository.
     /// </summary>
     /// <param name="issuingId">Issuing ID.</param>
-    public void IssuingDelete(int issuingId)
-    {
-        try
-        {
-            _issuingRepository.IssuingDelete(issuingId);
-        }
-        catch
-        {
-            throw;
-        }
-    }
+    public void IssuingDelete(int issuingId) => _issuingRepository.IssuingDelete(issuingId);
 
     /// <summary>
     /// Finds the most active reader.
@@ -115,25 +69,18 @@ public sealed class IssuingService : IIssuingService
     /// <returns>The most active reader.</returns>
     public IReaderModel? ReaderMostActiveGet()
     {
-        IEnumerable<IIssuingModel> issuings;
+        IEnumerable<IIssuingModel> issuings = _issuingRepository.IssuingGetAll();
         IReaderModel? reader = default;
 
-        try
-        {
-            issuings = _issuingRepository.IssuingGetAll();
-        }
-        catch
-        {
-            throw;
-        }
-
         if (issuings.Any() is true)
+        {
             reader = issuings
                 .Select(i => i.Reader)
                 .GroupBy(r => r.Id)
                 .OrderByDescending(g => g.Count())
                 .First()
                 .First();
+        }
 
         return reader;
     }
@@ -144,19 +91,11 @@ public sealed class IssuingService : IIssuingService
     /// <returns>The most popular author.</returns>
     public IAuthorModel? AuthorMostPopularGet()
     {
-        IEnumerable<IIssuingModel> issuings;
+        IEnumerable<IIssuingModel> issuings = _issuingRepository.IssuingGetAll();
         IAuthorModel? author = default;
 
-        try
-        {
-            issuings = _issuingRepository.IssuingGetAll();
-        }
-        catch
-        {
-            throw;
-        }
-
         if (issuings.Any() is true)
+        {
             author = issuings
                 .Select(i => i.Book.Authors)
                 .Aggregate((a1, a2) => a1.Concat(a2))
@@ -164,6 +103,7 @@ public sealed class IssuingService : IIssuingService
                 .OrderByDescending(g => g.Count())
                 .First()
                 .First();
+        }
 
         return author;
     }
@@ -174,25 +114,18 @@ public sealed class IssuingService : IIssuingService
     /// <returns>The most popular book genre.</returns>
     public string? BookMostPopularGenreGet()
     {
-        IEnumerable<IIssuingModel> issuings;
+        IEnumerable<IIssuingModel> issuings = _issuingRepository.IssuingGetAll();
         string? genre = default;
 
-        try
-        {
-            issuings = _issuingRepository.IssuingGetAll();
-        }
-        catch
-        {
-            throw;
-        }
-
         if (issuings.Any() is true)
+        {
             genre = issuings
                 .Select(i => i.Book.Genre)
                 .GroupBy(g => g)
                 .OrderByDescending(g => g.Count())
                 .First()
                 .First();
+        }
 
         return genre;
     }

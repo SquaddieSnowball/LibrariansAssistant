@@ -5,25 +5,27 @@ using Microsoft.Data.SqlClient;
 namespace LibrariansAssistant.Infrastructure.Services.Implementations.RepositoryInitializationStringBuilder;
 
 /// <summary>
-/// Represents the Sql Server initialization string builder.
+/// Represents the "SQL Server" initialization string builder.
 /// </summary>
 public sealed class SqlServerInitializationStringBuilder : IRepositoryInitializationStringBuilder
 {
     private readonly SqlConnectionStringBuilder _sqlConnectionStringBuilder = new();
 
     /// <summary>
-    /// Initializes a new instance of the SqlServerInitializationStringBuilder class.
+    /// Initializes a new instance of the <see cref="SqlServerInitializationStringBuilder"/> class.
     /// </summary>
-    /// <param name="sqlServerIsbSettings">Sql Server initialization string builder settings.</param>
+    /// <param name="sqlServerIsbSettings">"SQL Server" initialization string builder settings.</param>
     /// <exception cref="ArgumentNullException"></exception>
     public SqlServerInitializationStringBuilder(SqlServerInitializationStringBuilderSettings sqlServerIsbSettings)
     {
         if (sqlServerIsbSettings is null)
+        {
             throw new ArgumentNullException(nameof(sqlServerIsbSettings),
-                "SQL Server initialization string builder settings must not be null.");
+                "SQL server initialization string builder settings must not be null.");
+        }
 
         _sqlConnectionStringBuilder["Data Source"] =
-            string.IsNullOrEmpty(sqlServerIsbSettings.ServerInstanceName) is true ?
+            (string.IsNullOrEmpty(sqlServerIsbSettings.ServerInstanceName) is true) ?
             sqlServerIsbSettings.ServerName :
             sqlServerIsbSettings.ServerName + "\\" + sqlServerIsbSettings.ServerInstanceName;
 
@@ -42,6 +44,5 @@ public sealed class SqlServerInitializationStringBuilder : IRepositoryInitializa
     /// Builds an initialization string.
     /// </summary>
     /// <returns>New initialization string.</returns>
-    public string Build() =>
-        _sqlConnectionStringBuilder.ConnectionString;
+    public string Build() => _sqlConnectionStringBuilder.ConnectionString;
 }

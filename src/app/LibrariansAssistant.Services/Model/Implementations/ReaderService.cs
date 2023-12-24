@@ -11,16 +11,16 @@ namespace LibrariansAssistant.Services.Model.Implementations;
 public sealed class ReaderService : IReaderService
 {
     private readonly IReaderRepository _readerRepository;
-    private readonly IDataAnnotationModelValidationService _dataAnnotationModelValidationService;
+    private readonly IDataAnnotationsModelValidationService _dataAnnotationModelValidationService;
 
     /// <summary>
-    /// Initializes a new instance of the ReaderService class.
+    /// Initializes a new instance of the <see cref="ReaderService"/> class.
     /// </summary>
     /// <param name="readerRepository">Reader repository for management.</param>
-    /// <param name="dataAnnotationModelValidationService">Data Annotation 
+    /// <param name="dataAnnotationModelValidationService">Data Annotations 
     /// model validation service used to validate models.</param>
     public ReaderService(IReaderRepository readerRepository,
-        IDataAnnotationModelValidationService dataAnnotationModelValidationService) =>
+        IDataAnnotationsModelValidationService dataAnnotationModelValidationService) =>
         (_readerRepository, _dataAnnotationModelValidationService) =
         (readerRepository, dataAnnotationModelValidationService);
 
@@ -30,50 +30,22 @@ public sealed class ReaderService : IReaderService
     /// <param name="reader">Reader to add to the repository.</param>
     public void ReaderAdd(IReaderModel reader)
     {
-        try
-        {
-            _dataAnnotationModelValidationService.Validate(reader);
-
-            _readerRepository.ReaderAdd(reader);
-        }
-        catch
-        {
-            throw;
-        }
+        _dataAnnotationModelValidationService.Validate(reader);
+        _readerRepository.ReaderAdd(reader);
     }
 
     /// <summary>
     /// Gets all readers from the repository.
     /// </summary>
     /// <returns>All readers from the repository.</returns>
-    public IEnumerable<IReaderModel> ReaderGetAll()
-    {
-        try
-        {
-            return _readerRepository.ReaderGetAll();
-        }
-        catch
-        {
-            throw;
-        }
-    }
+    public IEnumerable<IReaderModel> ReaderGetAll() => _readerRepository.ReaderGetAll();
 
     /// <summary>
     /// Gets the reader with the specified ID from the repository.
     /// </summary>
     /// <param name="readerId">Reader ID.</param>
     /// <returns>Reader with the specified ID.</returns>
-    public IReaderModel? ReaderGetById(int readerId)
-    {
-        try
-        {
-            return _readerRepository.ReaderGetById(readerId);
-        }
-        catch
-        {
-            throw;
-        }
-    }
+    public IReaderModel? ReaderGetById(int readerId) => _readerRepository.ReaderGetById(readerId);
 
     /// <summary>
     /// Updates an existing reader in the repository.
@@ -81,31 +53,13 @@ public sealed class ReaderService : IReaderService
     /// <param name="reader">Existing reader to update.</param>
     public void ReaderUpdate(IReaderModel reader)
     {
-        try
-        {
-            _dataAnnotationModelValidationService.Validate(reader);
-
-            _readerRepository.ReaderUpdate(reader);
-        }
-        catch
-        {
-            throw;
-        }
+        _dataAnnotationModelValidationService.Validate(reader);
+        _readerRepository.ReaderUpdate(reader);
     }
 
     /// <summary>
     /// Removes an existing reader from the repository.
     /// </summary>
     /// <param name="readerId">Reader ID.</param>
-    public void ReaderDelete(int readerId)
-    {
-        try
-        {
-            _readerRepository.ReaderDelete(readerId);
-        }
-        catch
-        {
-            throw;
-        }
-    }
+    public void ReaderDelete(int readerId) => _readerRepository.ReaderDelete(readerId);
 }

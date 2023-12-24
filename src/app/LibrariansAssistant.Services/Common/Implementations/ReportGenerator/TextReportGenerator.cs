@@ -41,17 +41,15 @@ public sealed class TextReportGenerator : IReportGenerator
                 if (reportDocument[i, j].Length > columnMaxLength[j])
                     columnMaxLength[j] = reportDocument[i, j].Length;
 
-        documentWidth = columnMaxLength.Sum() + columnMaxLength.Length * 3 + 1;
+        documentWidth = columnMaxLength.Sum() + (columnMaxLength.Length * 3) + 1;
 
         _ = report.AppendLine(new string('\u2015', documentWidth));
-
         _ = report.Append('|');
 
         for (var j = 0; j < reportDocument.ColumnCount; j++)
-            _ = report.Append(" " + columnHeaders[j].PadRight(columnMaxLength[j]) + " |");
+            _ = report.Append($" {columnHeaders[j].PadRight(columnMaxLength[j])} |");
 
         _ = report.AppendLine();
-
         _ = report.AppendLine(new string('\u2015', documentWidth));
 
         for (var i = 0; i < reportDocument.RowCount; i++)
@@ -59,20 +57,13 @@ public sealed class TextReportGenerator : IReportGenerator
             _ = report.Append('|');
 
             for (var j = 0; j < reportDocument.ColumnCount; j++)
-                _ = report.Append(" " + reportDocument[i, j].PadRight(columnMaxLength[j]) + " |");
+                _ = report.Append($" {reportDocument[i, j].PadRight(columnMaxLength[j])} |");
 
             _ = report.AppendLine();
         }
 
         _ = report.Append(new string('\u2015', documentWidth));
 
-        try
-        {
-            File.WriteAllText(filePath, report.ToString());
-        }
-        catch
-        {
-            throw;
-        }
+        File.WriteAllText(filePath, report.ToString());
     }
 }

@@ -34,17 +34,18 @@ public sealed class AuthorModel : IAuthorModel
     public string? Patronymic { get; set; }
 
     /// <summary>
-    /// Initializes a new instance of the AuthorModel class.
+    /// Initializes a new instance of the <see cref="AuthorModel"/> class.
     /// </summary>
-    public AuthorModel() =>
-        (FirstName, LastName) = (string.Empty, string.Empty);
+    public AuthorModel() => (FirstName, LastName) = (default!, default!);
 
     /// <summary>
-    /// Initializes a new instance of the AuthorModel class with the specified first name, last name, and patronymic.
+    /// Initializes a new instance of the <see cref="AuthorModel"/> class 
+    /// with the specified first name, last name, and patronymic.
     /// </summary>
     /// <param name="firstName">First name of the author.</param>
     /// <param name="lastName">Last name of the author.</param>
     /// <param name="patronymic">Author's patronymic.</param>
     public AuthorModel(string firstName, string lastName, string? patronymic) =>
-        (FirstName, LastName, Patronymic) = (firstName, lastName, patronymic);
+        (FirstName, LastName, Patronymic) =
+        (firstName, lastName, patronymic);
 }

@@ -4,7 +4,7 @@ using LibrariansAssistant.UI.Helpers;
 namespace LibrariansAssistant.UI.Views;
 
 /// <summary>
-/// Represents the Pick Items view of the application.
+/// Represents the "Pick Items" view of the application.
 /// </summary>
 internal sealed partial class PickItemsView : Form
 {
@@ -17,15 +17,17 @@ internal sealed partial class PickItemsView : Form
     private bool _dataIsAscSortDirection = true;
     private int _dataPrevSortColumnIndex = -1;
 
+    #region Properties
+
     /// <summary>
     /// Gets the main control of the view.
     /// </summary>
-    internal Control MainControl { get; }
+    public Control MainControl { get; }
 
     /// <summary>
     /// Get or sets the items of the view.
     /// </summary>
-    internal Dictionary<int, string?>? Items
+    public Dictionary<int, string?>? Items
     {
         get => _items;
         set
@@ -39,7 +41,7 @@ internal sealed partial class PickItemsView : Form
     /// <summary>
     /// Get or sets the title of the items.
     /// </summary>
-    internal string? ItemsTitle
+    public string? ItemsTitle
     {
         get => _itemsTitle;
         set
@@ -53,13 +55,15 @@ internal sealed partial class PickItemsView : Form
     /// <summary>
     /// Gets the IDs of the picked items.
     /// </summary>
-    internal IEnumerable<int> PickedItemIds { get; } = new List<int>();
+    public IEnumerable<int> PickedItemIds { get; } = new List<int>();
+
+    #endregion
 
     /// <summary>
-    /// Initializes a new instance of the PickItemsView class.
+    /// Initializes a new instance of the <see cref="PickItemsView"/> class.
     /// </summary>
     /// <param name="isMultipick">A value indicating whether multiple items can be selected.</param>
-    internal PickItemsView(bool isMultipick)
+    public PickItemsView(bool isMultipick)
     {
         _isMultipick = isMultipick;
         MainControl = ControlCreation.PickItemsCreateTableLayoutPanel(out _buttonPlus, out _labelPicked);
@@ -72,8 +76,8 @@ internal sealed partial class PickItemsView : Form
     /// <summary>
     /// Select or deselect all items.
     /// </summary>
-    /// <param name="pick">true to select all items; otherwise - false.</param>
-    internal void ChangeAllItemsState(bool pick)
+    /// <param name="pick"><see langword="true"/> to select all items; otherwise, <see langword="false"/>.</param>
+    public void ChangeAllItemsState(bool pick)
     {
         for (var i = 0; i < dataGridViewItems.Rows.Count; i++)
         {
@@ -90,11 +94,13 @@ internal sealed partial class PickItemsView : Form
     /// Select or deselect items.
     /// </summary>
     /// <param name="ids">Item IDs.</param>
-    /// <param name="pick">true to select items; otherwise - false.</param>
-    internal void ChangeItemsState(IEnumerable<int> ids, bool pick)
+    /// <param name="pick"><see langword="true"/> to select items; otherwise, <see langword="false"/>.</param>
+    public void ChangeItemsState(IEnumerable<int> ids, bool pick)
     {
         foreach (int id in ids)
+        {
             for (var i = 0; i < dataGridViewItems.Rows.Count; i++)
+            {
                 if ((int)dataGridViewItems.Rows[i].Cells[1].Value == id)
                 {
                     dataGridViewItems.Rows[i].Cells[0].Value = pick;
@@ -104,6 +110,8 @@ internal sealed partial class PickItemsView : Form
 
                     break;
                 }
+            }
+        }
 
         UpdatePickedItems();
     }
@@ -136,6 +144,8 @@ internal sealed partial class PickItemsView : Form
         }
     }
 
+    #region Control event handlers
+
     private void DataGridViewItemsOnColumnAdded(object? sender, DataGridViewColumnEventArgs e)
     {
         switch (e.Column.Index)
@@ -144,7 +154,11 @@ internal sealed partial class PickItemsView : Form
                 if (dataGridViewItems.Columns[0].HeaderText.StartsWith("\u2713") is false)
                     dataGridViewItems.Columns[0].HeaderText = "\u2713";
 
-                dataGridViewItems.Columns[0].CellTemplate = new DataGridViewCheckBoxCell() { FlatStyle = FlatStyle.Flat };
+                dataGridViewItems.Columns[0].CellTemplate = new DataGridViewCheckBoxCell()
+                {
+                    FlatStyle = FlatStyle.Flat
+                };
+
                 dataGridViewItems.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dataGridViewItems.Columns[0].Width = 40;
                 break;
@@ -183,13 +197,17 @@ internal sealed partial class PickItemsView : Form
                 return;
 
             if ((_isMultipick is false) && (_lastPickedItemId is not -1))
+            {
                 for (var i = 0; i < dataGridViewItems.Rows.Count; i++)
+                {
                     if ((int)dataGridViewItems.Rows[i].Cells[1].Value == _lastPickedItemId)
                     {
                         dataGridViewItems.Rows[i].Cells[0].Value = false;
 
                         break;
                     }
+                }
+            }
 
             _lastPickedItemId = cellId;
         }
@@ -198,11 +216,11 @@ internal sealed partial class PickItemsView : Form
     private void DataGridViewItemsOnColumnHeaderMouseClick(object? sender, DataGridViewCellMouseEventArgs e) =>
         dataGridViewItems.SortDataSourceObjectList(e.ColumnIndex, ref _dataIsAscSortDirection, ref _dataPrevSortColumnIndex);
 
-    private void ButtonPlusOnClick(object? sender, EventArgs e) =>
-        _ = ShowDialog();
+    private void ButtonPlusOnClick(object? sender, EventArgs e) => _ = ShowDialog();
 
-    private void PickItemsViewOnFormClosed(object? sender, FormClosedEventArgs e) =>
-        UpdatePickedItems();
+    private void PickItemsViewOnFormClosed(object? sender, FormClosedEventArgs e) => UpdatePickedItems();
+
+    #endregion
 
     private void UpdatePickedItems()
     {
@@ -212,8 +230,10 @@ internal sealed partial class PickItemsView : Form
             ((List<int>)PickedItemIds).Clear();
 
             foreach (PickItem pickedItem in pickedItems)
+            {
                 if (pickedItem.IsChecked is true)
                     ((List<int>)PickedItemIds).Add(pickedItem.Id);
+            }
         }
 
         if (PickedItemIds.Any() is true)

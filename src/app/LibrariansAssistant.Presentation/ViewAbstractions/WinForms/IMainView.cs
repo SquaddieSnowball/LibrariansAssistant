@@ -1,32 +1,32 @@
 ﻿namespace LibrariansAssistant.Presentation.ViewAbstractions.WinForms;
 
 /// <summary>
-/// Provides properties and events used by the presenter to control the MainView.
+/// Provides properties and events used by the presenter to control the "Main" view.
 /// </summary>
 public interface IMainView : IView
 {
     /// <summary>
-    /// Gets or sets the data for Normal view.
+    /// Gets or sets the data for "Normal" view.
     /// </summary>
     public IEnumerable<object>? VisibleDataNormalView { get; set; }
 
     /// <summary>
-    /// Gets or sets the data for Edit view.
+    /// Gets or sets the data for "Edit" view.
     /// </summary>
     public IEnumerable<object?>? VisibleDataEditView { get; set; }
 
     /// <summary>
-    /// Gets or sets the data for Pick view.
+    /// Gets or sets the data for "Pick" view.
     /// </summary>
     public IEnumerable<KeyValuePair<int, string?>>? VisibleDataPickView { get; set; }
 
     /// <summary>
-    /// Gets or sets the data for Period view.
+    /// Gets or sets the data for "Period" view.
     /// </summary>
     public IEnumerable<KeyValuePair<int, string>>? VisibleDataPeriodView { get; set; }
 
     /// <summary>
-    /// Gets or sets data for column headers in the Normal view.
+    /// Gets or sets data for column headers in the "Normal" view.
     /// </summary>
     public IEnumerable<string>? VisibleDataColumnHeadersNormalView { get; set; }
 
@@ -36,67 +36,67 @@ public interface IMainView : IView
     public bool IsOperationSuccessful { get; set; }
 
     /// <summary>
-    /// Occurs when the Normal view requests an update of the authors.
+    /// Occurs when the "Normal" view requests an update of the authors.
     /// </summary>
     public event EventHandler? AuthorsUpdateNormalView;
 
     /// <summary>
-    /// Occurs when the Normal view requests an update of the books.
+    /// Occurs when the "Normal" view requests an update of the books.
     /// </summary>
     public event EventHandler? BooksUpdateNormalView;
 
     /// <summary>
-    /// Occurs when the Normal view requests an update of the issuings.
+    /// Occurs when the "Normal" view requests an update of the issuings.
     /// </summary>
     public event EventHandler? IssuingsUpdateNormalView;
 
     /// <summary>
-    /// Occurs when the Normal view requests an update of the readers.
+    /// Occurs when the "Normal" view requests an update of the readers.
     /// </summary>
     public event EventHandler? ReadersUpdateNormalView;
 
     /// <summary>
-    /// Occurs when the Edit view requests an update of the authors.
+    /// Occurs when the "Edit" view requests an update of the authors.
     /// </summary>
     public event EventHandler<int>? AuthorUpdateEditView;
 
     /// <summary>
-    /// Occurs when the Edit view requests an update of the books.
+    /// Occurs when the "Edit" view requests an update of the books.
     /// </summary>
     public event EventHandler<int>? BookUpdateEditView;
 
     /// <summary>
-    /// Occurs when the Edit view requests an update of the issuings.
+    /// Occurs when the "Edit" view requests an update of the issuings.
     /// </summary>
     public event EventHandler<int>? IssuingUpdateEditView;
 
     /// <summary>
-    /// Occurs when the Edit view requests an update of the readers.
+    /// Occurs when the "Edit" view requests an update of the readers.
     /// </summary>
     public event EventHandler<int>? ReaderUpdateEditView;
 
     /// <summary>
-    /// Occurs when the Pick view requests an update of the authors.
+    /// Occurs when the "Pick" view requests an update of the authors.
     /// </summary>
     public event EventHandler? AuthorsUpdatePickView;
 
     /// <summary>
-    /// Occurs when the Pick view requests an update of the books.
+    /// Occurs when the "Pick" view requests an update of the books.
     /// </summary>
     public event EventHandler? BooksUpdatePickView;
 
     /// <summary>
-    /// Occurs when the Pick view requests an update of the readers.
+    /// Occurs when the "Pick" view requests an update of the readers.
     /// </summary>
     public event EventHandler? ReadersUpdatePickView;
 
     /// <summary>
-    /// Occurs when the Period view requests an update of the issuings.
+    /// Occurs when the "Period" view requests an update of the issuings.
     /// </summary>
     public event EventHandler? IssuingsUpdatePeriodView;
 
     /// <summary>
-    /// Occurs when the Period view requests an update of the readers.
+    /// Occurs when the "Period" view requests an update of the readers.
     /// </summary>
     public event EventHandler? ReadersUpdatePeriodView;
 
@@ -186,7 +186,7 @@ public interface IMainView : IView
     public event EventHandler<IEnumerable<object>>? ExportDataText;
 
     /// <summary>
-    /// Occurs when the view requests that data be exported in Excel format.
+    /// Occurs when the view requests that data be exported in "Excel" format.
     /// </summary>
     public event EventHandler<IEnumerable<object>>? ExportDataExcel;
 }

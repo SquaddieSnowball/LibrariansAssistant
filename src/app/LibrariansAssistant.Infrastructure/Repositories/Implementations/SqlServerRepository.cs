@@ -7,7 +7,7 @@ using System.Text;
 namespace LibrariansAssistant.Infrastructure.Repositories.Implementations;
 
 /// <summary>
-/// Represents the Sql Server repository.
+/// Represents the "SQL Server" repository.
 /// </summary>
 public sealed class SqlServerRepository : IRepository
 {
@@ -21,20 +21,16 @@ public sealed class SqlServerRepository : IRepository
     public void Initialize(string initializationString)
     {
         if (string.IsNullOrEmpty(initializationString) is true)
-            throw new ArgumentNullException(nameof(initializationString),
-                "Initialization string must not be null or empty.");
-
-        try
         {
-            _sqlServerObjectRelationalMapper = new SqlServerObjectRelationalMapper(initializationString);
+            throw new ArgumentException("Initialization string must not be null or empty.",
+                nameof(initializationString));
+        }
 
-            OrmDependenciesConfigurator.Configure(_sqlServerObjectRelationalMapper);
-        }
-        catch
-        {
-            throw;
-        }
+        _sqlServerObjectRelationalMapper = new SqlServerObjectRelationalMapper(initializationString);
+        OrmDependenciesConfigurator.Configure(_sqlServerObjectRelationalMapper);
     }
+
+    #region Author repository
 
     /// <summary>
     /// Adds a new author to the repository.
@@ -44,30 +40,23 @@ public sealed class SqlServerRepository : IRepository
     public void AuthorAdd(IAuthorModel author)
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
-
-        try
-        {
-            _ = _sqlServerObjectRelationalMapper
-                .AddParameter("FirstName", author.FirstName)
-                .AddParameter("LastName", author.LastName)
-                .AddParameter("Patronymic", author.Patronymic);
-
-            _ = _sqlServerObjectRelationalMapper
-                .ExecuteNonQuery(
-
-                "INSERT INTO authors (first_name, last_name, patronymic) " +
-                "VALUES (@FirstName, @LastName, @Patronymic);",
-
-                default
-
-                );
         }
-        catch
-        {
-            throw;
-        }
+
+        _ = _sqlServerObjectRelationalMapper
+            .AddParameter("FirstName", author.FirstName)
+            .AddParameter("LastName", author.LastName)
+            .AddParameter("Patronymic", author.Patronymic);
+
+        _ = _sqlServerObjectRelationalMapper
+            .ExecuteNonQuery(
+
+            "INSERT INTO authors (first_name, last_name, patronymic) " +
+            "VALUES (@FirstName, @LastName, @Patronymic);",
+
+            default);
     }
 
     /// <summary>
@@ -78,31 +67,24 @@ public sealed class SqlServerRepository : IRepository
     public IEnumerable<IAuthorModel> AuthorGetAll()
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
+        }
 
         IEnumerable<IAuthorModel> authors;
 
-        try
-        {
-            authors = _sqlServerObjectRelationalMapper
-                .ExecuteQuery<IAuthorModel>(
+        authors = _sqlServerObjectRelationalMapper
+            .ExecuteQuery<IAuthorModel>(
 
-                "SELECT * " +
-                "FROM authors;",
+            "SELECT * " +
+            "FROM authors;",
 
-                default,
-                new MappingSettings()
-                {
-                    UseSqlStylePropertiesNaming = true
-                }
-
-                );
-        }
-        catch
-        {
-            throw;
-        }
+            default,
+            new MappingSettings()
+            {
+                UseSqlStylePropertiesNaming = true
+            });
 
         return authors;
     }
@@ -116,36 +98,29 @@ public sealed class SqlServerRepository : IRepository
     public IAuthorModel? AuthorGetById(int authorId)
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
+        }
 
         IAuthorModel? author;
 
-        try
-        {
-            _ = _sqlServerObjectRelationalMapper
-                .AddParameter("Id", authorId);
+        _ = _sqlServerObjectRelationalMapper
+            .AddParameter("Id", authorId);
 
-            author = _sqlServerObjectRelationalMapper
-                .ExecuteQuery<IAuthorModel>(
+        author = _sqlServerObjectRelationalMapper
+            .ExecuteQuery<IAuthorModel>(
 
-                "SELECT * " +
-                "FROM authors " +
-                "WHERE id = @Id;",
+            "SELECT * " +
+            "FROM authors " +
+            "WHERE id = @Id;",
 
-                default,
-                new MappingSettings()
-                {
-                    UseSqlStylePropertiesNaming = true
-                }
-
-                )
-                .FirstOrDefault();
-        }
-        catch
-        {
-            throw;
-        }
+            default,
+            new MappingSettings()
+            {
+                UseSqlStylePropertiesNaming = true
+            })
+            .FirstOrDefault();
 
         return author;
     }
@@ -158,34 +133,27 @@ public sealed class SqlServerRepository : IRepository
     public void AuthorUpdate(IAuthorModel author)
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
-
-        try
-        {
-            _ = _sqlServerObjectRelationalMapper
-                .AddParameter("Id", author.Id)
-                .AddParameter("FirstName", author.FirstName)
-                .AddParameter("LastName", author.LastName)
-                .AddParameter("Patronymic", author.Patronymic);
-
-            _ = _sqlServerObjectRelationalMapper
-                .ExecuteNonQuery(
-
-                "UPDATE authors " +
-                "SET first_name = @FirstName, " +
-                "last_name = @LastName, " +
-                "patronymic = @Patronymic " +
-                "WHERE id = @Id;",
-
-                default
-
-                );
         }
-        catch
-        {
-            throw;
-        }
+
+        _ = _sqlServerObjectRelationalMapper
+            .AddParameter("Id", author.Id)
+            .AddParameter("FirstName", author.FirstName)
+            .AddParameter("LastName", author.LastName)
+            .AddParameter("Patronymic", author.Patronymic);
+
+        _ = _sqlServerObjectRelationalMapper
+            .ExecuteNonQuery(
+
+            "UPDATE authors " +
+            "SET first_name = @FirstName, " +
+            "last_name = @LastName, " +
+            "patronymic = @Patronymic " +
+            "WHERE id = @Id;",
+
+            default);
     }
 
     /// <summary>
@@ -196,45 +164,40 @@ public sealed class SqlServerRepository : IRepository
     public void AuthorDelete(int authorId)
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
-
-        try
-        {
-            _ = _sqlServerObjectRelationalMapper
-                .AddParameter("Id", authorId);
-
-            _ = _sqlServerObjectRelationalMapper
-                .ExecuteNonQuery(
-
-                "DELETE " +
-                "FROM authors " +
-                "WHERE id = @Id;",
-
-                default
-
-                );
-
-            _ = _sqlServerObjectRelationalMapper
-                .ExecuteNonQuery(
-
-                "DELETE " +
-                "FROM books " +
-                "WHERE id NOT IN " +
-                "(" +
-                "SELECT book_id " +
-                "FROM authors_books" +
-                ");",
-
-                default
-
-                );
         }
-        catch
-        {
-            throw;
-        }
+
+        _ = _sqlServerObjectRelationalMapper
+            .AddParameter("Id", authorId);
+
+        _ = _sqlServerObjectRelationalMapper
+            .ExecuteNonQuery(
+
+            "DELETE " +
+            "FROM authors " +
+            "WHERE id = @Id;",
+
+            default);
+
+        _ = _sqlServerObjectRelationalMapper
+            .ExecuteNonQuery(
+
+            "DELETE " +
+            "FROM books " +
+            "WHERE id NOT IN " +
+            "(" +
+            "SELECT book_id " +
+            "FROM authors_books" +
+            ");",
+
+            default);
     }
+
+    #endregion
+
+    #region Book repository
 
     /// <summary>
     /// Adds a new book to the repository.
@@ -244,56 +207,53 @@ public sealed class SqlServerRepository : IRepository
     public void BookAdd(IBookModel book)
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
+        }
 
-        try
+        _ = _sqlServerObjectRelationalMapper
+            .AddParameter("Title", book.Title)
+            .AddParameter("Genre", book.Genre);
+
+        IAuthorModel[] authors = book.Authors.ToArray();
+
+        for (var i = 0; i < authors.Length; i++)
+            _ = _sqlServerObjectRelationalMapper.AddParameter($"AuthorId{i + 1}", authors[i].Id);
+
+        StringBuilder query = new();
+
+        _ = query.AppendLine("BEGIN TRY");
+        _ = query.AppendLine("BEGIN TRANSACTION;");
+
+        _ = query.AppendLine(
+
+            "INSERT INTO books (title, genre) " +
+            "VALUES (@Title, @Genre);"
+
+            );
+
+        _ = query.AppendLine("DECLARE @BookId INT = SCOPE_IDENTITY();");
+
+        for (var i = 0; i < authors.Length; i++)
         {
-            _ = _sqlServerObjectRelationalMapper
-                .AddParameter("Title", book.Title)
-                .AddParameter("Genre", book.Genre);
-
-            IAuthorModel[] authors = book.Authors.ToArray();
-
-            for (var i = 0; i < authors.Length; i++)
-                _ = _sqlServerObjectRelationalMapper.AddParameter("AuthorId" + (i + 1), authors[i].Id);
-
-            StringBuilder query = new();
-
-            _ = query.AppendLine("BEGIN TRY");
-            _ = query.AppendLine("BEGIN TRANSACTION;");
-
             _ = query.AppendLine(
 
-                "INSERT INTO books (title, genre) " +
-                "VALUES (@Title, @Genre);"
+                "INSERT INTO authors_books (author_id, book_id) " +
+                $"VALUES (@AuthorId{i + 1}, @BookId);"
 
                 );
-
-            _ = query.AppendLine("DECLARE @BookId INT = SCOPE_IDENTITY();");
-
-            for (var i = 0; i < authors.Length; i++)
-                _ = query.AppendLine(
-
-                    "INSERT INTO authors_books (author_id, book_id) " +
-                    $"VALUES (@AuthorId{i + 1}, @BookId);"
-
-                    );
-
-            _ = query.AppendLine("IF @@TRANCOUNT > 0 COMMIT TRANSACTION;");
-            _ = query.AppendLine("END TRY");
-
-            _ = query.AppendLine("BEGIN CATCH");
-            _ = query.AppendLine("IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;");
-            _ = query.AppendLine("THROW;");
-            _ = query.Append("END CATCH;");
-
-            _ = _sqlServerObjectRelationalMapper.ExecuteNonQuery(query.ToString(), default);
         }
-        catch
-        {
-            throw;
-        }
+
+        _ = query.AppendLine("IF @@TRANCOUNT > 0 COMMIT TRANSACTION;");
+        _ = query.AppendLine("END TRY");
+
+        _ = query.AppendLine("BEGIN CATCH");
+        _ = query.AppendLine("IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;");
+        _ = query.AppendLine("THROW;");
+        _ = query.Append("END CATCH;");
+
+        _ = _sqlServerObjectRelationalMapper.ExecuteNonQuery(query.ToString(), default);
     }
 
     /// <summary>
@@ -304,43 +264,36 @@ public sealed class SqlServerRepository : IRepository
     public IEnumerable<IBookModel> BookGetAll()
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
+        }
 
         IEnumerable<IBookModel> books;
 
-        try
-        {
-            books = _sqlServerObjectRelationalMapper
-                .ExecuteQuery<IBookModel>(
+        books = _sqlServerObjectRelationalMapper
+            .ExecuteQuery<IBookModel>(
 
-                "SELECT id AS book_id, title AS book_title, genre AS book_genre " +
-                "FROM books;" +
+            "SELECT id AS book_id, title AS book_title, genre AS book_genre " +
+            "FROM books;" +
 
-                Environment.NewLine + Environment.NewLine +
+            Environment.NewLine + Environment.NewLine +
 
-                "SELECT authors.id AS author_id, authors.first_name AS author_first_name, " +
-                "authors.last_name AS author_last_name, authors.patronymic AS author_patronymic, " +
-                "(ROW_NUMBER() OVER(PARTITION BY books.id ORDER BY books.id) - 1) AS i " +
-                "FROM authors " +
-                "INNER JOIN authors_books ON authors.id = authors_books.author_id " +
-                "INNER JOIN books ON authors_books.book_id = books.id " +
-                "ORDER BY books.id;",
+            "SELECT authors.id AS author_id, authors.first_name AS author_first_name, " +
+            "authors.last_name AS author_last_name, authors.patronymic AS author_patronymic, " +
+            "(ROW_NUMBER() OVER(PARTITION BY books.id ORDER BY books.id) - 1) AS i " +
+            "FROM authors " +
+            "INNER JOIN authors_books ON authors.id = authors_books.author_id " +
+            "INNER JOIN books ON authors_books.book_id = books.id " +
+            "ORDER BY books.id;",
 
-                default,
-                new MappingSettings()
-                {
-                    UseSqlStylePropertiesNaming = true,
-                    AddPropertyTypeObjectNamePrefix = true,
-                    SuppressModelInPrefix = true
-                }
-
-                );
-        }
-        catch
-        {
-            throw;
-        }
+            default,
+            new MappingSettings()
+            {
+                UseSqlStylePropertiesNaming = true,
+                AddPropertyTypeObjectNamePrefix = true,
+                SuppressModelInPrefix = true
+            });
 
         return books;
     }
@@ -354,49 +307,42 @@ public sealed class SqlServerRepository : IRepository
     public IBookModel? BookGetById(int bookId)
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
+        }
 
         IBookModel? book;
 
-        try
-        {
-            _ = _sqlServerObjectRelationalMapper
-                .AddParameter("Id", bookId);
+        _ = _sqlServerObjectRelationalMapper
+            .AddParameter("Id", bookId);
 
-            book = _sqlServerObjectRelationalMapper
-                .ExecuteQuery<IBookModel>(
+        book = _sqlServerObjectRelationalMapper
+            .ExecuteQuery<IBookModel>(
 
-                "SELECT id AS book_id, title AS book_title, genre AS book_genre " +
-                "FROM books " +
-                "WHERE id = @Id;" +
+            "SELECT id AS book_id, title AS book_title, genre AS book_genre " +
+            "FROM books " +
+            "WHERE id = @Id;" +
 
-                Environment.NewLine + Environment.NewLine +
+            Environment.NewLine + Environment.NewLine +
 
-                "SELECT authors.id AS author_id, authors.first_name AS author_first_name, " +
-                "authors.last_name AS author_last_name, authors.patronymic AS author_patronymic, " +
-                "(ROW_NUMBER() OVER(PARTITION BY books.id ORDER BY books.id) - 1) AS i " +
-                "FROM authors " +
-                "INNER JOIN authors_books ON authors.id = authors_books.author_id " +
-                "INNER JOIN books ON authors_books.book_id = books.id " +
-                "WHERE books.id = @Id " +
-                "ORDER BY books.id;",
+            "SELECT authors.id AS author_id, authors.first_name AS author_first_name, " +
+            "authors.last_name AS author_last_name, authors.patronymic AS author_patronymic, " +
+            "(ROW_NUMBER() OVER(PARTITION BY books.id ORDER BY books.id) - 1) AS i " +
+            "FROM authors " +
+            "INNER JOIN authors_books ON authors.id = authors_books.author_id " +
+            "INNER JOIN books ON authors_books.book_id = books.id " +
+            "WHERE books.id = @Id " +
+            "ORDER BY books.id;",
 
-                default,
-                new MappingSettings()
-                {
-                    UseSqlStylePropertiesNaming = true,
-                    AddPropertyTypeObjectNamePrefix = true,
-                    SuppressModelInPrefix = true
-                }
-
-                )
-                .FirstOrDefault();
-        }
-        catch
-        {
-            throw;
-        }
+            default,
+            new MappingSettings()
+            {
+                UseSqlStylePropertiesNaming = true,
+                AddPropertyTypeObjectNamePrefix = true,
+                SuppressModelInPrefix = true
+            })
+            .FirstOrDefault();
 
         return book;
     }
@@ -409,65 +355,62 @@ public sealed class SqlServerRepository : IRepository
     public void BookUpdate(IBookModel book)
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
+        }
 
-        try
+        _ = _sqlServerObjectRelationalMapper
+            .AddParameter("BookId", book.Id)
+            .AddParameter("Title", book.Title)
+            .AddParameter("Genre", book.Genre);
+
+        IAuthorModel[] authors = book.Authors.ToArray();
+
+        for (var i = 0; i < authors.Length; i++)
+            _ = _sqlServerObjectRelationalMapper.AddParameter($"AuthorId{i + 1}", authors[i].Id);
+
+        StringBuilder query = new();
+
+        _ = query.AppendLine("BEGIN TRY");
+        _ = query.AppendLine("BEGIN TRANSACTION;");
+
+        _ = query.AppendLine(
+
+            "UPDATE books " +
+            "SET title = @Title, " +
+            "genre = @Genre " +
+            "WHERE id = @BookId;"
+
+            );
+
+        _ = query.AppendLine(
+
+            "DELETE " +
+            "FROM authors_books " +
+            "WHERE book_id = @BookId;"
+
+            );
+
+        for (var i = 0; i < authors.Length; i++)
         {
-            _ = _sqlServerObjectRelationalMapper
-                .AddParameter("BookId", book.Id)
-                .AddParameter("Title", book.Title)
-                .AddParameter("Genre", book.Genre);
-
-            IAuthorModel[] authors = book.Authors.ToArray();
-
-            for (var i = 0; i < authors.Length; i++)
-                _ = _sqlServerObjectRelationalMapper.AddParameter("AuthorId" + (i + 1), authors[i].Id);
-
-            StringBuilder query = new();
-
-            _ = query.AppendLine("BEGIN TRY");
-            _ = query.AppendLine("BEGIN TRANSACTION;");
-
             _ = query.AppendLine(
 
-                "UPDATE books " +
-                "SET title = @Title, " +
-                "genre = @Genre " +
-                "WHERE id = @BookId;"
+                "INSERT INTO authors_books (author_id, book_id) " +
+                $"VALUES (@AuthorId{i + 1}, @BookId);"
 
                 );
-
-            _ = query.AppendLine(
-
-                "DELETE " +
-                "FROM authors_books " +
-                "WHERE book_id = @BookId;"
-
-                );
-
-            for (var i = 0; i < authors.Length; i++)
-                _ = query.AppendLine(
-
-                    "INSERT INTO authors_books (author_id, book_id) " +
-                    $"VALUES (@AuthorId{i + 1}, @BookId);"
-
-                    );
-
-            _ = query.AppendLine("IF @@TRANCOUNT > 0 COMMIT TRANSACTION;");
-            _ = query.AppendLine("END TRY");
-
-            _ = query.AppendLine("BEGIN CATCH");
-            _ = query.AppendLine("IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;");
-            _ = query.AppendLine("THROW;");
-            _ = query.Append("END CATCH;");
-
-            _ = _sqlServerObjectRelationalMapper.ExecuteNonQuery(query.ToString(), default);
         }
-        catch
-        {
-            throw;
-        }
+
+        _ = query.AppendLine("IF @@TRANCOUNT > 0 COMMIT TRANSACTION;");
+        _ = query.AppendLine("END TRY");
+
+        _ = query.AppendLine("BEGIN CATCH");
+        _ = query.AppendLine("IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;");
+        _ = query.AppendLine("THROW;");
+        _ = query.Append("END CATCH;");
+
+        _ = _sqlServerObjectRelationalMapper.ExecuteNonQuery(query.ToString(), default);
     }
 
     /// <summary>
@@ -478,30 +421,27 @@ public sealed class SqlServerRepository : IRepository
     public void BookDelete(int bookId)
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
-
-        try
-        {
-            _ = _sqlServerObjectRelationalMapper
-                .AddParameter("Id", bookId);
-
-            _ = _sqlServerObjectRelationalMapper
-                .ExecuteNonQuery(
-
-                "DELETE " +
-                "FROM books " +
-                "WHERE id = @Id;",
-
-                default
-
-                );
         }
-        catch
-        {
-            throw;
-        }
+
+        _ = _sqlServerObjectRelationalMapper
+            .AddParameter("Id", bookId);
+
+        _ = _sqlServerObjectRelationalMapper
+            .ExecuteNonQuery(
+
+            "DELETE " +
+            "FROM books " +
+            "WHERE id = @Id;",
+
+            default);
     }
+
+    #endregion
+
+    #region Issuing repository
 
     /// <summary>
     /// Adds a new issuing to the repository.
@@ -511,33 +451,26 @@ public sealed class SqlServerRepository : IRepository
     public void IssuingAdd(IIssuingModel issuing)
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
-
-        try
-        {
-            _ = _sqlServerObjectRelationalMapper
-                .AddParameter("ReaderId", issuing.Reader.Id)
-                .AddParameter("BookId", issuing.Book.Id)
-                .AddParameter("TakeDate", issuing.TakeDate)
-                .AddParameter("Returned", issuing.Returned)
-                .AddParameter("ReturnDate", issuing.ReturnDate)
-                .AddParameter("ReturnState", issuing.ReturnState);
-
-            _ = _sqlServerObjectRelationalMapper
-                .ExecuteNonQuery(
-
-                "INSERT INTO issuings (reader_id, book_id, take_date, returned, return_date, return_state) " +
-                "VALUES (@ReaderId, @BookId, @TakeDate, @Returned, @ReturnDate, @ReturnState);",
-
-                default
-
-                );
         }
-        catch
-        {
-            throw;
-        }
+
+        _ = _sqlServerObjectRelationalMapper
+            .AddParameter("ReaderId", issuing.Reader.Id)
+            .AddParameter("BookId", issuing.Book.Id)
+            .AddParameter("TakeDate", issuing.TakeDate)
+            .AddParameter("Returned", issuing.Returned)
+            .AddParameter("ReturnDate", issuing.ReturnDate)
+            .AddParameter("ReturnState", issuing.ReturnState);
+
+        _ = _sqlServerObjectRelationalMapper
+            .ExecuteNonQuery(
+
+            "INSERT INTO issuings (reader_id, book_id, take_date, returned, return_date, return_state) " +
+            "VALUES (@ReaderId, @BookId, @TakeDate, @Returned, @ReturnDate, @ReturnState);",
+
+            default);
     }
 
     /// <summary>
@@ -548,51 +481,44 @@ public sealed class SqlServerRepository : IRepository
     public IEnumerable<IIssuingModel> IssuingGetAll()
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
+        }
 
         IEnumerable<IIssuingModel> issuings;
 
-        try
-        {
-            issuings = _sqlServerObjectRelationalMapper
-                .ExecuteQuery<IIssuingModel>(
+        issuings = _sqlServerObjectRelationalMapper
+            .ExecuteQuery<IIssuingModel>(
 
-                "SELECT issuings.id AS issuing_id, readers.id AS reader_id, readers.first_name AS reader_first_name, " +
-                "readers.last_name AS reader_last_name, readers.patronymic AS reader_patronymic, " +
-                "readers.gender AS reader_gender, readers.date_of_birth AS reader_date_of_birth, " +
-                "books.id AS book_id, books.title AS book_title, books.genre AS book_genre, " +
-                "issuings.take_date AS issuing_take_date, issuings.returned AS issuing_returned, " +
-                "issuings.return_date AS issuing_return_date, issuings.return_state AS issuing_return_state " +
-                "FROM issuings " +
-                "INNER JOIN readers ON issuings.reader_id = readers.id " +
-                "INNER JOIN books ON issuings.book_id = books.id;" +
+            "SELECT issuings.id AS issuing_id, readers.id AS reader_id, readers.first_name AS reader_first_name, " +
+            "readers.last_name AS reader_last_name, readers.patronymic AS reader_patronymic, " +
+            "readers.gender AS reader_gender, readers.date_of_birth AS reader_date_of_birth, " +
+            "books.id AS book_id, books.title AS book_title, books.genre AS book_genre, " +
+            "issuings.take_date AS issuing_take_date, issuings.returned AS issuing_returned, " +
+            "issuings.return_date AS issuing_return_date, issuings.return_state AS issuing_return_state " +
+            "FROM issuings " +
+            "INNER JOIN readers ON issuings.reader_id = readers.id " +
+            "INNER JOIN books ON issuings.book_id = books.id;" +
 
-                Environment.NewLine + Environment.NewLine +
+            Environment.NewLine + Environment.NewLine +
 
-                "SELECT authors.id AS author_id, authors.first_name AS author_first_name, " +
-                "authors.last_name AS author_last_name, authors.patronymic AS author_patronymic, " +
-                "(ROW_NUMBER() OVER(PARTITION BY issuings.id ORDER BY issuings.id) - 1) AS i " +
-                "FROM authors " +
-                "INNER JOIN authors_books ON authors.id = authors_books.author_id " +
-                "INNER JOIN books ON authors_books.book_id = books.id " +
-                "INNER JOIN issuings ON authors_books.book_id = issuings.book_id " +
-                "ORDER BY issuings.id;",
+            "SELECT authors.id AS author_id, authors.first_name AS author_first_name, " +
+            "authors.last_name AS author_last_name, authors.patronymic AS author_patronymic, " +
+            "(ROW_NUMBER() OVER(PARTITION BY issuings.id ORDER BY issuings.id) - 1) AS i " +
+            "FROM authors " +
+            "INNER JOIN authors_books ON authors.id = authors_books.author_id " +
+            "INNER JOIN books ON authors_books.book_id = books.id " +
+            "INNER JOIN issuings ON authors_books.book_id = issuings.book_id " +
+            "ORDER BY issuings.id;",
 
-                default,
-                new MappingSettings()
-                {
-                    UseSqlStylePropertiesNaming = true,
-                    AddPropertyTypeObjectNamePrefix = true,
-                    SuppressModelInPrefix = true
-                }
-
-                );
-        }
-        catch
-        {
-            throw;
-        }
+            default,
+            new MappingSettings()
+            {
+                UseSqlStylePropertiesNaming = true,
+                AddPropertyTypeObjectNamePrefix = true,
+                SuppressModelInPrefix = true
+            });
 
         return issuings;
     }
@@ -606,57 +532,50 @@ public sealed class SqlServerRepository : IRepository
     public IIssuingModel? IssuingGetById(int issuingId)
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
+        }
 
         IIssuingModel? issuing;
 
-        try
-        {
-            _ = _sqlServerObjectRelationalMapper
-                .AddParameter("Id", issuingId);
+        _ = _sqlServerObjectRelationalMapper
+            .AddParameter("Id", issuingId);
 
-            issuing = _sqlServerObjectRelationalMapper
-                .ExecuteQuery<IIssuingModel>(
+        issuing = _sqlServerObjectRelationalMapper
+            .ExecuteQuery<IIssuingModel>(
 
-                "SELECT issuings.id AS issuing_id, readers.id AS reader_id, readers.first_name AS reader_first_name, " +
-                "readers.last_name AS reader_last_name, readers.patronymic AS reader_patronymic, " +
-                "readers.gender AS reader_gender, readers.date_of_birth AS reader_date_of_birth, " +
-                "books.id AS book_id, books.title AS book_title, books.genre AS book_genre, " +
-                "issuings.take_date AS issuing_take_date, issuings.returned AS issuing_returned, " +
-                "issuings.return_date AS issuing_return_date, issuings.return_state AS issuing_return_state " +
-                "FROM issuings " +
-                "INNER JOIN readers ON issuings.reader_id = readers.id " +
-                "INNER JOIN books ON issuings.book_id = books.id " +
-                "WHERE issuings.id = @Id;" +
+            "SELECT issuings.id AS issuing_id, readers.id AS reader_id, readers.first_name AS reader_first_name, " +
+            "readers.last_name AS reader_last_name, readers.patronymic AS reader_patronymic, " +
+            "readers.gender AS reader_gender, readers.date_of_birth AS reader_date_of_birth, " +
+            "books.id AS book_id, books.title AS book_title, books.genre AS book_genre, " +
+            "issuings.take_date AS issuing_take_date, issuings.returned AS issuing_returned, " +
+            "issuings.return_date AS issuing_return_date, issuings.return_state AS issuing_return_state " +
+            "FROM issuings " +
+            "INNER JOIN readers ON issuings.reader_id = readers.id " +
+            "INNER JOIN books ON issuings.book_id = books.id " +
+            "WHERE issuings.id = @Id;" +
 
-                Environment.NewLine + Environment.NewLine +
+            Environment.NewLine + Environment.NewLine +
 
-                "SELECT authors.id AS author_id, authors.first_name AS author_first_name, " +
-                "authors.last_name AS author_last_name, authors.patronymic AS author_patronymic, " +
-                "(ROW_NUMBER() OVER(PARTITION BY issuings.id ORDER BY issuings.id) - 1) AS i " +
-                "FROM authors " +
-                "INNER JOIN authors_books ON authors.id = authors_books.author_id " +
-                "INNER JOIN books ON authors_books.book_id = books.id " +
-                "INNER JOIN issuings ON authors_books.book_id = issuings.book_id " +
-                "WHERE issuings.id = @Id " +
-                "ORDER BY issuings.id;",
+            "SELECT authors.id AS author_id, authors.first_name AS author_first_name, " +
+            "authors.last_name AS author_last_name, authors.patronymic AS author_patronymic, " +
+            "(ROW_NUMBER() OVER(PARTITION BY issuings.id ORDER BY issuings.id) - 1) AS i " +
+            "FROM authors " +
+            "INNER JOIN authors_books ON authors.id = authors_books.author_id " +
+            "INNER JOIN books ON authors_books.book_id = books.id " +
+            "INNER JOIN issuings ON authors_books.book_id = issuings.book_id " +
+            "WHERE issuings.id = @Id " +
+            "ORDER BY issuings.id;",
 
-                default,
-                new MappingSettings()
-                {
-                    UseSqlStylePropertiesNaming = true,
-                    AddPropertyTypeObjectNamePrefix = true,
-                    SuppressModelInPrefix = true
-                }
-
-                )
-                .FirstOrDefault();
-        }
-        catch
-        {
-            throw;
-        }
+            default,
+            new MappingSettings()
+            {
+                UseSqlStylePropertiesNaming = true,
+                AddPropertyTypeObjectNamePrefix = true,
+                SuppressModelInPrefix = true
+            })
+            .FirstOrDefault();
 
         return issuing;
     }
@@ -669,40 +588,33 @@ public sealed class SqlServerRepository : IRepository
     public void IssuingUpdate(IIssuingModel issuing)
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
-
-        try
-        {
-            _ = _sqlServerObjectRelationalMapper
-                .AddParameter("Id", issuing.Id)
-                .AddParameter("ReaderId", issuing.Reader.Id)
-                .AddParameter("BookId", issuing.Book.Id)
-                .AddParameter("TakeDate", issuing.TakeDate)
-                .AddParameter("Returned", issuing.Returned)
-                .AddParameter("ReturnDate", issuing.ReturnDate)
-                .AddParameter("ReturnState", issuing.ReturnState);
-
-            _ = _sqlServerObjectRelationalMapper
-                .ExecuteNonQuery(
-
-                "UPDATE issuings " +
-                "SET reader_id = @ReaderId, " +
-                "book_id = @BookId, " +
-                "take_date = @TakeDate, " +
-                "returned = @Returned, " +
-                "return_date = @ReturnDate, " +
-                "return_state = @ReturnState " +
-                "WHERE id = @Id;",
-
-                default
-
-                );
         }
-        catch
-        {
-            throw;
-        }
+
+        _ = _sqlServerObjectRelationalMapper
+            .AddParameter("Id", issuing.Id)
+            .AddParameter("ReaderId", issuing.Reader.Id)
+            .AddParameter("BookId", issuing.Book.Id)
+            .AddParameter("TakeDate", issuing.TakeDate)
+            .AddParameter("Returned", issuing.Returned)
+            .AddParameter("ReturnDate", issuing.ReturnDate)
+            .AddParameter("ReturnState", issuing.ReturnState);
+
+        _ = _sqlServerObjectRelationalMapper
+            .ExecuteNonQuery(
+
+            "UPDATE issuings " +
+            "SET reader_id = @ReaderId, " +
+            "book_id = @BookId, " +
+            "take_date = @TakeDate, " +
+            "returned = @Returned, " +
+            "return_date = @ReturnDate, " +
+            "return_state = @ReturnState " +
+            "WHERE id = @Id;",
+
+            default);
     }
 
     /// <summary>
@@ -713,30 +625,27 @@ public sealed class SqlServerRepository : IRepository
     public void IssuingDelete(int issuingId)
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
-
-        try
-        {
-            _ = _sqlServerObjectRelationalMapper
-                .AddParameter("Id", issuingId);
-
-            _ = _sqlServerObjectRelationalMapper
-                .ExecuteNonQuery(
-
-                "DELETE " +
-                "FROM issuings " +
-                "WHERE id = @Id;",
-
-                default
-
-                );
         }
-        catch
-        {
-            throw;
-        }
+
+        _ = _sqlServerObjectRelationalMapper
+            .AddParameter("Id", issuingId);
+
+        _ = _sqlServerObjectRelationalMapper
+            .ExecuteNonQuery(
+
+            "DELETE " +
+            "FROM issuings " +
+            "WHERE id = @Id;",
+
+            default);
     }
+
+    #endregion
+
+    #region Reader repository
 
     /// <summary>
     /// Adds a new reader to the repository.
@@ -746,32 +655,25 @@ public sealed class SqlServerRepository : IRepository
     public void ReaderAdd(IReaderModel reader)
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
-
-        try
-        {
-            _ = _sqlServerObjectRelationalMapper
-                .AddParameter("FirstName", reader.FirstName)
-                .AddParameter("LastName", reader.LastName)
-                .AddParameter("Patronymic", reader.Patronymic)
-                .AddParameter("Gender", reader.Gender)
-                .AddParameter("DateOfBirth", reader.DateOfBirth);
-
-            _ = _sqlServerObjectRelationalMapper
-                .ExecuteNonQuery(
-
-                "INSERT INTO readers (first_name, last_name, patronymic, gender, date_of_birth) " +
-                "VALUES (@FirstName, @LastName, @Patronymic, @Gender, @DateOfBirth);",
-
-                default
-
-                );
         }
-        catch
-        {
-            throw;
-        }
+
+        _ = _sqlServerObjectRelationalMapper
+            .AddParameter("FirstName", reader.FirstName)
+            .AddParameter("LastName", reader.LastName)
+            .AddParameter("Patronymic", reader.Patronymic)
+            .AddParameter("Gender", reader.Gender)
+            .AddParameter("DateOfBirth", reader.DateOfBirth);
+
+        _ = _sqlServerObjectRelationalMapper
+            .ExecuteNonQuery(
+
+            "INSERT INTO readers (first_name, last_name, patronymic, gender, date_of_birth) " +
+            "VALUES (@FirstName, @LastName, @Patronymic, @Gender, @DateOfBirth);",
+
+            default);
     }
 
     /// <summary>
@@ -782,31 +684,24 @@ public sealed class SqlServerRepository : IRepository
     public IEnumerable<IReaderModel> ReaderGetAll()
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
+        }
 
         IEnumerable<IReaderModel> readers;
 
-        try
-        {
-            readers = _sqlServerObjectRelationalMapper
-                .ExecuteQuery<IReaderModel>(
+        readers = _sqlServerObjectRelationalMapper
+            .ExecuteQuery<IReaderModel>(
 
-                "SELECT * " +
-                "FROM readers;",
+            "SELECT * " +
+            "FROM readers;",
 
-                default,
-                new MappingSettings()
-                {
-                    UseSqlStylePropertiesNaming = true
-                }
-
-                );
-        }
-        catch
-        {
-            throw;
-        }
+            default,
+            new MappingSettings()
+            {
+                UseSqlStylePropertiesNaming = true
+            });
 
         return readers;
     }
@@ -820,36 +715,29 @@ public sealed class SqlServerRepository : IRepository
     public IReaderModel? ReaderGetById(int readerId)
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
+        }
 
         IReaderModel? reader;
 
-        try
-        {
-            _ = _sqlServerObjectRelationalMapper
-                .AddParameter("Id", readerId);
+        _ = _sqlServerObjectRelationalMapper
+            .AddParameter("Id", readerId);
 
-            reader = _sqlServerObjectRelationalMapper
-                .ExecuteQuery<IReaderModel>(
+        reader = _sqlServerObjectRelationalMapper
+            .ExecuteQuery<IReaderModel>(
 
-                "SELECT * " +
-                "FROM readers " +
-                "WHERE id = @Id;",
+            "SELECT * " +
+            "FROM readers " +
+            "WHERE id = @Id;",
 
-                default,
-                new MappingSettings()
-                {
-                    UseSqlStylePropertiesNaming = true
-                }
-
-                )
-                .FirstOrDefault();
-        }
-        catch
-        {
-            throw;
-        }
+            default,
+            new MappingSettings()
+            {
+                UseSqlStylePropertiesNaming = true
+            })
+            .FirstOrDefault();
 
         return reader;
     }
@@ -862,38 +750,31 @@ public sealed class SqlServerRepository : IRepository
     public void ReaderUpdate(IReaderModel reader)
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
-
-        try
-        {
-            _ = _sqlServerObjectRelationalMapper
-                .AddParameter("Id", reader.Id)
-                .AddParameter("FirstName", reader.FirstName)
-                .AddParameter("LastName", reader.LastName)
-                .AddParameter("Patronymic", reader.Patronymic)
-                .AddParameter("Gender", reader.Gender)
-                .AddParameter("DateOfBirth", reader.DateOfBirth);
-
-            _ = _sqlServerObjectRelationalMapper
-                .ExecuteNonQuery(
-
-                "UPDATE readers " +
-                "SET first_name = @FirstName, " +
-                "last_name = @LastName, " +
-                "patronymic = @Patronymic, " +
-                "gender = @Gender, " +
-                "date_of_birth = @DateOfBirth " +
-                "WHERE id = @Id;",
-
-                default
-
-                );
         }
-        catch
-        {
-            throw;
-        }
+
+        _ = _sqlServerObjectRelationalMapper
+            .AddParameter("Id", reader.Id)
+            .AddParameter("FirstName", reader.FirstName)
+            .AddParameter("LastName", reader.LastName)
+            .AddParameter("Patronymic", reader.Patronymic)
+            .AddParameter("Gender", reader.Gender)
+            .AddParameter("DateOfBirth", reader.DateOfBirth);
+
+        _ = _sqlServerObjectRelationalMapper
+            .ExecuteNonQuery(
+
+            "UPDATE readers " +
+            "SET first_name = @FirstName, " +
+            "last_name = @LastName, " +
+            "patronymic = @Patronymic, " +
+            "gender = @Gender, " +
+            "date_of_birth = @DateOfBirth " +
+            "WHERE id = @Id;",
+
+            default);
     }
 
     /// <summary>
@@ -904,28 +785,23 @@ public sealed class SqlServerRepository : IRepository
     public void ReaderDelete(int readerId)
     {
         if (_sqlServerObjectRelationalMapper is null)
+        {
             throw new InvalidOperationException("The operation could not be performed " +
                 "because the repository has not been initialized.");
-
-        try
-        {
-            _ = _sqlServerObjectRelationalMapper
-                .AddParameter("Id", readerId);
-
-            _ = _sqlServerObjectRelationalMapper
-                .ExecuteNonQuery(
-
-                "DELETE " +
-                "FROM readers " +
-                "WHERE id = @Id;",
-
-                default
-
-                );
         }
-        catch
-        {
-            throw;
-        }
+
+        _ = _sqlServerObjectRelationalMapper
+            .AddParameter("Id", readerId);
+
+        _ = _sqlServerObjectRelationalMapper
+            .ExecuteNonQuery(
+
+            "DELETE " +
+            "FROM readers " +
+            "WHERE id = @Id;",
+
+            default);
     }
+
+    #endregion
 }

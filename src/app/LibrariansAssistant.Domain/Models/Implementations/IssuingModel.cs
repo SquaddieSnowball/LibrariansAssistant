@@ -1,6 +1,4 @@
-﻿using LibrariansAssistant.Dependencies;
-using LibrariansAssistant.Domain.Models.Abstractions;
-using LibrariansAssistant.Domain.Validation.Attributes;
+﻿using LibrariansAssistant.Domain.Models.Abstractions;
 using System.ComponentModel.DataAnnotations;
 
 namespace LibrariansAssistant.Domain.Models.Implementations;
@@ -18,13 +16,13 @@ public sealed class IssuingModel : IIssuingModel
     /// <summary>
     /// Gets or sets the reader.
     /// </summary>
-    [NotDefaultModel(ErrorMessage = "Reader is required.")]
+    [Required(ErrorMessage = "Reader is required.")]
     public IReaderModel Reader { get; set; }
 
     /// <summary>
     /// Gets or sets the book.
     /// </summary>
-    [NotDefaultModel(ErrorMessage = "Book is required.")]
+    [Required(ErrorMessage = "Book is required.")]
     public IBookModel Book { get; set; }
 
     /// <summary>
@@ -45,18 +43,16 @@ public sealed class IssuingModel : IIssuingModel
     /// <summary>
     /// Gets or sets the return state of the book.
     /// </summary>
-    [Range(1, 100, ErrorMessage = "Return state must be in range of 1 to 100.")]
+    [Range(1, 100, ErrorMessage = "Return state must be in range of {1} to {2}.")]
     public int? ReturnState { get; set; }
 
     /// <summary>
-    /// Initializes a new instance of the IssuingModel class.
+    /// Initializes a new instance of the <see cref="IssuingModel"/> class.
     /// </summary>
-    public IssuingModel() =>
-        (Reader, Book) =
-        (DependenciesContainer.Resolve<IReaderModel>()!, DependenciesContainer.Resolve<IBookModel>()!);
+    public IssuingModel() => (Reader, Book) = (default!, default!);
 
     /// <summary>
-    /// Initializes a new instance of the IssuingModel class with the specified 
+    /// Initializes a new instance of the <see cref="IssuingModel"/> class with the specified 
     /// reader, book, take date, return status, return date and return state.
     /// </summary>
     /// <param name="reader">Reader.</param>
@@ -65,8 +61,8 @@ public sealed class IssuingModel : IIssuingModel
     /// <param name="returned">Value indicating whether the book was returned.</param>
     /// <param name="returnDate">The time the book was returned.</param>
     /// <param name="returnState">Return state of the book.</param>
-    public IssuingModel(IReaderModel reader, IBookModel book, DateTime takeDate,
-        bool returned, DateTime? returnDate, int? returnState) =>
+    public IssuingModel(IReaderModel reader, IBookModel book,
+        DateTime takeDate, bool returned, DateTime? returnDate, int? returnState) =>
         (Reader, Book, TakeDate, Returned, ReturnDate, ReturnState) =
         (reader, book, takeDate, returned, returnDate, returnState);
 }

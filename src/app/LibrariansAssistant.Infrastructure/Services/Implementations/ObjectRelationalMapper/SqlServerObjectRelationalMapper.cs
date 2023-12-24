@@ -9,7 +9,7 @@ using System.Data;
 namespace LibrariansAssistant.Infrastructure.Services.Implementations.ObjectRelationalMapper;
 
 /// <summary>
-/// Represents the Sql Server ORM.
+/// Represents the "SQL Server" ORM.
 /// </summary>
 public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
 {
@@ -18,7 +18,7 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
     private SqlCommand _sqlCommand;
 
     /// <summary>
-    /// Initializes a new instance of the SqlServerOrm class.
+    /// Initializes a new instance of the <see cref="SqlServerObjectRelationalMapper"/> class.
     /// </summary>
     /// <param name="connectionString">Connection string.</param>
     public SqlServerObjectRelationalMapper(string connectionString)
@@ -27,12 +27,7 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
         {
             _sqlConnection = new SqlConnection(connectionString);
             _sqlCommand = _sqlConnection.CreateCommand();
-
             _sqlConnection.Open();
-        }
-        catch
-        {
-            throw;
         }
         finally
         {
@@ -70,15 +65,9 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
     /// <returns>The current instance of the ORM object.</returns>
     public IObjectRelationalMapper AddParameter<T>(string name, T value)
     {
-        try
-        {
-            _ = _sqlCommand.Parameters
-                .Add(value is not null ? new SqlParameter(name, value) : new SqlParameter(name, DBNull.Value));
-        }
-        catch
-        {
-            throw;
-        }
+        _ = _sqlCommand
+            .Parameters
+            .Add((value is not null) ? new SqlParameter(name, value) : new SqlParameter(name, DBNull.Value));
 
         return this;
     }
@@ -92,7 +81,6 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
     public int ExecuteNonQuery(string query, QueryExecutionSettings? executionSettings)
     {
         executionSettings ??= new();
-
         _sqlCommand.CommandText = query;
 
         if (executionSettings.IsStoredProcedure is true)
@@ -104,10 +92,6 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
         {
             _sqlConnection.Open();
             rowsAffected = _sqlCommand.ExecuteNonQuery();
-        }
-        catch
-        {
-            throw;
         }
         finally
         {
@@ -148,10 +132,6 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
                 rowsAffectedArray[i] = _sqlCommand.ExecuteNonQuery();
             }
         }
-        catch
-        {
-            throw;
-        }
         finally
         {
             _sqlConnection.Close();
@@ -169,12 +149,12 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
     /// <param name="executionSettings">Execution settings.</param>
     /// <param name="mappingSettings">Mapping settings.</param>
     /// <returns>Query results converted to the specified type.</returns>
-    public IEnumerable<T> ExecuteQuery<T>(string query, QueryExecutionSettings? executionSettings,
+    public IEnumerable<T> ExecuteQuery<T>(string query,
+        QueryExecutionSettings? executionSettings,
         MappingSettings? mappingSettings)
     {
         executionSettings ??= new();
         mappingSettings ??= new();
-
         _sqlCommand.CommandText = query;
 
         if (executionSettings.IsStoredProcedure is true)
@@ -193,12 +173,10 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
                 do
                 {
                     object? obj = CreateObject(typeof(T));
-
                     InitializeObject(obj, typeDetails, sqlDataReader, mappingSettings);
-
                     queryResults.Add((T)obj!);
-
-                } while (sqlDataReader.Read() is true);
+                }
+                while (sqlDataReader.Read() is true);
             }
 
             if (sqlDataReader.NextResult() is true)
@@ -208,6 +186,7 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
                 do
                 {
                     if (sqlDataReader.Read() is true)
+                    {
                         foreach (T queryResult in queryResults)
                         {
                             int currentEnumerableNumber = 0;
@@ -215,15 +194,12 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
                             InitializeObjectEnumerable(queryResult, typeDetails, sqlDataReader,
                                 mappingSettings, enumerableNumber, ref currentEnumerableNumber);
                         }
+                    }
 
                     enumerableNumber++;
-
-                } while (sqlDataReader.NextResult() is true);
+                }
+                while (sqlDataReader.NextResult() is true);
             }
-        }
-        catch
-        {
-            throw;
         }
         finally
         {
@@ -244,7 +220,6 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
     public T ExecuteScalar<T>(string query, QueryExecutionSettings? executionSettings)
     {
         executionSettings ??= new();
-
         _sqlCommand.CommandText = query;
 
         if (executionSettings.IsStoredProcedure is true)
@@ -257,10 +232,6 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
             _sqlConnection.Open();
             queryResult = (T)_sqlCommand.ExecuteScalar();
         }
-        catch
-        {
-            throw;
-        }
         finally
         {
             _sqlConnection.Close();
@@ -271,9 +242,7 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
     }
 
     private object? CreateObject(Type type) =>
-        _dependencies.ContainsKey(type) is true ?
-        Activator.CreateInstance(_dependencies[type]) :
-        Activator.CreateInstance(type);
+        Activator.CreateInstance((_dependencies.ContainsKey(type) is true) ? _dependencies[type] : type);
 
     private void InitializeObject(object? obj, TypeDetails typeDetails,
         SqlDataReader sqlDataReader, MappingSettings mappingSettings)
@@ -283,18 +252,18 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
         if (mappingSettings.AddPropertyTypeObjectNamePrefix is true)
         {
             propertyNamePrefix =
-                _dependencies.ContainsKey(typeDetails.ObjectType) is true ?
+                (_dependencies.ContainsKey(typeDetails.ObjectType) is true) ?
                 _dependencies[typeDetails.ObjectType].Name :
                 typeDetails.ObjectType.Name;
 
-            if (mappingSettings.SuppressModelInPrefix is true && propertyNamePrefix.EndsWith("Model") is true)
+            if ((mappingSettings.SuppressModelInPrefix is true) && (propertyNamePrefix.EndsWith("Model") is true))
                 propertyNamePrefix = propertyNamePrefix.Remove(propertyNamePrefix.LastIndexOf("Model"));
 
             if (mappingSettings.UseSqlStylePropertiesNaming is true)
                 propertyNamePrefix = propertyNamePrefix.ToLower() + '_';
         }
 
-        foreach (PropertyDetails propertyDetails in typeDetails.PropertyDetails)
+        foreach (PropertyDetails propertyDetails in typeDetails.PropertiesDetails)
         {
             string propertyMappingName = string.Empty;
 
@@ -302,7 +271,7 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
                 propertyMappingName += propertyNamePrefix;
 
             propertyMappingName +=
-                mappingSettings.UseSqlStylePropertiesNaming is true ?
+                (mappingSettings.UseSqlStylePropertiesNaming is true) ?
                 propertyDetails.SqlStyleName :
                 propertyDetails.PropertyInfo.Name;
 
@@ -311,8 +280,7 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
                 try
                 {
                     object propertyValue = sqlDataReader[propertyMappingName];
-
-                    propertyDetails.PropertyInfo.SetValue(obj, propertyValue is not DBNull ? propertyValue : default);
+                    propertyDetails.PropertyInfo.SetValue(obj, (propertyValue is not DBNull) ? propertyValue : default);
                 }
                 catch (IndexOutOfRangeException)
                 {
@@ -326,9 +294,7 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
                     continue;
 
                 object? nestedObj = CreateObject(propertyDetails.TypeDetails.ObjectType);
-
                 InitializeObject(nestedObj, propertyDetails.TypeDetails, sqlDataReader, mappingSettings);
-
                 propertyDetails.PropertyInfo.SetValue(obj, nestedObj);
             }
         }
@@ -337,7 +303,8 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
     private bool InitializeObjectEnumerable(object? obj, TypeDetails typeDetails, SqlDataReader sqlDataReader,
         MappingSettings mappingSettings, int enumerableNumber, ref int currentEnumerableNumber)
     {
-        foreach (PropertyDetails propertyDetails in typeDetails.PropertyDetails)
+        foreach (PropertyDetails propertyDetails in typeDetails.PropertiesDetails)
+        {
             if (propertyDetails.IsSimpleType is false)
             {
                 if (propertyDetails.TypeDetails!.IsEnumerable is true)
@@ -352,15 +319,12 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
                         do
                         {
                             object? enumerabledObj = CreateObject(propertyDetails.TypeDetails.ObjectType);
-
                             InitializeObject(enumerabledObj, propertyDetails.TypeDetails, sqlDataReader, mappingSettings);
-
                             _ = enumerable.Add(enumerabledObj);
-
-                        } while (sqlDataReader.Read() is true && GetEnumerableElementNumber(sqlDataReader) != 0);
+                        }
+                        while ((sqlDataReader.Read() is true) && (GetEnumerableElementNumber(sqlDataReader) != 0));
 
                         propertyDetails.PropertyInfo.SetValue(obj, enumerable);
-
                         currentEnumerableNumber++;
 
                         return true;
@@ -384,6 +348,7 @@ public sealed class SqlServerObjectRelationalMapper : IObjectRelationalMapper
                     }
                 }
             }
+        }
 
         return false;
     }

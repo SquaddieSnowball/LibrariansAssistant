@@ -3,7 +3,7 @@
 /// <summary>
 /// Provides methods used to validate models using Data Annotations.
 /// </summary>
-public interface IDataAnnotationModelValidationService
+public interface IDataAnnotationsModelValidationService
 {
     /// <summary>
     /// Determines whether the specified model is valid.

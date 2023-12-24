@@ -5,12 +5,11 @@ using OfficeOpenXml;
 namespace LibrariansAssistant.Services.Common.Implementations.ReportGenerator;
 
 /// <summary>
-/// Represents the Excel report generator.
+/// Represents the "Excel" report generator.
 /// </summary>
 public sealed class ExcelReportGenerator : IReportGenerator
 {
-    static ExcelReportGenerator() =>
-       ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+    static ExcelReportGenerator() => ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
     /// <summary>
     /// Generates a report and saves it to the specified file path.
@@ -27,39 +26,24 @@ public sealed class ExcelReportGenerator : IReportGenerator
         if (reportDocument is null)
             throw new ArgumentNullException(nameof(reportDocument), "Report document must not be null.");
 
-        try
-        {
-            if (File.Exists(filePath) is true)
-                File.Delete(filePath);
-        }
-        catch
-        {
-            throw;
-        }
+        if (File.Exists(filePath) is true)
+            File.Delete(filePath);
 
-        try
-        {
-            using ExcelPackage excelPackage = new(filePath);
+        using ExcelPackage excelPackage = new(filePath);
+        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets.Add(reportDocument.Title);
 
-            ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets.Add(reportDocument.Title);
+        string[] columnHeaders = reportDocument.ColumnHeaders.ToArray();
 
-            string[] columnHeaders = reportDocument.ColumnHeaders.ToArray();
+        for (var j = 0; j < columnHeaders.Length; j++)
+            excelWorksheet.Cells[1, j + 1].Value = columnHeaders[j];
 
-            for (var j = 0; j < columnHeaders.Length; j++)
-                excelWorksheet.Cells[1, j + 1].Value = columnHeaders[j];
+        for (var i = 0; i < reportDocument.RowCount; i++)
+            for (var j = 0; j < reportDocument.ColumnCount; j++)
+                excelWorksheet.Cells[i + 2, j + 1].Value = reportDocument[i, j];
 
-            for (var i = 0; i < reportDocument.RowCount; i++)
-                for (var j = 0; j < reportDocument.ColumnCount; j++)
-                    excelWorksheet.Cells[i + 2, j + 1].Value = reportDocument[i, j];
+        excelWorksheet.Cells.AutoFitColumns();
+        excelWorksheet.Rows[1].Style.Font.Bold = true;
 
-            excelWorksheet.Cells.AutoFitColumns();
-            excelWorksheet.Rows[1].Style.Font.Bold = true;
-
-            excelPackage.Save();
-        }
-        catch
-        {
-            throw;
-        }
+        excelPackage.Save();
     }
 }

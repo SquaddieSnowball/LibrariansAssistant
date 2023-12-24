@@ -8,20 +8,20 @@ internal static class ControlExtensions
     /// <summary>
     /// Sorts a data source containing a list of objects.
     /// </summary>
-    /// <param name="dataGridView">Instance of the DataGridView class for sorting.</param>
+    /// <param name="dataGridView">Instance of the <see cref="DataGridView"/> class for sorting.</param>
     /// <param name="columnIndex">Index of the column to sort by.</param>
     /// <param name="dataIsAscSortDirection">Value indicating whether ascending sorting should be applied.</param>
     /// <param name="dataPrevSortColumnIndex">Index of the previous sorted column.</param>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="InvalidOperationException"></exception>
-    internal static void SortDataSourceObjectList(this DataGridView dataGridView,
+    public static void SortDataSourceObjectList(this DataGridView dataGridView,
         int columnIndex, ref bool dataIsAscSortDirection, ref int dataPrevSortColumnIndex)
     {
         if (dataGridView is null)
             throw new ArgumentNullException(nameof(dataGridView), "Data grid view must not be null.");
 
         if (dataGridView.DataSource is null)
-            throw new ArgumentNullException(nameof(dataGridView.DataSource), "Data source must not be null.");
+            throw new ArgumentNullException(nameof(dataGridView), "Data source must not be null.");
 
         List<object> data;
 
@@ -38,7 +38,7 @@ internal static class ControlExtensions
             dataIsAscSortDirection = !dataIsAscSortDirection;
 
         dataGridView.DataSource =
-            dataIsAscSortDirection is true ?
+            (dataIsAscSortDirection is true) ?
             data.OrderBy(o => o.GetType().GetProperty(dataGridView.Columns[columnIndex].Name)!.GetValue(o)).ToList() :
             data.OrderByDescending(o => o.GetType().GetProperty(dataGridView.Columns[columnIndex].Name)!.GetValue(o)).ToList();
 
@@ -46,9 +46,11 @@ internal static class ControlExtensions
         {
             string sortedCulumnHeaderText = dataGridView.Columns[dataPrevSortColumnIndex].HeaderText;
 
-            if (sortedCulumnHeaderText.EndsWith('\u2191') is true || sortedCulumnHeaderText.EndsWith('\u2193') is true)
+            if ((sortedCulumnHeaderText.EndsWith('\u2191') is true) || (sortedCulumnHeaderText.EndsWith('\u2193') is true))
+            {
                 dataGridView.Columns[dataPrevSortColumnIndex].HeaderText =
                     sortedCulumnHeaderText.Remove(sortedCulumnHeaderText.Length - 1, 1);
+            }
         }
 
         if (dataIsAscSortDirection is true)

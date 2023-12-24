@@ -4,7 +4,7 @@ using LibrariansAssistant.Infrastructure.Repositories.Implementations;
 namespace LibrariansAssistant.Infrastructure.Repositories.Factories.Implementations;
 
 /// <summary>
-/// Represents the Sql Server repository factory.
+/// Represents the "SQL Server" repository factory.
 /// </summary>
 public sealed class SqlServerRepositoryFactory : IRepositoryFactory
 {

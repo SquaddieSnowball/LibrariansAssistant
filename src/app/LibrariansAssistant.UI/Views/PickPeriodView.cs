@@ -4,7 +4,7 @@ using LibrariansAssistant.UI.Services.Implementations;
 namespace LibrariansAssistant.UI.Views;
 
 /// <summary>
-/// Represents the Pick Period view of the application.
+/// Represents the "Pick Period" view of the application.
 /// </summary>
 internal sealed partial class PickPeriodView : Form
 {
@@ -13,30 +13,32 @@ internal sealed partial class PickPeriodView : Form
     private readonly Button _buttonPick;
     private Dictionary<int, string> _periodColumnIndexNames = new();
 
+    #region Properties
+
     /// <summary>
     /// Gets the main control of the view.
     /// </summary>
-    internal Control MainControl { get; }
+    public Control MainControl { get; }
 
     /// <summary>
     /// Get the start period.
     /// </summary>
-    internal DateTime? StartPeriod { get; private set; }
+    public DateTime? StartPeriod { get; private set; }
 
     /// <summary>
     /// Get the end period.
     /// </summary>
-    internal DateTime? EndPeriod { get; private set; }
+    public DateTime? EndPeriod { get; private set; }
 
     /// <summary>
     /// Gets the index of the column to which to apply the period.
     /// </summary>
-    internal int? PeriodColumnIndex { get; private set; }
+    public int? PeriodColumnIndex { get; private set; }
 
     /// <summary>
     /// Gets or sets the names of the columns to which the period can be applied.
     /// </summary>
-    internal Dictionary<int, string> PeriodColumnIndexNames
+    public Dictionary<int, string> PeriodColumnIndexNames
     {
         get => _periodColumnIndexNames;
         set
@@ -53,15 +55,21 @@ internal sealed partial class PickPeriodView : Form
         }
     }
 
+    #endregion
+
+    #region Events
+
     /// <summary>
     /// Occurs when the period is set.
     /// </summary>
-    internal event EventHandler? PeriodSet;
+    public event EventHandler? PeriodSet;
+
+    #endregion
 
     /// <summary>
-    /// Initializes a new instance of the PickPeriodView class.
+    /// Initializes a new instance of the <see cref="PickPeriodView"/> class.
     /// </summary>
-    internal PickPeriodView()
+    public PickPeriodView()
     {
         MainControl = ControlCreation.PickPeriodCreateTableLayoutPanel(out _labelPickedPeriod, out _buttonPick);
 
@@ -77,17 +85,18 @@ internal sealed partial class PickPeriodView : Form
         buttonReset.Click += ButtonResetOnClick;
     }
 
-    private void InitializeView() =>
-        ResetPeriod();
+    private void InitializeView() => ResetPeriod();
 
-    private void ButtonPickOnClick(object? sender, EventArgs e) =>
-        _ = ShowDialog();
+    #region Control event handlers
+
+    private void ButtonPickOnClick(object? sender, EventArgs e) => _ = ShowDialog();
 
     private void ButtonConfirmOnClick(object? sender, EventArgs e)
     {
         if (dateTimePickerStartPeriod.Value > dateTimePickerEndPeriod.Value)
         {
-            _winFormsMessageService.ShowWarning("The end period value must be greater than or equal to the start period value.");
+            _winFormsMessageService.ShowWarning("The end period value must be " +
+                "greater than or equal to the start period value.");
 
             return;
         }
@@ -116,6 +125,8 @@ internal sealed partial class PickPeriodView : Form
 
         Close();
     }
+
+    #endregion
 
     private void ResetPeriod()
     {

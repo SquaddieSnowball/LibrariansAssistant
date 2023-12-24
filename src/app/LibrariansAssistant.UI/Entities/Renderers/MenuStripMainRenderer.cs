@@ -1,20 +1,20 @@
 ﻿namespace LibrariansAssistant.UI.Entities.Renderers;
 
 /// <summary>
-/// Represents the renderer for the Main view's MenuStrip.
+/// Represents the renderer for the "Main" view's <see cref="MenuStrip"/>.
 /// </summary>
 internal sealed class MenuStripMainRenderer : ToolStripProfessionalRenderer
 {
     /// <summary>
-    /// Initializes a new instance of the MenuStripMainRenderer class.
+    /// Initializes a new instance of the <see cref="MenuStripMainRenderer"/> class.
     /// </summary>
-    internal MenuStripMainRenderer() : base() { }
+    public MenuStripMainRenderer() : base() { }
 
     /// <summary>
-    /// Initializes a new instance of the MenuStripMainRenderer class with the specified color table.
+    /// Initializes a new instance of the <see cref="MenuStripMainRenderer"/> class with the specified color table.
     /// </summary>
     /// <param name="professionalColorTable">Color table.</param>
-    internal MenuStripMainRenderer(ProfessionalColorTable professionalColorTable) : base(professionalColorTable) { }
+    public MenuStripMainRenderer(ProfessionalColorTable professionalColorTable) : base(professionalColorTable) { }
 
     protected override void OnRenderArrow(ToolStripArrowRenderEventArgs e)
     {

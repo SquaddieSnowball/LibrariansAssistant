@@ -10,8 +10,7 @@ public static class DependenciesContainer
     /// <summary>
     /// Gets all project dependencies.
     /// </summary>
-    /// <returns>All project dependencies.</returns>
-    public static IEnumerable<KeyValuePair<Type, Type>> GetAll() => _dependencies;
+    public static IEnumerable<KeyValuePair<Type, Type>> Dependencies => _dependencies;
 
     /// <summary>
     /// Registers a new dependency.
@@ -42,18 +41,9 @@ public static class DependenciesContainer
     {
         Type type = typeof(T);
 
-        if (_dependencies.ContainsKey(type) is true)
-        {
-            try
-            {
-                return (T?)Activator.CreateInstance(_dependencies[type], ctorArgs);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-        else
+        return
+            (_dependencies.ContainsKey(type) is true) ?
+            (T?)Activator.CreateInstance(_dependencies[type], ctorArgs) :
             throw new ArgumentException("This dependency has not yet been registered.");
     }
 }

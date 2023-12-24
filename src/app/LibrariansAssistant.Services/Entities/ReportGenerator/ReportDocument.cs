@@ -52,7 +52,7 @@ public sealed class ReportDocument
         {
             try
             {
-                _reportData[rowIndex, columnIndex] = value is not null ? value : string.Empty;
+                _reportData[rowIndex, columnIndex] = (value is not null) ? value : string.Empty;
             }
             catch (ArgumentOutOfRangeException ex)
             {
@@ -62,7 +62,7 @@ public sealed class ReportDocument
     }
 
     /// <summary>
-    /// Initializes a new instance of the ReportDocument class.
+    /// Initializes a new instance of the <see cref="ReportDocument"/> class.
     /// </summary>
     /// <param name="title">Title of the document.</param>
     /// <param name="columnHeaders">Document's column headers.</param>
@@ -85,8 +85,10 @@ public sealed class ReportDocument
             throw new ArgumentException("The report document must contain at least one column.", nameof(columnCount));
 
         if (columnHeaders.Count() != columnCount)
+        {
             throw new ArgumentException("The number of column headers must be equal to the number of columns.",
                 nameof(columnHeaders));
+        }
 
         _reportData = new string[rowCount, columnCount];
 
